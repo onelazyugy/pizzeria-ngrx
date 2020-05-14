@@ -9,7 +9,7 @@ import { SummaryComponent } from './pages/pizza/summary/summary.component';
 
 const routes: Routes = [
   {
-    path: 'pizza',
+    path: '',
     component: PizzaComponent,
     children: [
       {path: '', component: CreateComponent}, // if user navigate to /pizza, it will render CreateComponent
@@ -21,7 +21,7 @@ const routes: Routes = [
           {path: 'complete', component: CompleteComponent}
         ]
       },
-      {path: 'summary', component: SummaryComponent}
+      {path: 'summary', component: SummaryComponent},
     ]
   }
 ];

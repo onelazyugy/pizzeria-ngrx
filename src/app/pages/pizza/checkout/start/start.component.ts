@@ -43,7 +43,7 @@ export class StartComponent implements OnInit, OnDestroy {
     //clear the store on submit payment...similar to logout
     this.store.dispatch(new ResetStoreTask());
     this.store.dispatch(new StoreOrderSummaryTask(entireOrderSummaries));
-    this.router.navigate(['pizza/checkout/complete']);
+    this.router.navigate(['checkout/complete']);
   }
 
   ngOnInit(): void {

@@ -105,7 +105,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   }
 
   checkout(): void {
-    this.router.navigate(['pizza/checkout']);
+    this.router.navigate(['/checkout']);
   }
 
   ngOnDestroy(): void {

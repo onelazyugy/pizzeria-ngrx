@@ -25,7 +25,7 @@ export class CompleteComponent implements OnInit, OnDestroy {
   }
 
   startNewOrder() {
-    this.router.navigate(['/pizza']);
+    this.router.navigate(['/']);
   }
 
   ngOnDestroy(): void {
