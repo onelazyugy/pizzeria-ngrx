@@ -1,0 +1,84 @@
+<h1 class="center-text">MAKE YOUR OWN PIZZA</h1>
+<nz-steps [nzCurrent]="current">
+    <nz-step nzTitle="BASE"></nz-step>
+    <nz-step nzTitle="CHEESE"></nz-step>
+    <nz-step nzTitle="MEAT"></nz-step>
+    <nz-step nzTitle="VEGGIE"></nz-step>
+    <nz-step nzTitle="SUMMARY"></nz-step>
+</nz-steps>
+
+<div class="steps-content">
+    <div *ngIf="current === 0">
+        <div nz-row class="center-text select-pizza-size">
+            <div nz-col class="gutter-row" [nzSpan]="12">
+                <h3>Select Pizza Size</h3>
+                <nz-radio-group [(ngModel)]="selectedPizzaSize" (ngModelChange)="onSelectSize($event)" *ngFor="let size of pizzaSizeArray">
+                    <label nz-radio nzValue="{{size.value}}">{{size.label}}</label>
+                </nz-radio-group>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="12">
+                <div class="inner-box">
+                    <h3>Pick up or Delivery</h3>
+                    <nz-radio-group [(ngModel)]="selectedDeliveryType" (ngModelChange)="onSelectDeliveryType($event)" *ngFor="let deliveryType of deliveryTypeArray">
+                        <label nz-radio nzValue="{{deliveryType.value}}">{{deliveryType.label}}</label>
+                    </nz-radio-group>
+                </div>
+            </div>
+        </div>
+        <div nz-row class="center-text">
+            <img src="{{initialPizzaImage}}" style="height: 414px; width: 706px;">
+        </div>
+    </div>
+    <div *ngIf="current === 1">
+        <app-topping [input]="cheeses" [index]=1></app-topping>
+    </div>
+    <div *ngIf="current === 2">
+        <app-topping [input]="meats" [index]=2></app-topping>
+    </div>
+    <div *ngIf="current === 3">
+        <app-topping [input]="veggies" [index]=3></app-topping>
+    </div>
+    <div *ngIf="current === 4">
+        <!-- <img src="assets/pizza/4pizza-final.png"> -->
+        <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
+            <div nz-col class="gutter-row" [nzSpan]="18">
+                <div class="inner-box" style="margin-right: 10px;">
+                    <img src="assets/pizza/4pizza-final.png" width="100%">
+                </div>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <div class="inner-box">
+                    <h3>Selected Size</h3>
+                    {{finalSelectedPizzaSize}}
+                    <h3>Delivery Type</h3>
+                    {{finalSelectedDeliveryType}}
+                    <h3>Selected Toppings</h3>
+                    <nz-divider nzText="Cheeses" nzOrientation="left"></nz-divider>
+                    <div *ngFor="let topping of selectedCheeeses">
+                        <li>{{topping.name}}</li>
+                    </div>
+                    <nz-divider nzText="Meats" nzOrientation="left"></nz-divider>
+                    <div *ngFor="let topping of selectedMeats">
+                        <li>{{topping.name}}</li>
+                    </div>
+                    <nz-divider nzText="Veggies" nzOrientation="left"></nz-divider>
+                    <div *ngFor="let topping of selectedVeggies">
+                        <li>{{topping.name}}</li>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<div class="steps-action">
+    <button nz-button nzType="default" (click)="pre()" *ngIf="current > 0">
+        <span>Previous</span>
+    </button>
+    <button nz-button nzType="default" (click)="next()" *ngIf="current < 4">
+        <span>Next</span>
+    </button>
+    <button nz-button nzType="primary" (click)="checkout()" *ngIf="current === 4">
+        <span>Checkout</span>
+    </button>
+</div>

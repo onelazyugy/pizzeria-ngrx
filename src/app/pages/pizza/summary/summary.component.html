@@ -1,0 +1,19 @@
+<h1 class="center-text">ORDER SUMMARY</h1>
+<nz-table  #basicTable [nzData]="orderSummaries">
+    <thead>
+      <tr>
+        <th>Order Id</th>
+        <th>Tax</th>
+        <th>Total Due</th>
+        <th>Delivery Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let summary of basicTable.data">
+        <td>{{ summary.orderId }}</td>
+        <td>{{ summary.totalTax | currency }}</td>
+        <td>{{ summary.totalDue | currency}}</td>
+        <td>{{ summary.deliveryType }}</td>
+      </tr>
+    </tbody>
+  </nz-table>

@@ -1,0 +1,8 @@
+<div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
+    <div *ngFor="let topping of input">
+        <div nz-col [ngClass]="!topping.isSelected ? 'gutter-row content-box': 'gutter-row content-selected-box'" [nzSpan]="6" (click)="toppingClicked(topping)">
+            <div class="inner-box">{{topping.name}}</div>
+            <img src="{{topping.image}}" style="height: 100px; width: 100px;">
+        </div>
+    </div>
+</div>

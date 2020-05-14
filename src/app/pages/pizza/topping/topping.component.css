@@ -1,0 +1,28 @@
+.inner-box {
+    padding: 8px 0;
+    margin: 5px;
+}
+
+.content-box {
+    border-radius: 25px;
+    border: 2px solid gray;
+    /* border-style: solid; */
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.content-selected-box {
+    border-radius: 25px;
+    border: 2px solid green;
+    background-color: greenyellow;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
