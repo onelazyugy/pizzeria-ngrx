@@ -15,6 +15,7 @@ import * as fromApp from './store/app.reducer';
 import { PizzaModule } from './pages/pizza/pizza.module';
 import { environment } from 'src/environments/environment';
 import { clearState } from './pages/pizza/checkout/start/store/start.reducer';
+import { RegisterModule } from './pages/register/register.module';
 
 registerLocaleData(en);
 
@@ -34,7 +35,8 @@ registerLocaleData(en);
     StoreModule.forRoot(fromApp.appReducer, {metaReducers: [clearState]}), //metaReducers is for clearing the store upon logout
     //ngrxdevtools
     StoreDevtoolsModule.instrument({logOnly: environment.production}),
-    PizzaModule
+    PizzaModule,
+    RegisterModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]
