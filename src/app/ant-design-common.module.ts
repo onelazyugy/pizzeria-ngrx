@@ -12,6 +12,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @NgModule({
     declarations: [],
@@ -28,7 +29,8 @@ import { NzTableModule } from 'ng-zorro-antd/table';
         NzSelectModule,
         NzResultModule,
         NzMenuModule,
-        NzTableModule
+        NzTableModule,
+        NzToolTipModule
     ]
 })
 export class AntDesignCommonModule {}

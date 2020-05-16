@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RegisterComponent } from './register.component';
+import { LoginComponent } from './login.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AntDesignCommonModule } from 'src/app/ant-design-common.module';
-import { AppRoutingModule } from 'src/app/app-routing.module';
 import { ShareModule } from 'src/app/share/share.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+
 
 @NgModule({
-  declarations: [RegisterComponent],
+  declarations: [LoginComponent],
   imports: [
-    AppRoutingModule,
     AntDesignCommonModule,
     ShareModule,
     CommonModule,
@@ -17,4 +17,4 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule
   ]
 })
-export class RegisterModule { }
+export class LoginModule { }

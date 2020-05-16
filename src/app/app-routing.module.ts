@@ -7,6 +7,7 @@ import { CompleteComponent } from './pages/pizza/checkout/complete/complete.comp
 import { StartComponent } from './pages/pizza/checkout/start/start.component';
 import { SummaryComponent } from './pages/pizza/summary/summary.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   }
 ];
 

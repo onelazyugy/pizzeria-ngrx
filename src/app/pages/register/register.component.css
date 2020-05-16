@@ -1,0 +1,19 @@
+.register-form {
+  max-width: 600px;
+}
+
+.phone-select {
+  width: 70px;
+}
+
+.register-area {
+  margin-bottom: 8px;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.register-form-button {
+  width: 100%;
+}

@@ -16,6 +16,7 @@ import { PizzaModule } from './pages/pizza/pizza.module';
 import { environment } from 'src/environments/environment';
 import { clearState } from './pages/pizza/checkout/start/store/start.reducer';
 import { RegisterModule } from './pages/register/register.module';
+import { LoginModule } from './pages/login/login.module';
 
 registerLocaleData(en);
 
@@ -36,7 +37,8 @@ registerLocaleData(en);
     //ngrxdevtools
     StoreDevtoolsModule.instrument({logOnly: environment.production}),
     PizzaModule,
-    RegisterModule
+    RegisterModule,
+    LoginModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]
