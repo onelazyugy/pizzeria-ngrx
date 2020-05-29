@@ -17,6 +17,8 @@ import { environment } from 'src/environments/environment';
 import { clearState } from './pages/pizza/checkout/start/store/start.reducer';
 import { RegisterModule } from './pages/register/register.module';
 import { LoginModule } from './pages/login/login.module';
+import { EffectsModule } from '@ngrx/effects';
+import { RegisterEffects } from './pages/register/store/register.effect';
 
 registerLocaleData(en);
 
@@ -34,6 +36,7 @@ registerLocaleData(en);
 
     //wire up the store with all of the app reducers
     StoreModule.forRoot(fromApp.appReducer, {metaReducers: [clearState]}), //metaReducers is for clearing the store upon logout
+    EffectsModule.forRoot([RegisterEffects]),
     //ngrxdevtools
     StoreDevtoolsModule.instrument({logOnly: environment.production}),
     PizzaModule,

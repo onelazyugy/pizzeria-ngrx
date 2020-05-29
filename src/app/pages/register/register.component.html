@@ -2,7 +2,7 @@
 <div nz-row>
     <div nz-col nzSpan="6"></div>
     <div nz-col nzSpan="12" class="register-form">
-        <form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <form [formGroup]="userRegistrationForm" (ngSubmit)="submitForm()">
             <nz-form-item>
                 <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid E-mail!">
@@ -17,9 +17,9 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>Confirm Password</nz-form-label>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="confirmPassword" nzRequired>Confirm Password</nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
-                    <input nz-input type="password" formControlName="checkPassword" id="checkPassword" />
+                    <input nz-input type="password" formControlName="confirmPassword" id="confirmPassword" />
                     <ng-template #errorTpl let-control>
                         <ng-container *ngIf="control.hasError('required')">
                             Please confirm your password!
@@ -31,23 +31,26 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickName" nzRequired>
                     <span>
                         Nickname <i nz-icon nz-tooltip nzTitle="Nickname display once logged in" nzType="question-circle" nzTheme="outline"></i>
                     </span>
                 </nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your nickname!">
-                    <input nz-input id="nickname" formControlName="nickname" />
+                    <input nz-input id="nickName" formControlName="nickName" />
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item nz-row class="register-area">
                 <nz-form-control [nzSpan]="14" [nzOffset]="6">
-                    <button class="register-form-button" [disabled]="!validateForm.valid" nz-button nzType="primary">Register</button>
+                    <button class="register-form-button" [disabled]="!userRegistrationForm.valid" nz-button nzType="primary">Register</button>
                     <nz-divider nzText="OR"></nz-divider>
                     <button nz-button nzType="default" class="register-form-button" (click)="login()">Login</button>
                 </nz-form-control>
             </nz-form-item>
-        </form>        
+        </form>    
+        <div *ngIf="isRegistering">
+            {{status}}
+        </div>
     </div>
     <div nz-col nzSpan="6"></div>
 </div>
