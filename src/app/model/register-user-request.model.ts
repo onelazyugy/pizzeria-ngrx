@@ -4,3 +4,9 @@ export class RegisterUserRequest {
     confirmPassword: string;
     nickName: string;
 }
+
+export interface RegisterStatus {
+    isRegistering: boolean;
+    isRegisteringComplete: boolean;
+    isRegisterSuccess: boolean;
+}

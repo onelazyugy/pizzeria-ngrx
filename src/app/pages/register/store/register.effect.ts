@@ -4,6 +4,7 @@ import {switchMap, catchError, map} from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { RegisterStatus } from 'src/app/model/register-user-request.model';
 
 // effect is nothing much but piece of code that is similar to service for making http request or localstorage
 // up to you to use effect or not since it is a matter of preference if you want to stick with ngrx rather than angular
@@ -21,24 +22,23 @@ export class RegisterEffects {
             .pipe(
                 map((response: any) => {
                     console.log('response: ', response);
-                    const status = {
+                    const registerSuccessStatus: RegisterStatus = {
                         isRegistering: false,
                         isRegisteringComplete: true,
                         isRegisterSuccess: true
                     }
-                    return new RegisterActions.RegisterUserTaskSuccess(status);
+                    return new RegisterActions.RegisterUserTaskSuccess(registerSuccessStatus);
                 }),
                 catchError(error => {
                     console.error(error);
-                    const status = {
+                    const registerFailureStatus: RegisterStatus = {
                         isRegistering: false,
                         isRegisteringComplete: true,
                         isRegisterSuccess: false
                     }
-                    return of(new RegisterActions.RegisterUserTaskFailure(status)); 
+                    return of(new RegisterActions.RegisterUserTaskFailure(registerFailureStatus)); 
                 })
             );
         }),
-
     );
 }

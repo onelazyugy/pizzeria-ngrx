@@ -35,8 +35,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     this.registrationSubscription = this.store.select('registerReducer').subscribe(response => {
       console.log('response: ', response);
-      if(response.isRegisteringComplete) {
-        if(response.isRegisterSuccess) {
+      if(response.registerStatus.isRegisteringComplete) {
+        if(response.registerStatus.isRegisterSuccess) {
           // this.isRegistering = false;
           this.status = 'register success';
         } else {
@@ -44,18 +44,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
         }
       }
     });
-
-    // this.corsService.fetchUserDetials().subscribe(res => {
-    //   console.log('res: ', res);
-    // }, error => {
-    //   console.log('error: ', error);
-    // });
-
-    // this.corsService.fetchPizzaDetails().subscribe(res => {
-    //   console.log('res: ', res);
-    // }, error => {
-    //   console.log('error: ', error);
-    // });
   }
 
   updateConfirmValidator(): void {
