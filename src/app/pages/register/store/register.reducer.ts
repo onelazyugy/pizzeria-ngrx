@@ -23,21 +23,18 @@ export function registerReducer(state: State = initlaTasks, action: RegisterActi
                 isRegistering: true,
                 isRegisteringComplete: false
             }
-            console.log('registration start: ', registerStartStatus);
             return {
                ...state,
                registerStatus: {...registerStartStatus}
             }
         case RegisterActions.REGISTER_USER_SUCCESS: 
             const registerSuccessStatus = action.payload;
-            console.log('registration success: ', registerSuccessStatus);
             return {
                 ...state,
                 registerStatus: {...registerSuccessStatus}
             }
         case RegisterActions.REGISTER_USER_FAILURE:
             const registerFailureStatus = action.payload;
-            console.log('registration failure: ', registerSuccessStatus);
             return {
                 ...state,
                 registerStatus: {...registerFailureStatus}

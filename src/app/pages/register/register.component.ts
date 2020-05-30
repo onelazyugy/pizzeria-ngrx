@@ -18,6 +18,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   registrationSubscription: Subscription;
   isRegistering: boolean = false;
   status: string = '';
+  // isRegisterComplete: boolean = false;
 
   constructor(private store: Store<fromApp.AppState>, private route: Router, private fb: FormBuilder, private corsService: CorsService) { }
 
@@ -28,17 +29,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
       confirmPassword: [null, [Validators.required, this.confirmationValidator]],
       nickName: [null, [Validators.required]]
     });
-    
-    // this.startSubscription = this.store.select('startReducer').subscribe(data => {
-    //   this.orderSummaries = data.orderSummaries;
-    // });
 
-    this.registrationSubscription = this.store.select('registerReducer').subscribe(response => {
-      console.log('response: ', response);
+    this.registrationSubscription = this.store.select('registerReducer').subscribe(response => {  
       if(response.registerStatus.isRegisteringComplete) {
+        this.isRegistering = false;
         if(response.registerStatus.isRegisterSuccess) {
-          // this.isRegistering = false;
           this.status = 'register success';
+          setTimeout(() => {
+            //redirect to login page
+            this.route.navigate(['/login']);
+          }, 2000);
         } else {
           this.status = 'register fail';
         }
@@ -73,7 +73,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     };
 
     this.isRegistering = true;
-    this.status = 'registering...';
+    this.status = '';
     this.store.dispatch(
       new RegisterActions.StartRegisterUserTask(registerUserRequest)
     );

@@ -42,13 +42,13 @@
             </nz-form-item>
             <nz-form-item nz-row class="register-area">
                 <nz-form-control [nzSpan]="14" [nzOffset]="6">
-                    <button class="register-form-button" [disabled]="!userRegistrationForm.valid" nz-button nzType="primary">Register</button>
+                    <button class="register-form-button" [disabled]="!userRegistrationForm.valid" nz-button nzType="primary" [nzLoading]="isRegistering">Register</button>
                     <nz-divider nzText="OR"></nz-divider>
                     <button nz-button nzType="default" class="register-form-button" (click)="login()">Login</button>
                 </nz-form-control>
             </nz-form-item>
         </form>    
-        <div *ngIf="isRegistering">
+        <div class="center-text" *ngIf="!isRegistering">
             {{status}}
         </div>
     </div>

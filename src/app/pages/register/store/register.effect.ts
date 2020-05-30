@@ -21,7 +21,6 @@ export class RegisterEffects {
             return this.http.post<any>('http://localhost:8282/pizzeria/api/v1/user/register', registrationPayload)
             .pipe(
                 map((response: any) => {
-                    console.log('response: ', response);
                     const registerSuccessStatus: RegisterStatus = {
                         isRegistering: false,
                         isRegisteringComplete: true,
@@ -29,8 +28,8 @@ export class RegisterEffects {
                     }
                     return new RegisterActions.RegisterUserTaskSuccess(registerSuccessStatus);
                 }),
-                catchError(error => {
-                    console.error(error);
+                catchError(err => {
+                    //status code >= 300
                     const registerFailureStatus: RegisterStatus = {
                         isRegistering: false,
                         isRegisteringComplete: true,

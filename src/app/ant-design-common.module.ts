@@ -13,6 +13,7 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 @NgModule({
     declarations: [],
@@ -30,7 +31,8 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
         NzResultModule,
         NzMenuModule,
         NzTableModule,
-        NzToolTipModule
+        NzToolTipModule,
+        NzSpinModule
     ]
 })
 export class AntDesignCommonModule {}
