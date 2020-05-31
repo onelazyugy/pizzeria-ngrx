@@ -18,7 +18,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   registrationSubscription: Subscription;
   isRegistering: boolean = false;
   status: string = '';
-  // isRegisterComplete: boolean = false;
 
   constructor(private store: Store<fromApp.AppState>, private route: Router, private fb: FormBuilder, private corsService: CorsService) { }
 
@@ -36,7 +35,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         if(response.registerStatus.isRegisterSuccess) {
           this.status = 'register success';
           setTimeout(() => {
-            //redirect to login page
+            //redirect to login page after 2 second to indicate register success
             this.route.navigate(['/login']);
           }, 2000);
         } else {

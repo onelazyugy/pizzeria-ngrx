@@ -19,6 +19,7 @@ import { RegisterModule } from './pages/register/register.module';
 import { LoginModule } from './pages/login/login.module';
 import { EffectsModule } from '@ngrx/effects';
 import { RegisterEffects } from './pages/register/store/register.effect';
+import { LoginEffects } from './pages/login/store/login.effect';
 
 registerLocaleData(en);
 
@@ -36,7 +37,7 @@ registerLocaleData(en);
 
     //wire up the store with all of the app reducers
     StoreModule.forRoot(fromApp.appReducer, {metaReducers: [clearState]}), //metaReducers is for clearing the store upon logout
-    EffectsModule.forRoot([RegisterEffects]),
+    EffectsModule.forRoot([RegisterEffects, LoginEffects]),
     //ngrxdevtools
     StoreDevtoolsModule.instrument({logOnly: environment.production}),
     PizzaModule,
