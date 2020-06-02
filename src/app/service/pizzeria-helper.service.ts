@@ -16,7 +16,11 @@ export class HelperService {
     }
 
     getObjectFromLocalStorage(): string {
-        return this.decodeString(localStorage.getItem(constant.PIZZERIA_KEY))
+        const loginInfoFromLocalStorage = localStorage.getItem(constant.PIZZERIA_KEY);
+        if(loginInfoFromLocalStorage !== null) {
+            return this.decodeString(loginInfoFromLocalStorage)
+        }
+        return undefined;
     }
 
     encodeString(s: string): string {

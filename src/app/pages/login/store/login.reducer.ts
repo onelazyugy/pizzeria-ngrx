@@ -38,6 +38,12 @@ export function loginReducer(state: State = initlaTasks, action: LoginActions.Lo
                 ...state,
                 loginStatus: {...loginFailureStatus}
             }
+        case LoginActions.LOGOUT_USER: 
+            const logoutUserStatus = action.payload;
+            return {
+                ...state,
+                loginStatus: {...logoutUserStatus}
+            }
         default:
             return state;
     }

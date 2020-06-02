@@ -17,7 +17,7 @@
                     </nz-input-group>
                 </nz-form-control>
             </nz-form-item>
-            <button nz-button [disabled]="!userLoginForm.valid" class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
+            <button nz-button [disabled]="!userLoginForm.valid" class="login-form-button login-form-margin" [nzLoading]="isLoggingIn" [nzType]="'primary'">Log in</button>
         </form>
         <nz-divider nzText="OR"></nz-divider>
         <button nz-button nzType="default" class="login-form-button login-form-margin" (click)="redirectToRegister()">Register</button>

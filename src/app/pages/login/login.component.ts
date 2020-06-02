@@ -36,7 +36,10 @@ export class LoginComponent implements OnInit, OnDestroy {
             //redirect to login page after 2 second to indicate register success
             this.route.navigate(['/']);
           }, 2000);
-        } else {
+        } else if(!response.loginStatus.isLoginSuccess) {
+          // isLoggingIn: false,
+          // isLoginComplete: true,
+          // isLoginSuccess: false
           this.status = 'login fail';
         }
       }

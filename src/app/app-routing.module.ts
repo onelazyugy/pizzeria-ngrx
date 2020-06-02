@@ -8,6 +8,7 @@ import { StartComponent } from './pages/pizza/checkout/start/start.component';
 import { SummaryComponent } from './pages/pizza/summary/summary.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
+import { LoginGuardService } from './service/login-guard.service';
 
 const routes: Routes = [
   {
@@ -32,7 +33,8 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [LoginGuardService]
   }
 ];
 
