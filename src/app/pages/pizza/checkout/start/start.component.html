@@ -127,5 +127,30 @@
     </div>
 </div>
 
-
-
+<nz-steps [nzCurrent]="0" nzDirection="vertical">
+    <nz-step nzTitle="Your Information" [nzDescription]="stepOne">
+    </nz-step>
+    <nz-step nzTitle="Delivery Address" [nzDescription]="stepTwo"></nz-step>
+    <nz-step nzTitle="Payment information" [nzDescription]="stepThree"></nz-step>
+</nz-steps>
+<ng-template #stepOne>
+    <p style="color: red;">Step One</p>
+    <button nz-button nzType="default" (click)="next()">
+        <span>Next</span>
+    </button>
+</ng-template>
+<ng-template #stepTwo>
+    <p style="color: green;">Step Two</p>
+    <button nz-button nzType="default" (click)="pre()">
+        <span>Previous</span>
+    </button>&nbsp;
+    <button nz-button nzType="default" (click)="next()">
+        <span>Next</span>
+    </button>
+</ng-template>
+<ng-template #stepThree>
+    <p style="color: orange;">Step Three</p>
+    <button nz-button nzType="primary" (click)="checkout()">
+        <span>PLACE ORDER</span>
+    </button>
+</ng-template>
