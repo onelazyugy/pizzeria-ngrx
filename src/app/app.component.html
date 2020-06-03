@@ -11,22 +11,20 @@
         <h1>LV Pizzeria</h1>
       </a>
     </div>
+    <div style="text-align: center;" *ngIf="isShowUserInfo">
+      <nz-avatar nzIcon="user" style="background-color:#87d068;"></nz-avatar>
+      <h3 style="color: white;">{{nickName | uppercaseTextPipe}}</h3>
+    </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
       <li nz-submenu nzTitle="Pizza" nzIcon="appstore" [nzOpen]="true">
         <ul>
-          <li nz-menu-item>
-            <a routerLink="">Create Pizza</a>
-          </li>
-          <li nz-menu-item>
-            <a routerLink="/summary">Summary</a>
-          </li>
-          <li nz-menu-item>
-            <a routerLink="/register">Register</a>
-          </li>
-          <li nz-menu-item>
-            <a routerLink="/login">Login</a>
-          </li>
-          <li nz-menu-item>
+          <!--ng-container does not append to DOM-->
+          <ng-container *ngFor="let route of routes">
+              <li nz-menu-item *ngIf="route.showRoute" [nzSelected]="[route.isSelected]">
+                <a [routerLink]="[route.route]">{{route.label}}</a>
+              </li>
+          </ng-container>
+          <li nz-menu-item *ngIf="isShowLogoutMenuItem">
             <a (click)="logout()">Logout</a>
           </li>
         </ul>

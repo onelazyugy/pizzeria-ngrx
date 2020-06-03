@@ -20,6 +20,7 @@ import { LoginModule } from './pages/login/login.module';
 import { EffectsModule } from '@ngrx/effects';
 import { RegisterEffects } from './pages/register/store/register.effect';
 import { LoginEffects } from './pages/login/store/login.effect';
+import { ShareModule } from './share/share.module';
 
 registerLocaleData(en);
 
@@ -42,7 +43,8 @@ registerLocaleData(en);
     StoreDevtoolsModule.instrument({logOnly: environment.production}),
     PizzaModule,
     RegisterModule,
-    LoginModule
+    LoginModule,
+    ShareModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]
