@@ -23,8 +23,6 @@ export class StartComponent implements OnInit, OnDestroy {
   shouldStepOneHidden = true;
   shouldStepTwoHidden = true;
 
-  shouldPlaceOrderBtnDisabled = true;
-
   //forms
   personalInfoForm: FormGroup;
   deliveryInfoForm: FormGroup;
@@ -34,7 +32,6 @@ export class StartComponent implements OnInit, OnDestroy {
 
   toppingSubscription: Subscription;
   startSubscription: Subscription;
-  // validateForm: FormGroup;
 
   orderSummary: OrderSummary;
   totalSelectedCheeses: number;
@@ -43,11 +40,7 @@ export class StartComponent implements OnInit, OnDestroy {
   
   constructor(private router: Router, private fb: FormBuilder, private store: Store<fromApp.AppState>) {}
 
-  submitForm(): void {
-    // for (const i in this.validateForm.controls) {
-    //   this.validateForm.controls[i].markAsDirty();
-    //   this.validateForm.controls[i].updateValueAndValidity();
-    // }
+  checkout(): void {
     for (const i in this.personalInfoForm.controls) {
       this.personalInfoForm.controls[i].markAsDirty();
       this.personalInfoForm.controls[i].updateValueAndValidity();
