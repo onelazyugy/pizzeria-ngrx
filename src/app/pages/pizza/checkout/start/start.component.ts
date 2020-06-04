@@ -15,6 +15,11 @@ import { ResetStoreTask, StoreOrderSummaryTask } from './store/start.action';
   styleUrls: ['./start.component.css']
 })
 export class StartComponent implements OnInit, OnDestroy {
+  //data for stepper
+  showPreviousButton = false;
+  showNextButton = true;
+  currentStep = 0;
+  //end data for stepper
   toppingSubscription: Subscription;
   startSubscription: Subscription;
   validateForm: FormGroup;
@@ -118,6 +123,26 @@ export class StartComponent implements OnInit, OnDestroy {
 
       this.validateForm.controls["zipCodeForDeliveryAddress"].setValidators(Validators.required);
       this.validateForm.controls["zipCodeForDeliveryAddress"].updateValueAndValidity();
+    }
+  }
+
+  next() {
+    this.currentStep += 1;
+    if(this.currentStep === 2) {
+      this.showNextButton = false;
+    }
+    if(this.currentStep > 0) {
+      this.showPreviousButton = true;
+    }
+  }
+
+  pre() {
+    this.currentStep -= 1;
+    if(this.currentStep === 0) {
+      this.showPreviousButton = false;
+    }
+    if(this.currentStep < 2) {
+      this.showNextButton = true;
     }
   }
 
