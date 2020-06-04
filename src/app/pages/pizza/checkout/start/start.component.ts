@@ -22,25 +22,43 @@ export class StartComponent implements OnInit, OnDestroy {
   shouldStepZeroHidden = false;
   shouldStepOneHidden = true;
   shouldStepTwoHidden = true;
+
+  shouldPlaceOrderBtnDisabled = true;
+
+  //forms
+  personalInfoForm: FormGroup;
+  deliveryInfoForm: FormGroup;
+  paymentInfoForm: FormGroup;
+  aptStFloorOptions: any = ['None', 'Apt', 'Suite', 'Floor'];
   //end data for stepper
+
   toppingSubscription: Subscription;
   startSubscription: Subscription;
-  validateForm: FormGroup;
+  // validateForm: FormGroup;
 
   orderSummary: OrderSummary;
-
   totalSelectedCheeses: number;
   totalSelectedMeats: number;
   totalSelectedVeggies: number;
   
-  aptStFloorOptions: any = ['None', 'Apt', 'Suite', 'Floor'];
-
   constructor(private router: Router, private fb: FormBuilder, private store: Store<fromApp.AppState>) {}
 
   submitForm(): void {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
+    // for (const i in this.validateForm.controls) {
+    //   this.validateForm.controls[i].markAsDirty();
+    //   this.validateForm.controls[i].updateValueAndValidity();
+    // }
+    for (const i in this.personalInfoForm.controls) {
+      this.personalInfoForm.controls[i].markAsDirty();
+      this.personalInfoForm.controls[i].updateValueAndValidity();
+    }
+    for (const i in this.deliveryInfoForm.controls) {
+      this.deliveryInfoForm.controls[i].markAsDirty();
+      this.deliveryInfoForm.controls[i].updateValueAndValidity();
+    }
+    for (const i in this.paymentInfoForm.controls) {
+      this.paymentInfoForm.controls[i].markAsDirty();
+      this.paymentInfoForm.controls[i].updateValueAndValidity();
     }
     const orderSummaryCopied: OrderSummary[] = [this.orderSummary];
     let currentSummaries: OrderSummary[] = [];
@@ -95,37 +113,42 @@ export class StartComponent implements OnInit, OnDestroy {
       this.orderSummary.totalTax = newTotalTax;
       this.orderSummary.totalDue = newTotalTax + newSubTotal;
 
-
       const currentSelectedDeliveryType = _.filter(data.pizza.deliveryType, {'isSelected': true});
       this.orderSummary.deliveryType = currentSelectedDeliveryType[0].value;
     });
     const validateAddress = this.orderSummary.deliveryType === 'delivery'? true: false;
     
-    this.validateForm = this.fb.group({
+    //personal form
+    this.personalInfoForm = this.fb.group({
       userName: [null, [Validators.required]],
       phone: [null, [Validators.required]],
-      comment: [null],
+    });
+
+    //payment form
+    this.paymentInfoForm = this.fb.group({
       cardNumber: [null, [Validators.required]],
       expirationDate: [null, [Validators.required]],
       cvv: [null, [Validators.required]],
       zipCodeForPayment: [null, [Validators.required]],
-      // for delivery address
-      address: [null, []],
+    });
+    
+    //delivery form
+    this.deliveryInfoForm = this.fb.group({
+      comment: [null],
+      address: [null, [Validators.required]],
       aptStFloor: [null],
       aptStFloorSelect: [null],
-      zipCodeForDeliveryAddress: [null, []]
+      zipCodeForDeliveryAddress: [null, [Validators.required]]
     });
-
     //set select default
-    this.validateForm.controls['aptStFloorSelect'].setValue('None', {onlySelf: true});
-
+    this.deliveryInfoForm.controls['aptStFloorSelect'].setValue('None', {onlySelf: true});
     //delivery, we need to validate
     if(validateAddress) {
-      this.validateForm.controls["address"].setValidators(Validators.required);
-      this.validateForm.controls["address"].updateValueAndValidity();
+      this.deliveryInfoForm.controls["address"].setValidators(Validators.required);
+      this.deliveryInfoForm.controls["address"].updateValueAndValidity();
 
-      this.validateForm.controls["zipCodeForDeliveryAddress"].setValidators(Validators.required);
-      this.validateForm.controls["zipCodeForDeliveryAddress"].updateValueAndValidity();
+      this.deliveryInfoForm.controls["zipCodeForDeliveryAddress"].setValidators(Validators.required);
+      this.deliveryInfoForm.controls["zipCodeForDeliveryAddress"].updateValueAndValidity();
     }
   }
 

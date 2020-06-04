@@ -13,6 +13,8 @@ export class TrimTextPipe implements PipeTransform {
 @Pipe({ name: 'uppercaseTextPipe' })
 export class UppercaseTextPipe implements PipeTransform {
     transform(value: string): string {
-        return value.toUpperCase();
+        if(value !== undefined) {
+            return value.toUpperCase();
+        }
     }
 }
