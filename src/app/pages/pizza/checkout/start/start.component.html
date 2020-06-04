@@ -136,19 +136,19 @@
 </nz-steps>
 
 <ng-template #stepOne>
-    <div [hidden]="false">
+    <div [hidden]="shouldStepZeroHidden">
         <p style="color: red;">Step One</p>
     </div>
 </ng-template>
 
 <ng-template #stepTwo>
-    <div [hidden]="false">
+    <div [hidden]="shouldStepOneHidden">
         <p style="color: green;">Step Two</p>
     </div>
 </ng-template>
 
 <ng-template #stepThree>
-    <div [hidden]="false">
+    <div [hidden]="shouldStepTwoHidden">
         <p style="color: orange;">Step Three</p>
     </div>
 </ng-template>

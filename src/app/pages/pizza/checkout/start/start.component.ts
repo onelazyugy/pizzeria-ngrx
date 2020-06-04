@@ -19,6 +19,9 @@ export class StartComponent implements OnInit, OnDestroy {
   showPreviousButton = false;
   showNextButton = true;
   currentStep = 0;
+  shouldStepZeroHidden = false;
+  shouldStepOneHidden = true;
+  shouldStepTwoHidden = true;
   //end data for stepper
   toppingSubscription: Subscription;
   startSubscription: Subscription;
@@ -134,6 +137,20 @@ export class StartComponent implements OnInit, OnDestroy {
     if(this.currentStep > 0) {
       this.showPreviousButton = true;
     }
+    switch(this.currentStep) {
+      case 0: 
+        return null;
+      case 1:
+        this.shouldStepZeroHidden = true;
+        this.shouldStepOneHidden = false;
+        return null;
+      case 2: 
+        this.shouldStepOneHidden = true;
+        this.shouldStepTwoHidden = false;
+        return null;
+      default:
+        return null;
+    }
   }
 
   pre() {
@@ -143,6 +160,23 @@ export class StartComponent implements OnInit, OnDestroy {
     }
     if(this.currentStep < 2) {
       this.showNextButton = true;
+    }
+    switch(this.currentStep) {
+      case 0: 
+        this.shouldStepZeroHidden = false;
+        this.shouldStepOneHidden = true;
+        return null;
+      case 1:
+        this.shouldStepOneHidden = false;
+        this.shouldStepTwoHidden = true;
+        return null;
+      case 2: 
+        this.shouldStepZeroHidden = true;
+        this.shouldStepOneHidden = true;
+        this.shouldStepTwoHidden = false;
+        return null;
+      default:
+        return null;
     }
   }
 
