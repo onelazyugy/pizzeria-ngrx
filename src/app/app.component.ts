@@ -37,6 +37,7 @@ export class AppComponent implements OnInit{
         this.isShowUserInfo = false;
         this.isShowLogoutMenuItem = false;
         this.routes[3].showRoute = true;
+        this.routes[2].showRoute = true;
       } else {
         const userLoggedInInfo = JSON.parse(this.helperService.getObjectFromLocalStorage());
         this.nickName = userLoggedInInfo.nickName;
@@ -44,6 +45,7 @@ export class AppComponent implements OnInit{
         this.isShowUserInfo = true;
         this.isShowLogoutMenuItem = true;
         this.routes[3].showRoute = false;
+        this.routes[2].showRoute = false;
       }
       const currentPath = this.location.path();
       if(currentPath === '') {
