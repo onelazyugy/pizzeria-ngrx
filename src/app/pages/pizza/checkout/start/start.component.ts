@@ -128,10 +128,11 @@ export class StartComponent implements OnInit, OnDestroy {
     //delivery form
     this.deliveryInfoForm = this.fb.group({
       comment: [null],
-      address: [null, [Validators.required]],
+      // address: [null, [Validators.required]],
+      address: [null],
       aptStFloor: [null],
       aptStFloorSelect: [null],
-      zipCodeForDeliveryAddress: [null, [Validators.required]]
+      zipCodeForDeliveryAddress: [null]
     });
     //set select default
     this.deliveryInfoForm.controls['aptStFloorSelect'].setValue('None', {onlySelf: true});
