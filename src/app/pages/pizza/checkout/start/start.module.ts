@@ -12,7 +12,8 @@ import { StartComponent } from './start.component';
     ShareModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ShareModule
   ]
 })
 export class StartModule { }

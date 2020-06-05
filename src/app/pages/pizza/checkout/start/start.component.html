@@ -19,7 +19,7 @@
             <hr />
             <label>Total tax: {{orderSummary.taxPercent}} * {{orderSummary.subtotal | currency}} = {{orderSummary.totalTax | currency}}</label>
             <hr />
-            <label>Total due: {{orderSummary.totalDue | currency}}</label>
+            <label app-high-light>Total due: {{orderSummary.totalDue | currency}}</label>
         </div>
     </div>
     <div nz-col [nzSpan]="14" style="max-width: 450px;" class="payment-info">
