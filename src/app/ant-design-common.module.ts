@@ -15,6 +15,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+// import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @NgModule({
     declarations: [],
