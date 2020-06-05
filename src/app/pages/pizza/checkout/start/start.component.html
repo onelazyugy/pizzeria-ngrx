@@ -24,10 +24,10 @@
     </div>
     <div nz-col [nzSpan]="14" style="max-width: 450px;" class="payment-info">
         <nz-steps [nzCurrent]="currentStep" nzDirection="vertical">
-            <nz-step nzTitle="Your Information" [nzDescription]="stepZero">
+            <nz-step nzTitle="Your Information" [nzDescription]="stepZero" nzIcon="user">
             </nz-step>
-            <nz-step nzTitle="Delivery Address" [nzDescription]="stepOne"></nz-step>
-            <nz-step nzTitle="Payment information" [nzDescription]="stepTwo"></nz-step>
+            <nz-step nzTitle="Order Type" [nzDescription]="stepOne" nzIcon="car"></nz-step>
+            <nz-step nzTitle="Payment information" [nzDescription]="stepTwo" nzIcon="bank"></nz-step>
         </nz-steps>
         
         <ng-template #stepZero>
@@ -56,7 +56,7 @@
         
         <ng-template #stepOne>
             <div [hidden]="shouldStepOneHidden">
-                <!-- <div *ngIf="orderSummary.deliveryType === 'delivery'"> -->
+                <div *ngIf="orderSummary.deliveryType === 'delivery'; else carryOutBlock">
                     <form nz-form [formGroup]="deliveryInfoForm">
                         <div>
                             <!-- if delivery, we need address -->
@@ -93,7 +93,10 @@
                             </nz-form-item>
                         </div>
                     </form>
-                <!-- </div> -->
+                </div>
+                <ng-template #carryOutBlock>
+                    <i>Your order is carry out</i> 
+                </ng-template>
             </div>
         </ng-template>
         
