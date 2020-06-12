@@ -17,15 +17,12 @@ export class AppComponent implements OnInit{
   isCollapsed = false;
   currentSelectedRoute = '';
   isSelected = false;
-  isShowLogoutMenuItem = false;
   isShowUserInfo = false;
   nickName = '';
   
   routes: any[] = [
     {label: 'Create-Pizza', route: '', isSelected: false, showRoute: true},
     {label: 'Summary', route: '/summary', isSelected: false, showRoute: true},
-    {label: 'Register', route: '/register', isSelected: false, showRoute: true},
-    {label: 'Login', route: '/login', isSelected: false, showRoute: true},
   ]
 
   constructor(private helperService: HelperService, private route: Router, 
@@ -34,19 +31,11 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     this.store.select('loginReducer').subscribe(response => {
       if(this.helperService.getObjectFromLocalStorage() === undefined) {
-        //hide logout, show login
         this.isShowUserInfo = false;
-        this.isShowLogoutMenuItem = false;
-        this.routes[3].showRoute = true;
-        this.routes[2].showRoute = true;
       } else {
         const userLoggedInInfo = JSON.parse(this.helperService.getObjectFromLocalStorage());
         this.nickName = userLoggedInInfo.nickName;
-        //hide login, show logout
         this.isShowUserInfo = true;
-        this.isShowLogoutMenuItem = true;
-        this.routes[3].showRoute = false;
-        this.routes[2].showRoute = false;
       }
       const currentPath = this.location.path();
       if(currentPath === '') {
@@ -58,9 +47,6 @@ export class AppComponent implements OnInit{
       } else if(currentPath === '/register') {
         console.log('path: ', currentPath);
         this.routes[2].isSelected = true;
-      } else {
-        console.log('path: ', currentPath);
-        this.routes[3].isSelected = true;
       }
       //TODO: need to handle nzSelected when programmatically routed
     });

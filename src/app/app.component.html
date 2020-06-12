@@ -11,10 +11,16 @@
         <h1>LV Pizzeria</h1>
       </a>
     </div>
-    <div style="text-align: center;" *ngIf="isShowUserInfo">
+    <div style="text-align: center;" *ngIf="isShowUserInfo; else elseBlock">
       <nz-avatar nzIcon="user" style="background-color:#87d068;"></nz-avatar>
-      <h3 style="color: white;">{{nickName | uppercaseTextPipe}}</h3>
+      <h3 style="color: white;">{{nickName | uppercaseTextPipe}} <span (click)="logout()"nzTooltipTitle="log out" nzTooltipPlacement="top" nz-tooltip><fa name="sign-out" size="lg"></fa></span></h3>
     </div>
+    <ng-template #elseBlock>
+      <div style="text-align: center;">
+        <nz-avatar nzIcon="user" style="background-color:orange;"></nz-avatar>
+        <h3 style="color: white;">GUESS <span routerLink="/login" nzTooltipTitle="log in" nzTooltipPlacement="top" nz-tooltip><fa name="sign-in" size="lg"></fa></span></h3>
+      </div>
+    </ng-template>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
       <li nz-submenu nzTitle="Pizza" nzIcon="appstore" [nzOpen]="true">
         <ul>
@@ -24,9 +30,6 @@
                 <a [routerLink]="[route.route]">{{route.label}}</a>
               </li>
           </ng-container>
-          <li nz-menu-item *ngIf="isShowLogoutMenuItem">
-            <a (click)="logout()">Logout</a>
-          </li>
         </ul>
       </li>
     </ul>
