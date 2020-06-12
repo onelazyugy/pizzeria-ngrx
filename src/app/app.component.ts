@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import * as LoginActions from './pages/login/store/login.action';
 import { LoginStatus } from './model/login-user-request.model';
 import { Location } from "@angular/common";
+import { ResetStoreTask } from '../app/pages/pizza/checkout/start/store/start.action';
 
 @Component({
   selector: 'app-root',
@@ -77,6 +78,8 @@ export class AppComponent implements OnInit{
     this.store.dispatch(
       new LoginActions.LogoutUserTask(logoutUserStatus)
     );
+    //clear all store
+    this.store.dispatch(new ResetStoreTask());
     this.route.navigate(['/login']);
   }
 }
