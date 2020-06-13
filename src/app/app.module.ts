@@ -21,9 +21,9 @@ import { EffectsModule } from '@ngrx/effects';
 import { RegisterEffects } from './pages/register/store/register.effect';
 import { LoginEffects } from './pages/login/store/login.effect';
 import { ShareModule } from './share/share.module';
-import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { WingModule } from './pages/wing/wing.module';
 import { AngularFlexLayoutModule } from './angular-flex-layout.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 registerLocaleData(en);
 
@@ -38,8 +38,8 @@ registerLocaleData(en);
     NgZorroAntdModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    AngularFontAwesomeModule,
     AngularFlexLayoutModule,
+    FontAwesomeModule,
 
     //wire up the store with all of the app reducers
     StoreModule.forRoot(fromApp.appReducer, {metaReducers: [clearState]}), //metaReducers is for clearing the store upon logout
@@ -50,7 +50,7 @@ registerLocaleData(en);
     RegisterModule,
     LoginModule,
     ShareModule,
-    WingModule
+    WingModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]

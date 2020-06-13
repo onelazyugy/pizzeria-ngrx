@@ -7,6 +7,7 @@ import * as LoginActions from './pages/login/store/login.action';
 import { LoginStatus } from './model/login-user-request.model';
 import { Location } from "@angular/common";
 import { ResetStoreTask } from '../app/pages/pizza/checkout/start/store/start.action';
+import { faSignOutAlt, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,9 @@ export class AppComponent implements OnInit{
   isSelected = false;
   isShowUserInfo = false;
   nickName = '';
+
+  faSignInAlt = faSignInAlt;
+  faSignOutAlt = faSignOutAlt;
   
   routes: any[] = [
     {label: 'Pizza', route: '', isSelected: false, showRoute: true},

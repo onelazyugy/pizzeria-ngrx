@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { faSignOutAlt, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-wing',
@@ -6,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./wing.component.css']
 })
 export class WingComponent implements OnInit {
-
+  faSignInAlt = faSignInAlt;
+  faSignOutAlt = faSignOutAlt;
+  
   constructor() { }
 
   ngOnInit() {

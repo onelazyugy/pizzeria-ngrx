@@ -32,6 +32,11 @@ http://192.168.1.76:8080
 ## How to update 
 ```$ ng update```<br />
 ```ex: $ ng update @angular/cli @angular/core ng-zorro-antd rxjs```
+
+## Error I face with packages and angular 9+
+-Error: Failed to compile entry-point angular-font-awesome (es2015 as esm2015) due to compilation errors:
+-Solution: ```$ ng add @fortawesome/angular-fontawesome```
+
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
