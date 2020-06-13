@@ -9,6 +9,7 @@ import { SummaryComponent } from './pages/pizza/summary/summary.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { LoginGuardService } from './service/login-guard.service';
+import { WingComponent } from './pages/wing/wing.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
       },
       {path: 'summary', component: SummaryComponent},
     ]
+  },
+  {
+    path: 'wings',
+    component: WingComponent
   },
   {
     path: 'register',

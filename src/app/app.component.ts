@@ -21,7 +21,8 @@ export class AppComponent implements OnInit{
   nickName = '';
   
   routes: any[] = [
-    {label: 'Create-Pizza', route: '', isSelected: false, showRoute: true},
+    {label: 'Pizza', route: '', isSelected: false, showRoute: true},
+    {label: 'Wings', route: '/wings', isSelected: false, showRoute: true},
     {label: 'Summary', route: '/summary', isSelected: false, showRoute: true},
   ]
 
@@ -41,10 +42,10 @@ export class AppComponent implements OnInit{
       if(currentPath === '') {
         console.log('path: ', currentPath);
         this.routes[0].isSelected = true;
-      } else if(currentPath === '/summary') {
+      } else if(currentPath === '/wings') {
         console.log('path: ', currentPath);
         this.routes[1].isSelected = true;
-      } else if(currentPath === '/register') {
+      } else if(currentPath === '/summary') {
         console.log('path: ', currentPath);
         this.routes[2].isSelected = true;
       }

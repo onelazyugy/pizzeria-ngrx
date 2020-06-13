@@ -29,7 +29,9 @@ sudo npm install http-server -g <br>
 npx http-server dist/pizzeria
 http://192.168.1.76:8080
 
-
+## How to update 
+```$ ng update```<br />
+```ex: $ ng update @angular/cli @angular/core ng-zorro-antd rxjs```
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).

@@ -15,7 +15,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-// import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzCardModule } from 'ng-zorro-antd/card';
 
 @NgModule({
     declarations: [],
@@ -35,7 +35,8 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
         NzTableModule,
         NzToolTipModule,
         NzSpinModule,
-        NzAvatarModule
+        NzAvatarModule,
+        NzCardModule
     ]
 })
 export class AntDesignCommonModule {}
