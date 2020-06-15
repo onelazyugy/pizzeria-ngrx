@@ -5,6 +5,7 @@ import { AntDesignCommonModule } from 'src/app/ant-design-common.module';
 import { ShareModule } from 'src/app/share/share.module';
 import { FormsModule } from '@angular/forms';
 import { ToppingModule } from '../topping/topping.module';
+import { AngularFlexLayoutModule } from 'src/app/angular-flex-layout.module';
 
 @NgModule({
   declarations: [CreateComponent],
@@ -14,6 +15,7 @@ import { ToppingModule } from '../topping/topping.module';
     CommonModule,
     FormsModule,
     ToppingModule,
+    AngularFlexLayoutModule
   ]
 })
 export class CreateModule { }
