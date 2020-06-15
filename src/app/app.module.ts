@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IconsProviderModule } from './icons-provider.module';
-import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
+import { NZ_I18N, en_US } from 'ng-zorro-antd';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
@@ -24,6 +24,7 @@ import { ShareModule } from './share/share.module';
 import { WingModule } from './pages/wing/wing.module';
 import { AngularFlexLayoutModule } from './angular-flex-layout.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AntDesignCommonModule } from './ant-design-common.module';
 
 registerLocaleData(en);
 
@@ -35,7 +36,7 @@ registerLocaleData(en);
     BrowserModule,
     AppRoutingModule,
     IconsProviderModule,
-    NgZorroAntdModule,
+    AntDesignCommonModule,
     HttpClientModule,
     BrowserAnimationsModule,
     AngularFlexLayoutModule,
