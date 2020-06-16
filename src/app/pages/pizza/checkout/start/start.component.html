@@ -1,11 +1,8 @@
 <!-- https://stackblitz.com/edit/integrations-ant-step-numbering GOOD EXAMPLE OF USING NG-TEMPLATE AND # -->
-<h1 class="center-text">CHECKOUT</h1>
-<div nz-row>
-    <div nz-col [nzSpan]="10">
-        <div nz-row>
-            <img src="assets/pizza/box-pizza.jpg" width="100%">
-        </div>
-        <div class="order-summary">
+<h1 fxLayoutAlign="center">CHECKOUT</h1>
+<div fxLayout="column" fxLayout.lt-sm="column" fxLayout.md="column" fxLayoutGap="10px">
+    <div class="order-summary" fxLayout="row wrap" fxLayout.lt-sm="column">
+        <div fxFlexOrder="2">
             <nz-divider nzText="Order Summary" nzOrientation="center"></nz-divider>
             <label>Total meats topping: {{orderSummary.totalSelectedMeatTopping}} x .90 = {{orderSummary.totalCostForSelectedMeatTopping | currency}}</label>
             <hr />
@@ -21,9 +18,12 @@
             <hr />
             <label app-high-light>Total due: {{orderSummary.totalDue | currency}}</label>
         </div>
+        <div fxFlexOrder="1">
+            <img src="assets/pizza/box-pizza.jpg" style="max-width: 80%; max-height: 80%;">
+        </div>
     </div>
-
-    <div nz-col [nzSpan]="14" style="max-width: 450px;" class="payment-info">
+    <div style="max-width: 100%;" class="payment-info">
+        <nz-divider nzText="Payment Info" nzOrientation="center"></nz-divider>
         <nz-steps [nzCurrent]="currentStep" nzDirection="vertical">
             <nz-step nzTitle="Your Information" [nzDescription]="stepZero" nzIcon="user">
             </nz-step>

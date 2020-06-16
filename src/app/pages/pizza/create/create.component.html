@@ -1,4 +1,4 @@
-<h1 class="center-text">MAKE YOUR OWN PIZZA</h1>
+<h1 fxLayoutAlign="center">MAKE YOUR OWN PIZZA</h1>
 <nz-steps [nzCurrent]="current">
     <nz-step nzTitle="BASE"></nz-step>
     <nz-step nzTitle="CHEESE"></nz-step>
@@ -39,14 +39,15 @@
         <app-topping [input]="veggies" [index]=3></app-topping>
     </div>
     <div *ngIf="current === 4">
-        <div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutGap="10px">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="10px">
             <div fxFlexOrder="1">
-                <div class="inner-box" style="margin-right: 10px;">
+                <div fxLayoutAlign="center">
                     <img src="assets/pizza/4pizza-final.png" width="100%">
                 </div>
             </div>
             <div fxFlexOrder="2">
-                <div class="inner-box">
+                <div>
+                    <nz-divider nzText="Your Selections" nzOrientation="center"></nz-divider>
                     <h3><fa-icon [icon]="faCubes"></fa-icon>Size</h3>
                     <span app-italicize>{{finalSelectedPizzaSize}}</span>
                     <h3><fa-icon [icon]="faCar"></fa-icon>Order Type</h3>
