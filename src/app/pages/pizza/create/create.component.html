@@ -39,36 +39,35 @@
         <app-topping [input]="veggies" [index]=3></app-topping>
     </div>
     <div *ngIf="current === 4">
-        <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
-            <div nz-col class="gutter-row" [nzSpan]="18">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutGap="10px">
+            <div fxFlexOrder="1">
                 <div class="inner-box" style="margin-right: 10px;">
                     <img src="assets/pizza/4pizza-final.png" width="100%">
                 </div>
             </div>
-            <div nz-col class="gutter-row" [nzSpan]="6">
+            <div fxFlexOrder="2">
                 <div class="inner-box">
-                    <h3>Selected Size</h3>
-                    {{finalSelectedPizzaSize}}
-                    <h3>Order Type</h3>
-                    {{finalSelectedDeliveryType}}
-                    <h3>Selected Toppings</h3>
+                    <h3><fa-icon [icon]="faCubes"></fa-icon>Size</h3>
+                    <span app-italicize>{{finalSelectedPizzaSize}}</span>
+                    <h3><fa-icon [icon]="faCar"></fa-icon>Order Type</h3>
+                    <span app-italicize>{{finalSelectedDeliveryType}}</span>
+                    <h3><fa-icon [icon]="faPizzaSlice"></fa-icon>Selected Toppings</h3>
                     <nz-divider nzText="Cheeses" nzOrientation="left"></nz-divider>
                     <div *ngFor="let topping of selectedCheeeses">
-                        <li>{{topping.name}}</li>
+                        <li app-italicize>{{topping.name}}</li>
                     </div>
                     <nz-divider nzText="Meats" nzOrientation="left"></nz-divider>
                     <div *ngFor="let topping of selectedMeats">
-                        <li>{{topping.name}}</li>
+                        <li app-italicize>{{topping.name}}</li>
                     </div>
                     <nz-divider nzText="Veggies" nzOrientation="left"></nz-divider>
                     <div *ngFor="let topping of selectedVeggies">
-                        <li>{{topping.name}}</li>
+                        <li app-italicize>{{topping.name}}</li>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
 </div>
 <div class="steps-action">
     <button nz-button nzType="default" (click)="pre()" *ngIf="current > 0">

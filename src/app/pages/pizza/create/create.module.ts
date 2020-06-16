@@ -6,6 +6,7 @@ import { ShareModule } from 'src/app/share/share.module';
 import { FormsModule } from '@angular/forms';
 import { ToppingModule } from '../topping/topping.module';
 import { AngularFlexLayoutModule } from 'src/app/angular-flex-layout.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [CreateComponent],
@@ -15,7 +16,8 @@ import { AngularFlexLayoutModule } from 'src/app/angular-flex-layout.module';
     CommonModule,
     FormsModule,
     ToppingModule,
-    AngularFlexLayoutModule
+    AngularFlexLayoutModule,
+    FontAwesomeModule,
   ]
 })
 export class CreateModule { }
