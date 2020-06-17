@@ -7,7 +7,7 @@ import * as LoginActions from './pages/login/store/login.action';
 import { LoginStatus } from './model/login-user-request.model';
 import { Location } from "@angular/common";
 import { ResetStoreTask } from '../app/pages/pizza/checkout/start/store/start.action';
-import { faSignOutAlt, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt, faSignInAlt, faPizzaSlice, faDrumstickBite, faList } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -21,13 +21,17 @@ export class AppComponent implements OnInit{
   isShowUserInfo = false;
   nickName = '';
 
+  //icons
   faSignInAlt = faSignInAlt;
   faSignOutAlt = faSignOutAlt;
+  faPizzaSlice = faPizzaSlice;
+  faDrumstickBite = faDrumstickBite;
+  faList = faList;
   
   routes: any[] = [
-    {label: 'Pizza', route: '', isSelected: false, showRoute: true},
-    {label: 'Wings', route: '/wings', isSelected: false, showRoute: true},
-    {label: 'Summary', route: '/summary', isSelected: false, showRoute: true},
+    {label: 'Pizza', route: '', isSelected: false, showRoute: true, icon: faPizzaSlice},
+    {label: 'Wings', route: '/wings', isSelected: false, showRoute: true, icon: faDrumstickBite},
+    {label: 'Summary', route: '/summary', isSelected: false, showRoute: true, icon: faList},
   ]
 
   constructor(private helperService: HelperService, private route: Router, 

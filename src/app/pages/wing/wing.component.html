@@ -1,23 +1,27 @@
-<p>wing works!</p>
-<nz-card style="width:300px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
-    <nz-card-meta nzTitle="Card title" nzDescription="This is the description" [nzAvatar]="avatarTemplate"></nz-card-meta>
-</nz-card>
-<ng-template #avatarTemplate>
-    <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
-</ng-template>
-<ng-template #coverTemplate>
-    <img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
-</ng-template>
-<ng-template #actionSetting>
-    <i nz-icon nzType="setting"></i>
-</ng-template>
-<ng-template #actionEdit>
-    <i nz-icon nzType="edit"></i>
-</ng-template>
-<ng-template #actionEllipsis>
-    <i nz-icon nzType="ellipsis"></i>
-</ng-template>
-
-
-<hr/>
-<fa-icon [icon]="faSignOutAlt"></fa-icon>
+<h1 fxLayoutAlign="center">CHOOSE YOUR WINGS</h1>
+<div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="20px">
+    <div *ngFor="let wing of wings">
+        <!-- <div style="border-style: solid;" fxFlex="auto"> -->
+        <div class="wing-box" fxFlex="4 4 calc(12em + 20px)">
+        <!-- <div style="border-style: solid;" fxFlex="0 1 calc(33.3% - 32px)"> -->
+            <nz-card [nzCover]="wingimage" [nzActions]="[qty, btn]">
+                <nz-card-meta nzTitle="{{wing.name}}" nzDescription="{{wing.desc}} starting at {{wing.prices[0] | currency}}"></nz-card-meta>
+            </nz-card>
+            <ng-template #wingimage>
+                <img alt="{{wing.name}}" src="{{wing.img}}"/>
+            </ng-template>
+            <ng-template #qty>
+                <nz-select style="width: 74px;" nzShowSearch nzAllowClear nzPlaceHolder="qty?" [(ngModel)]="wing.selectedQty" (ngModelChange)="dropdownSelect(wing.id)">
+                    <nz-option *ngFor="let qty of wing.quanties" nzLabel="{{qty}}" nzValue="{{qty}}"></nz-option>
+                </nz-select>
+            </ng-template>
+            <ng-template #btn>
+                <button nz-button nzType="primary" [disabled]="wing.selectedQty === null" (click)="add(wing.id)">ADD</button>
+            </ng-template>
+            <div *ngIf="wing.selectedQty !== null">
+                <hr />
+                <div>{{wing.selectedPrice | currency}}</div>
+            </div>
+        </div>
+    </div>
+</div>

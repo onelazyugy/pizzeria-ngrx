@@ -27,7 +27,7 @@
           <!--ng-container does not append to DOM-->
           <ng-container *ngFor="let route of routes">
               <li nz-menu-item *ngIf="route.showRoute" [nzSelected]="[route.isSelected]">
-                <a [routerLink]="[route.route]">{{route.label}}</a>
+                <a [routerLink]="[route.route]"><fa-icon [icon]="route.icon"></fa-icon> {{route.label}}</a>
               </li>
           </ng-container>
         </ul>
