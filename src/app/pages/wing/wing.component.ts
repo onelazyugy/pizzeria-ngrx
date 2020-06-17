@@ -26,6 +26,16 @@ export class WingComponent implements OnInit {
       prices: [7.59, 14.79, 20.99, 40.99],
       flavors: ['Honey BBQ', 'Lemon Pepper', 'Sweet and Sour'],
       selectedFlavor: null
+    },
+    {
+      'id': 2, 'name': 'Hot Wings', 'desc': 'Hot and delicious', 'img': 'assets/wings/hotwing.jpg', 
+      quanties: [6, 12, 18, 24, 30],
+      selectedQty: null,
+      selectedPrice: null,
+      prices: [7.59, 14.79, 20.99, 40.99],
+      // flavors: ['Honey BBQ', 'Lemon Pepper', 'Sweet and Sour'],
+      flavors: [],
+      selectedFlavor: null
     }
   ];
 

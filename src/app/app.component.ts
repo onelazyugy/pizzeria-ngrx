@@ -7,7 +7,7 @@ import * as LoginActions from './pages/login/store/login.action';
 import { LoginStatus } from './model/login-user-request.model';
 import { Location } from "@angular/common";
 import { ResetStoreTask } from '../app/pages/pizza/checkout/start/store/start.action';
-import { faSignOutAlt, faSignInAlt, faPizzaSlice, faDrumstickBite, faList } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt, faSignInAlt, faPizzaSlice, faDrumstickBite, faList, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -27,11 +27,13 @@ export class AppComponent implements OnInit{
   faPizzaSlice = faPizzaSlice;
   faDrumstickBite = faDrumstickBite;
   faList = faList;
+  faShoppingCart = faShoppingCart;
   
   routes: any[] = [
     {label: 'Pizza', route: '', isSelected: false, showRoute: true, icon: faPizzaSlice},
     {label: 'Wings', route: '/wings', isSelected: false, showRoute: true, icon: faDrumstickBite},
     {label: 'Summary', route: '/summary', isSelected: false, showRoute: true, icon: faList},
+    {label: 'Cart', route: '/cart', isSelected: false, showRoute: true, icon: faShoppingCart},
   ]
 
   constructor(private helperService: HelperService, private route: Router, 
@@ -48,14 +50,13 @@ export class AppComponent implements OnInit{
       }
       const currentPath = this.location.path();
       if(currentPath === '') {
-        console.log('path: ', currentPath);
         this.routes[0].isSelected = true;
       } else if(currentPath === '/wings') {
-        console.log('path: ', currentPath);
         this.routes[1].isSelected = true;
       } else if(currentPath === '/summary') {
-        console.log('path: ', currentPath);
         this.routes[2].isSelected = true;
+      } else if(currentPath === '/cart') {
+        this.routes[3].isSelected = true;
       }
       //TODO: need to handle nzSelected when programmatically routed
     });

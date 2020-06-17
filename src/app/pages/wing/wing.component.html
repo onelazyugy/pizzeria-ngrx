@@ -16,14 +16,17 @@
                         <nz-option *ngFor="let qty of wing.quanties" nzLabel="{{qty}}" nzValue="{{qty}}"></nz-option>
                     </nz-select>
                 </div>
-                <div style="padding-bottom: 5px; padding-top: 5px;">
+                <div style="padding-bottom: 5px; padding-top: 5px;" *ngIf="wing.flavors.length > 0">
                     <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="What Flavor?" [(ngModel)]="wing.selectedFlavor" (ngModelChange)="flavorDropdownSelect(wing.id)">
                         <nz-option *ngFor="let flavor of wing.flavors" nzLabel="{{flavor}}" nzValue="{{flavor}}"></nz-option>
                     </nz-select>
                 </div>
-                <div>
+                <div *ngIf="wing.flavors.length > 0; else elseBlock">
                     <button style="width: 100%;" nz-button nzType="primary" [disabled]="wing.selectedQty === null || wing.selectedFlavor === null" (click)="add(wing.id)">ADD TO ORDER</button>
                 </div>
+                <ng-template #elseBlock>
+                    <button style="width: 100%;" nz-button nzType="primary" [disabled]="wing.selectedQty === null" (click)="add(wing.id)">ADD TO ORDER</button>
+                </ng-template>
                 <div class="ant-card-actions" *ngIf="wing.selectedQty !== null">
                     <hr />
                     <div>{{wing.selectedQty}} pieces at {{wing.selectedPrice | currency}}</div>

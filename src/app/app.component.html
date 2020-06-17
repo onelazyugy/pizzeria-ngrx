@@ -26,9 +26,20 @@
         <ul>
           <!--ng-container does not append to DOM-->
           <ng-container *ngFor="let route of routes">
-              <li nz-menu-item *ngIf="route.showRoute" [nzSelected]="[route.isSelected]">
-                <a [routerLink]="[route.route]"><fa-icon [icon]="route.icon"></fa-icon> {{route.label}}</a>
-              </li>
+              <ng-container *ngIf="route.label === 'Cart'; else elseBlock">
+                <li nz-menu-item *ngIf="route.showRoute" [nzSelected]="[route.isSelected]">
+                  <a [routerLink]="[route.route]"><fa-icon [icon]="route.icon"></fa-icon> {{route.label}}</a>
+                  <nz-badge style="margin-bottom: 20px;"
+                    [nzCount]="4"
+                    [nzStyle]="{ backgroundColor: 'green', color: '#fff', boxShadow: '0 0 0 1px #d9d9d9 inset', marginTop: '5px' }"
+                  ></nz-badge>
+                </li>
+              </ng-container>
+              <ng-template #elseBlock>
+                <li nz-menu-item *ngIf="route.showRoute" [nzSelected]="[route.isSelected]">
+                  <a [routerLink]="[route.route]"><fa-icon [icon]="route.icon"></fa-icon> {{route.label}}</a>
+                </li>
+              </ng-template>
           </ng-container>
         </ul>
       </li>

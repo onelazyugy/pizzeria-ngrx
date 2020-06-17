@@ -17,7 +17,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
-
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 
 @NgModule({
     declarations: [],
@@ -39,7 +39,8 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
         NzSpinModule,
         NzAvatarModule,
         NzCardModule,
-        NzLayoutModule
+        NzLayoutModule,
+        NzBadgeModule
     ]
 })
 export class AntDesignCommonModule {}

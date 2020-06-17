@@ -28,7 +28,7 @@
     "@ngrx/store": "^9.2.0",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.15",
-    "ng-zorro-antd": "^9.1.2",
+    "ng-zorro-antd": "^9.2.1",
     "rxjs": "~6.5.5",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

@@ -10,6 +10,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { LoginGuardService } from './service/login-guard.service';
 import { WingComponent } from './pages/wing/wing.component';
+import { CartComponent } from './pages/cart/cart.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,7 @@ const routes: Routes = [
         ]
       },
       {path: 'summary', component: SummaryComponent},
+      {path: 'cart', component: CartComponent}
     ]
   },
   {
