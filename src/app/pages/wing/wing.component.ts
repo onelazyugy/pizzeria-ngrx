@@ -14,14 +14,18 @@ export class WingComponent implements OnInit {
       quanties: [6, 12, 18, 24, 30],
       selectedQty: null,
       selectedPrice: null,
-      prices: [7.59, 14.79, 20.99, 25.89, 30.99]
+      prices: [7.59, 14.79, 20.99, 25.89, 30.99],
+      flavors: ['Honey BBQ', 'Lemon Pepper', 'Sweet and Sour'],
+      selectedFlavor: null
     },
     {
       'id': 1, 'name': 'Boneless Wings', 'desc': 'Juicy and tasty', 'img': 'assets/wings/wing_boneless.jpg', 
       quanties: [6, 12, 18, 24, 30],
       selectedQty: null,
       selectedPrice: null,
-      prices: [7.59, 14.79, 20.99, 40.99]
+      prices: [7.59, 14.79, 20.99, 40.99],
+      flavors: ['Honey BBQ', 'Lemon Pepper', 'Sweet and Sour'],
+      selectedFlavor: null
     }
   ];
 
@@ -40,13 +44,19 @@ export class WingComponent implements OnInit {
   }
 
   add(id: number) {
-    console.log(this.wings[id].selectedQty + " | " + this.wings[id].selectedPrice);
+    console.log('id: ' + id + ' | ' + this.wings[id].selectedQty + " | " + this.wings[id].selectedPrice);
   }
 
-  dropdownSelect(id: number) {
+  qtyDropdownSelect(id: number) {
     console.log('id: ' + id + ' qty: ' + this.wings[id].selectedQty);
     const qtyToPriceObjs = _.filter(this.qtyToPriceMap, ['qty', +this.wings[id].selectedQty]);
-    this.wings[id].selectedPrice = qtyToPriceObjs[0].price;
+    if(qtyToPriceObjs[0] !== undefined) {
+      this.wings[id].selectedPrice = qtyToPriceObjs[0].price;
+    }
+  }
+
+  flavorDropdownSelect(id: number) {
+    console.log('id: ' + id + ' qty: ' + this.wings[id].selectedFlavor);
   }
 
 }

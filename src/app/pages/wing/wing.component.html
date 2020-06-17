@@ -4,23 +4,30 @@
         <!-- <div style="border-style: solid;" fxFlex="auto"> -->
         <div class="wing-box" fxFlex="4 4 calc(12em + 20px)">
         <!-- <div style="border-style: solid;" fxFlex="0 1 calc(33.3% - 32px)"> -->
-            <nz-card [nzCover]="wingimage" [nzActions]="[qty, btn]">
+            <nz-card [nzCover]="wingimage">
                 <nz-card-meta nzTitle="{{wing.name}}" nzDescription="{{wing.desc}} starting at {{wing.prices[0] | currency}}"></nz-card-meta>
             </nz-card>
             <ng-template #wingimage>
                 <img alt="{{wing.name}}" src="{{wing.img}}"/>
             </ng-template>
-            <ng-template #qty>
-                <nz-select style="width: 74px;" nzShowSearch nzAllowClear nzPlaceHolder="qty?" [(ngModel)]="wing.selectedQty" (ngModelChange)="dropdownSelect(wing.id)">
-                    <nz-option *ngFor="let qty of wing.quanties" nzLabel="{{qty}}" nzValue="{{qty}}"></nz-option>
-                </nz-select>
-            </ng-template>
-            <ng-template #btn>
-                <button nz-button nzType="primary" [disabled]="wing.selectedQty === null" (click)="add(wing.id)">ADD</button>
-            </ng-template>
-            <div *ngIf="wing.selectedQty !== null">
-                <hr />
-                <div>{{wing.selectedPrice | currency}}</div>
+            <div class="ant-card-actions">
+                <div style="padding-bottom: 5px; padding-top: 5px;">
+                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="How Many?" [(ngModel)]="wing.selectedQty" (ngModelChange)="qtyDropdownSelect(wing.id)">
+                        <nz-option *ngFor="let qty of wing.quanties" nzLabel="{{qty}}" nzValue="{{qty}}"></nz-option>
+                    </nz-select>
+                </div>
+                <div style="padding-bottom: 5px; padding-top: 5px;">
+                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="What Flavor?" [(ngModel)]="wing.selectedFlavor" (ngModelChange)="flavorDropdownSelect(wing.id)">
+                        <nz-option *ngFor="let flavor of wing.flavors" nzLabel="{{flavor}}" nzValue="{{flavor}}"></nz-option>
+                    </nz-select>
+                </div>
+                <div>
+                    <button style="width: 100%;" nz-button nzType="primary" [disabled]="wing.selectedQty === null || wing.selectedFlavor === null" (click)="add(wing.id)">ADD TO ORDER</button>
+                </div>
+                <div class="ant-card-actions" *ngIf="wing.selectedQty !== null">
+                    <hr />
+                    <div>{{wing.selectedQty}} pieces at {{wing.selectedPrice | currency}}</div>
+                </div>
             </div>
         </div>
     </div>

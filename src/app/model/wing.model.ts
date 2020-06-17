@@ -7,4 +7,6 @@ export class Wing {
     selectedPrice: number;
     selectedQty: number;
     prices: number[];
+    flavors: string[];
+    selectedFlavor: string;
 }
