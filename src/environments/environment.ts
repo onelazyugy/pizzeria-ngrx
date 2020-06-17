@@ -6,6 +6,8 @@ export const environment = {
   production: false,
   registerUrl: 'http://localhost:8282/pizzeria/api/v1/user/register',
   loginUrl: 'http://localhost:8282/pizzeria/api/v1/user/login',
+  addItemToCartUrl: 'http://localhost:8282/pizzeria/api/v1/cart/add',
+  removeItemFromCartUrl: 'http://localhost:8282/pizzeria/api/v1/cart/remove',
 };
 
 /*
