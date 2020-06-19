@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IconsProviderModule } from './icons-provider.module';
 import { NZ_I18N, en_US } from 'ng-zorro-antd';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
@@ -26,6 +26,7 @@ import { WingModule } from './pages/wing/wing.module';
 import { AngularFlexLayoutModule } from './angular-flex-layout.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AntDesignCommonModule } from './ant-design-common.module';
+import { HttpRequestInterceptor } from './service/request.interceptor';
 
 registerLocaleData(en);
 
@@ -54,7 +55,14 @@ registerLocaleData(en);
     ShareModule,
     WingModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [
+    { provide: NZ_I18N, useValue: en_US }, 
+    { 
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpRequestInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

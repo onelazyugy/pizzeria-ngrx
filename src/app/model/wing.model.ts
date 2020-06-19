@@ -10,3 +10,27 @@ export class Wing {
     flavors: string[];
     selectedFlavor: string;
 }
+
+export class AddWingToOrderRequest {
+    name: string; 
+    desc: string;
+    img: string;
+    selectedPrice: number;
+    selectedQty: number;
+    selectedFlavor: string;
+    userId: number;
+    wingId: number;
+}
+
+export interface Status {
+    timestamp: string;
+    message: string;
+    transactionId: string;
+    statusCd: number;
+}
+
+export class AddWingToOrderResponse {
+    status: Status;
+    success: boolean;
+    totalItemInCart: number;
+}
