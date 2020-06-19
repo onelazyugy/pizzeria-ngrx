@@ -4,6 +4,7 @@ import * as fromStartReducer from '../pages/pizza/checkout/start/store/start.red
 import * as fromRegisterReducer from '../pages/register/store/register.reducer';
 import * as fromLoginReducer from '../pages/login/store/login.reducer';
 import * as fromCartReducer from '../pages/cart/store/cart.reducer';
+import * as fromWingReducer from '../pages/wing/store/wing.reducer';
 import { ActionReducerMap } from '@ngrx/store';
 
 export interface AppState {
@@ -12,7 +13,8 @@ export interface AppState {
     startReducer: fromStartReducer.State,
     registerReducer: fromRegisterReducer.State,
     loginReducer: fromLoginReducer.State,
-    cartReducer: fromCartReducer.State
+    cartReducer: fromCartReducer.State,
+    wingReducer: fromWingReducer.State
 }
 
 export const appReducer: ActionReducerMap<AppState> = {
@@ -21,5 +23,6 @@ export const appReducer: ActionReducerMap<AppState> = {
     startReducer: fromStartReducer.startReducer,
     registerReducer: fromRegisterReducer.registerReducer,
     loginReducer: fromLoginReducer.loginReducer,
-    cartReducer: fromCartReducer.cartReducer
+    cartReducer: fromCartReducer.cartReducer,
+    wingReducer: fromWingReducer.wingReducer
 }

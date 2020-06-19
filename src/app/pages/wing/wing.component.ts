@@ -14,43 +14,13 @@ import { faCheck, faExclamation } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./wing.component.css']
 })
 export class WingComponent implements OnInit {
-  wings: Wing[] = [
-    {
-      'id': 0, 'name': 'Tradition Wings', 'desc': 'Juicy and tasty', 'img': 'assets/wings/wing.jpg',
-      quanties: [6, 12, 18, 24, 30],
-      selectedQty: null,
-      selectedPrice: null,
-      prices: [7.59, 14.79, 20.99, 25.89, 30.99],
-      flavors: ['Honey BBQ', 'Lemon Pepper', 'Sweet and Sour'],
-      selectedFlavor: null
-    },
-    {
-      'id': 1, 'name': 'Boneless Wings', 'desc': 'Juicy and tasty', 'img': 'assets/wings/wing_boneless.jpg', 
-      quanties: [6, 12, 18, 24, 30],
-      selectedQty: null,
-      selectedPrice: null,
-      prices: [7.59, 14.79, 20.99, 40.99],
-      flavors: ['Honey BBQ', 'Lemon Pepper', 'Sweet and Sour'],
-      selectedFlavor: null
-    },
-    {
-      'id': 2, 'name': 'Hot Wings', 'desc': 'Hot and delicious', 'img': 'assets/wings/hotwing.jpg', 
-      quanties: [6, 12, 18, 24, 30],
-      selectedQty: null,
-      selectedPrice: null,
-      prices: [7.59, 14.79, 20.99, 40.99],
-      flavors: [],
-      selectedFlavor: null
-    }
-  ];
+  wings: Wing[] = [];
+  qtyToPriceMap: any[] = [];
+  
 
-  qtyToPriceMap: any[] = [
-    {'qty': 6, 'price': 7.59},
-    {'qty': 12, 'price': 14.79},
-    {'qty': 18, 'price': 20.99},
-    {'qty': 24, 'price': 25.89},
-    {'qty': 30, 'price': 30.99},
-  ]
+  selectedQuantity: number;
+
+
   isAddingItemToCart: boolean = false;
   isError: boolean = false;
   showStatus: boolean = false;
@@ -62,56 +32,80 @@ export class WingComponent implements OnInit {
   constructor(private store: Store<fromApp.AppState>, private helperService: HelperService, private http: HttpClient) { }
 
   ngOnInit() {
-    this.store.select('cartReducer').subscribe(response => {
-      if(response.addWingToOrderResponse.status.statusCd !== 0) {
-        if(response.addWingToOrderResponse.success) {
-          //show checked icon
+    this.store.select('wingReducer').subscribe(response => {
+      console.log(response);
+      //make a deep clone of wings array
+      const wingCloned = response.wings.map(wing=>{
+        return {...wing};
+      });
+      const qtyToPriceMapCloned = response.qtyToPrice.map(price=>{
+        return {...price};
+      })
+      this.wings = wingCloned;
+      this.qtyToPriceMap = qtyToPriceMapCloned;
+
+
+
+
+
+      // if(response.addWingToOrderResponse.status.statusCd !== 0) {
+      //   if(response.addWingToOrderResponse.success) {
+      //     //show checked icon
                   
-          //update cart count
-        } else {
-          //show 'error' icon
-          this.isError = true;
-        }
-        this.showStatus = true;
-        this.isAddingItemToCart = false;
-        this.message = response.addWingToOrderResponse.status.message;
-      } 
-      if(response.addWingToOrderResponse.status.statusCd === 403) {
-        this.showStatus = true;
-        this.isAddingItemToCart = false;
-        this.message = response.addWingToOrderResponse.status.message;
+      //     //update cart count
+      //   } else {
+      //     //show 'error' icon
+      //     this.isError = true;
+      //   }
+      //   this.showStatus = true;
+      //   this.isAddingItemToCart = false;
+      //   this.message = response.addWingToOrderResponse.status.message;
+      // } 
+      // if(response.addWingToOrderResponse.status.statusCd === 403) {
+      //   this.showStatus = true;
+      //   this.isAddingItemToCart = false;
+      //   this.message = response.addWingToOrderResponse.status.message;
+      // }
+    });
+  }
+
+  addToOrder(selectedWing: Wing) {
+    console.log(selectedWing);
+
+    // this.isAddingItemToCart = true;
+    const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
+    const wing: AddWingToOrderRequest = {
+      name: selectedWing.name, 
+      desc: selectedWing.desc,
+      img: selectedWing.img,
+      selectedPrice: selectedWing.selectedPrice,
+      selectedQty: +selectedWing.selectedQty,
+      selectedFlavor: selectedWing.selectedFlavor,
+      userId: user.id,
+      wingId: selectedWing.id
+    }
+
+    this.store.dispatch(
+      new CartActions.AddItemToCartTask(wing)
+    );
+  }
+
+  qtyDropdownSelect(qty: number, id: number) {
+    const qtyToPrice = _.filter(this.qtyToPriceMap, ['qty', +qty]);//should always be one
+    this.wings.map(wing=>{
+      if(wing.id === id) {
+        wing.selectedPrice = qtyToPrice[0].price;
       }
     });
   }
 
-  addToOrder(wing: Wing) {
-    this.isAddingItemToCart = true;
-    const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
-    const payLoad: AddWingToOrderRequest = {
-      name: wing.name, 
-      desc: wing.desc,
-      img: wing.img,
-      selectedPrice: wing.selectedPrice,
-      selectedQty: +wing.selectedQty,
-      selectedFlavor: wing.selectedFlavor,
-      userId: user.id,
-      wingId: wing.id
-    }
-    this.store.dispatch(
-      new CartActions.AddItemToCartTask(payLoad)
-    );
-  }
-
-  qtyDropdownSelect(id: number) {
-    console.log('id: ' + id + ' qty: ' + this.wings[id].selectedQty);
-    const qtyToPriceObjs = _.filter(this.qtyToPriceMap, ['qty', +this.wings[id].selectedQty]);
-    if(qtyToPriceObjs[0] !== undefined) {
-      this.wings[id].selectedPrice = qtyToPriceObjs[0].price;
-    }
-  }
-
-  flavorDropdownSelect(id: number) {
-    console.log('id: ' + id + ' qty: ' + this.wings[id].selectedFlavor);
+  flavorDropdownSelect(flavor: string, id: number) {
+    console.log(flavor + ' | ' + id);
+    this.wings.map(wing=>{
+      if(wing.id === id) {
+        wing.selectedFlavor = flavor;
+      }
+    });
   }
 
   test() {

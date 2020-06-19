@@ -1,9 +1,7 @@
 <h1 fxLayoutAlign="center">CHOOSE YOUR WINGS</h1>
 <div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="20px">
     <div *ngFor="let wing of wings">
-        <!-- <div style="border-style: solid;" fxFlex="auto"> -->
         <div class="wing-box" fxFlex="4 4 calc(12em + 20px)">
-        <!-- <div style="border-style: solid;" fxFlex="0 1 calc(33.3% - 32px)"> -->
             <nz-card [nzCover]="wingimage">
                 <nz-card-meta nzTitle="{{wing.name}}" nzDescription="{{wing.desc}} starting at {{wing.prices[0] | currency}}"></nz-card-meta>
             </nz-card>
@@ -12,12 +10,12 @@
             </ng-template>
             <div class="ant-card-actions">
                 <div style="padding-bottom: 5px; padding-top: 5px;">
-                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="How Many?" [(ngModel)]="wing.selectedQty" (ngModelChange)="qtyDropdownSelect(wing.id)">
+                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="How Many?" [(ngModel)]="wing.selectedQty" (ngModelChange)="qtyDropdownSelect($event, wing.id)">
                         <nz-option *ngFor="let qty of wing.quanties" nzLabel="{{qty}}" nzValue="{{qty}}"></nz-option>
                     </nz-select>
                 </div>
                 <div style="padding-bottom: 5px; padding-top: 5px;" *ngIf="wing.flavors.length > 0">
-                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="What Flavor?" [(ngModel)]="wing.selectedFlavor" (ngModelChange)="flavorDropdownSelect(wing.id)">
+                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="What Flavor?" [(ngModel)]="wing.selectedFlavor" (ngModelChange)="flavorDropdownSelect($event, wing.id)">
                         <nz-option *ngFor="let flavor of wing.flavors" nzLabel="{{flavor}}" nzValue="{{flavor}}"></nz-option>
                     </nz-select>
                 </div>
@@ -27,6 +25,8 @@
                 <ng-template #elseBlock>
                     <button [nzLoading]="isAddingItemToCart" style="width: 100%;" nz-button nzType="primary" [disabled]="wing.selectedQty === null" (click)="addToOrder(wing)">ADD TO ORDER</button>
                 </ng-template>
+
+                
                 <div class="ant-card-actions" *ngIf="wing.selectedQty !== null">
                     <hr />
                     <div fxLayoutAlign="center">{{wing.selectedQty}} pieces at {{wing.selectedPrice | currency}}</div>
