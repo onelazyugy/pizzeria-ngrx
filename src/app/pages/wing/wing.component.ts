@@ -5,7 +5,8 @@ import * as fromApp from '../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import * as CartActions from '../cart/store/cart.action';
 import { HelperService } from 'src/app/service/pizzeria-helper.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { faCheck, faExclamation } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-wing',
@@ -50,17 +51,41 @@ export class WingComponent implements OnInit {
     {'qty': 24, 'price': 25.89},
     {'qty': 30, 'price': 30.99},
   ]
-
+  isAddingItemToCart: boolean = false;
+  isError: boolean = false;
+  showStatus: boolean = false;
+  message: string = '';
+  //icon 
+  faCheck = faCheck;
+  faExclamation = faExclamation;
 
   constructor(private store: Store<fromApp.AppState>, private helperService: HelperService, private http: HttpClient) { }
 
   ngOnInit() {
-    this.store.select('loginReducer').subscribe(response => {
-      console.log(response);
+    this.store.select('cartReducer').subscribe(response => {
+      if(response.addWingToOrderResponse.status.statusCd !== 0) {
+        if(response.addWingToOrderResponse.success) {
+          //show checked icon
+                  
+          //update cart count
+        } else {
+          //show 'error' icon
+          this.isError = true;
+        }
+        this.showStatus = true;
+        this.isAddingItemToCart = false;
+        this.message = response.addWingToOrderResponse.status.message;
+      } 
+      if(response.addWingToOrderResponse.status.statusCd === 403) {
+        this.showStatus = true;
+        this.isAddingItemToCart = false;
+        this.message = response.addWingToOrderResponse.status.message;
+      }
     });
   }
 
   addToOrder(wing: Wing) {
+    this.isAddingItemToCart = true;
     const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
     const payLoad: AddWingToOrderRequest = {
       name: wing.name, 
@@ -90,37 +115,8 @@ export class WingComponent implements OnInit {
   }
 
   test() {
-    const payload = {
-      "name": "Boneless Wings",
-      "desc": "Juicy and tasty",
-      "img": "assets/wings/wing_boneless.jpg",
-      "selectedPrice": 14.79,
-      "selectedQty": 12,
-      "selectedFlavor": "Sweet and Sour",
-      "userId": 4,
-      "wingId": 1
-    }
-    
-    // let headers = new HttpHeaders({
-    //     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImF1dGgiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNTkyNTE1MzE5LCJleHAiOjE1OTI1MTU2MTl9.FkBn46FtH2ienTdVsjIJKRwhACNSFXIp9kEAqld_e9o'
-
-    // });
-    // let options = { headers: headers };
-    // this.http.post<any>('http://localhost:8282/pizzeria/api/v1/cart/add/wing', payload, options).subscribe(res=>{
-    //   console.log(res);
-    // })
-    
-    // let headers = new HttpHeaders();
-    // headers.append('Authorization', 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImF1dGgiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNTkyNTMyODA3LCJleHAiOjE1OTI1MzM3MDd9._hbo3qCrugS_vwR1N3KAm_T9wiOAfMWT7mFROAPH7-U');
-
-    this.http.get<any>('http://localhost:8282/pizzeria/api/v1/user/topsecret').subscribe(res=> {
+    this.http.get<any>('http://localhost:8282/pizzeria/api/v1/user/topsecret').subscribe(res=>{
       console.log(res);
     });
-
-
-    // this.http.get<any>('http://localhost:8282/pizzeria/api/v1/user/test').subscribe(res=> {
-    //   console.log(res);
-    // });
-    
   }
 }

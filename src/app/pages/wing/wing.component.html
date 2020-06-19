@@ -22,15 +22,27 @@
                     </nz-select>
                 </div>
                 <div *ngIf="wing.flavors.length > 0; else elseBlock">
-                    <button style="width: 100%;" nz-button nzType="primary" [disabled]="wing.selectedQty === null || wing.selectedFlavor === null" (click)="addToOrder(wing)">ADD TO ORDER</button>
+                    <button [nzLoading]="isAddingItemToCart" style="width: 100%;" nz-button nzType="primary" [disabled]="wing.selectedQty === null || wing.selectedFlavor === null" (click)="addToOrder(wing)">ADD TO ORDER</button>
                 </div>
                 <ng-template #elseBlock>
-                    <button style="width: 100%;" nz-button nzType="primary" [disabled]="wing.selectedQty === null" (click)="addToOrder(wing)">ADD TO ORDER</button>
+                    <button [nzLoading]="isAddingItemToCart" style="width: 100%;" nz-button nzType="primary" [disabled]="wing.selectedQty === null" (click)="addToOrder(wing)">ADD TO ORDER</button>
                 </ng-template>
                 <div class="ant-card-actions" *ngIf="wing.selectedQty !== null">
                     <hr />
-                    <div>{{wing.selectedQty}} pieces at {{wing.selectedPrice | currency}}</div>
+                    <div fxLayoutAlign="center">{{wing.selectedQty}} pieces at {{wing.selectedPrice | currency}}</div>
                 </div>
+                <div>
+                    {{message}}
+                </div>
+                <!-- <div class="ant-card-actions" *ngIf="wing.selectedQty !== null">
+                    <div *ngIf="showStatus">
+                        <hr />
+                        <div style="color: red;" fxLayoutAlign="center"><fa-icon *ngIf="isError; else elseBlock" [icon]="faExclamation"></fa-icon> {{message}}</div>
+                        <ng-template #elseBlock>
+                            <div style="color: green;" fxLayoutAlign="center"><fa-icon *ngIf="isError; else elseBlock" [icon]="faCheck"></fa-icon> {{message}}</div>
+                        </ng-template>
+                    </div>
+                </div> -->
             </div>
         </div>
     </div>
