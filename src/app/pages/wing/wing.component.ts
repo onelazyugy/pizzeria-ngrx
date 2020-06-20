@@ -86,7 +86,7 @@ export class WingComponent implements OnInit {
   }
 
   qtyDropdownSelect(qty: number, id: number) {
-    // this.showStatus = false;
+    this.showStatus = false;
     const qtyToPrice = _.filter(this.qtyToPriceMap, ['qty', +qty]);//should always be one
     this.wings.map(wing=>{
       if(wing.id === id) {
@@ -96,7 +96,7 @@ export class WingComponent implements OnInit {
   }
 
   flavorDropdownSelect(flavor: string, id: number) {
-    console.log(flavor + ' | ' + id);
+    this.showStatus = false;
     this.wings.map(wing=>{
       if(wing.id === id) {
         wing.selectedFlavor = flavor;

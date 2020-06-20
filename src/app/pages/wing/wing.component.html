@@ -27,13 +27,12 @@
                 </ng-template>
 
                 
-
-
-
                 <div class="ant-card-actions" *ngIf="wing.isCurrentlySelected">
                     <hr />
-                    <div fxLayoutAlign="center">{{wing.selectedQty}} pieces at {{wing.selectedPrice | currency}}</div>
-                    <!-- <div *ngIf="showStatus">
+                    <div fxLayoutAlign="center">{{wing.selectedQty}} pieces at {{wing.selectedPrice | currency}}</div>  
+
+
+                    <div *ngIf="showStatus">
                         <hr />
                         <div fxLayoutAlign="center">
                             <span style="color: green;" *ngIf="!isError; else elseBlock">
@@ -45,7 +44,7 @@
                                 </span>
                             </ng-template>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
 
 

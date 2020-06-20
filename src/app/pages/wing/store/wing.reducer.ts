@@ -70,6 +70,8 @@ export function wingReducer(state: State = initlaTasks, action: WingActions.Wing
                     wing.selectedFlavor = selectedWing.selectedFlavor;
                     wing.selectedPrice = selectedWing.selectedPrice;
                     wing.selectedQty = selectedWing.selectedQty;
+                } else {
+                    wing.isCurrentlySelected = false;
                 }
             })
             return {
