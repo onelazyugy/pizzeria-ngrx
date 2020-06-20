@@ -79,10 +79,10 @@ export class WingComponent implements OnInit {
       new CartActions.AddItemToCartTask(wing)
     );
 
-    selectedWing.isCurrentlySelected = true;
-    this.store.dispatch(
-      new WingActions.UpdateSelectedWing(selectedWing)
-    );
+    // selectedWing.isCurrentlySelected = true;
+    // this.store.dispatch(
+    //   new WingActions.UpdateSelectedWing(selectedWing)
+    // );
   }
 
   qtyDropdownSelect(qty: number, id: number) {
@@ -93,6 +93,13 @@ export class WingComponent implements OnInit {
         wing.selectedPrice = qtyToPrice[0].price;
       }
     });
+
+    //let dispatch an action when update qty
+    let selectedWing: Wing[] = _.filter(this.wings, ['id', id]);
+    selectedWing[0].isCurrentlySelected = true;
+    this.store.dispatch(
+      new WingActions.QuantitySelectedAction(selectedWing[0])
+    );
   }
 
   flavorDropdownSelect(flavor: string, id: number) {

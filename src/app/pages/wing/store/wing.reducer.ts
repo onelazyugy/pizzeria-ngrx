@@ -78,6 +78,27 @@ export function wingReducer(state: State = initlaTasks, action: WingActions.Wing
                 ...state,
                 wings: [...deepClonedOfWings]
             }
+        case WingActions.QTY_SELECTED_ACTION: 
+            const selectedWingForQty: Wing = action.payload;
+            const clonedWingsForQty = [...state.wings];
+            let deepClonedOfWingsForQty: Wing[] = clonedWingsForQty.map(wing=>{
+                return {...wing};
+            })
+
+            deepClonedOfWingsForQty.map(wing=>{
+                if(wing.id === selectedWingForQty.id) {
+                    wing.isCurrentlySelected = true;
+                    wing.selectedFlavor = selectedWingForQty.selectedFlavor;
+                    wing.selectedPrice = selectedWingForQty.selectedPrice;
+                    wing.selectedQty = selectedWingForQty.selectedQty;
+                } else {
+                    wing.isCurrentlySelected = false;
+                }
+            })
+            return {
+                ...state,
+                wings: [...deepClonedOfWingsForQty]
+            }
         default:
             return state;
     }
