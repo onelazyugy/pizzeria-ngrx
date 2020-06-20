@@ -21,6 +21,9 @@ export class AppComponent implements OnInit{
   isShowUserInfo = false;
   nickName = '';
 
+  //cart count
+  totalItemInCart = 0;
+
   //icons
   faSignInAlt = faSignInAlt;
   faSignOutAlt = faSignOutAlt;
@@ -59,6 +62,12 @@ export class AppComponent implements OnInit{
         this.routes[3].isSelected = true;
       }
       //TODO: need to handle nzSelected when programmatically routed
+    });
+    //TOOD: when refresh, need to query total item in cart and display it
+
+    //below is a listener when there is an item get added to cart only but not when page refresh
+    this.store.select('cartReducer').subscribe(response=>{
+      this.totalItemInCart = response.addWingToOrderResponse.totalItemInCart;
     });
   }
 

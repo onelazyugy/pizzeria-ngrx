@@ -54,40 +54,13 @@ const initlaTasks: State = {
 
 export function wingReducer(state: State = initlaTasks, action: WingActions.WingTaskActions) {
     switch(action.type)  {
-        case WingActions.LOAD_INITIAL_WING:
-            return {
-               ...state,
-               wings: [...state.wings],
-               qtyToPrice: [...state.qtyToPrice]
-            }
-        case WingActions.UPDATE_SELECTED_WING:
-            const selectedWing: Wing = action.payload;
-            const clonedWings = [...state.wings];
-            let deepClonedOfWings: Wing[] = clonedWings.map(wing=>{
-                return {...wing};
-            })
-
-            deepClonedOfWings.map(wing=>{
-                if(wing.id === selectedWing.id) {
-                    wing.isCurrentlySelected = true;
-                    wing.selectedFlavor = selectedWing.selectedFlavor;
-                    wing.selectedPrice = selectedWing.selectedPrice;
-                    wing.selectedQty = selectedWing.selectedQty;
-                } else {
-                    wing.isCurrentlySelected = false;
-                }
-            })
-            return {
-                ...state,
-                wings: [...deepClonedOfWings]
-            }
         case WingActions.QTY_SELECTED_ACTION: 
             const selectedWingForQty: Wing = action.payload;
             const clonedWingsForQty = [...state.wings];
+            //deep copy
             let deepClonedOfWingsForQty: Wing[] = clonedWingsForQty.map(wing=>{
                 return {...wing};
             })
-
             deepClonedOfWingsForQty.map(wing=>{
                 if(wing.id === selectedWingForQty.id) {
                     wing.isCurrentlySelected = true;
