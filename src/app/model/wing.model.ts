@@ -10,6 +10,7 @@ export class Wing {
     flavors: string[];
     selectedFlavor: string;
     isCurrentlySelected: boolean;
+    hasFlavor: boolean;
 }
 
 export class AddWingToOrderRequest {
@@ -21,6 +22,7 @@ export class AddWingToOrderRequest {
     selectedFlavor: string;
     userId: number;
     wingId: number;
+    hasFlavor: boolean;
 }
 
 export interface Status {

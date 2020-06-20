@@ -38,7 +38,7 @@ export class WingComponent implements OnInit {
       //make a deep clone of qtyToPrice array
       const qtyToPriceMapCloned = response.qtyToPrice.map(price=>{
         return {...price};
-      })
+      });
       this.wings = wingCloned;
       this.qtyToPriceMap = qtyToPriceMapCloned;
     });
@@ -72,17 +72,13 @@ export class WingComponent implements OnInit {
       selectedQty: +selectedWing.selectedQty,
       selectedFlavor: selectedWing.selectedFlavor,
       userId: user.id,
-      wingId: selectedWing.id
+      wingId: selectedWing.id,
+      hasFlavor: selectedWing.hasFlavor
     }
 
     this.store.dispatch(
       new CartActions.AddItemToCartTask(wing)
     );
-
-    // selectedWing.isCurrentlySelected = true;
-    // this.store.dispatch(
-    //   new WingActions.UpdateSelectedWing(selectedWing)
-    // );
   }
 
   qtyDropdownSelect(qty: number, id: number) {

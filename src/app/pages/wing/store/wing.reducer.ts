@@ -17,7 +17,8 @@ const initlaTasks: State = {
           prices: [7.59, 14.79, 20.99, 25.89, 30.99],
           flavors: ['Honey BBQ', 'Lemon Pepper', 'Sweet and Sour'],
           selectedFlavor: null,
-          isCurrentlySelected: false
+          isCurrentlySelected: false,
+          hasFlavor: true
         },
         {
           'id': 1, 'name': 'Boneless Wings', 'desc': 'Juicy and tasty', 'img': 'assets/wings/wing_boneless.jpg', 
@@ -27,7 +28,8 @@ const initlaTasks: State = {
           prices: [7.59, 14.79, 20.99, 40.99],
           flavors: ['Honey BBQ', 'Lemon Pepper', 'Sweet and Sour'],
           selectedFlavor: null,
-          isCurrentlySelected: false
+          isCurrentlySelected: false,
+          hasFlavor: true
         },
         {
           'id': 2, 'name': 'Hot Wings', 'desc': 'Hot and delicious', 'img': 'assets/wings/hotwing.jpg', 
@@ -37,7 +39,8 @@ const initlaTasks: State = {
           prices: [7.59, 14.79, 20.99, 40.99],
           flavors: [],
           selectedFlavor: null,
-          isCurrentlySelected: false
+          isCurrentlySelected: false,
+          hasFlavor: false
         }
       ],
       qtyToPrice: [
