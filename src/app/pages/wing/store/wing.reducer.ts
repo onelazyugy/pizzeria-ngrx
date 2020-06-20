@@ -16,7 +16,8 @@ const initlaTasks: State = {
           selectedPrice: null,
           prices: [7.59, 14.79, 20.99, 25.89, 30.99],
           flavors: ['Honey BBQ', 'Lemon Pepper', 'Sweet and Sour'],
-          selectedFlavor: null
+          selectedFlavor: null,
+          isCurrentlySelected: false
         },
         {
           'id': 1, 'name': 'Boneless Wings', 'desc': 'Juicy and tasty', 'img': 'assets/wings/wing_boneless.jpg', 
@@ -25,7 +26,8 @@ const initlaTasks: State = {
           selectedPrice: null,
           prices: [7.59, 14.79, 20.99, 40.99],
           flavors: ['Honey BBQ', 'Lemon Pepper', 'Sweet and Sour'],
-          selectedFlavor: null
+          selectedFlavor: null,
+          isCurrentlySelected: false
         },
         {
           'id': 2, 'name': 'Hot Wings', 'desc': 'Hot and delicious', 'img': 'assets/wings/hotwing.jpg', 
@@ -34,7 +36,8 @@ const initlaTasks: State = {
           selectedPrice: null,
           prices: [7.59, 14.79, 20.99, 40.99],
           flavors: [],
-          selectedFlavor: null
+          selectedFlavor: null,
+          isCurrentlySelected: false
         }
       ],
       qtyToPrice: [
@@ -51,16 +54,27 @@ export function wingReducer(state: State = initlaTasks, action: WingActions.Wing
         case WingActions.LOAD_INITIAL_WING:
             return {
                ...state,
-               wings: {...state.wings},
-               qtyToPrice: {...state.qtyToPrice}
+               wings: [...state.wings],
+               qtyToPrice: [...state.qtyToPrice]
             }
         case WingActions.UPDATE_SELECTED_WING:
             const selectedWing: Wing = action.payload;
             const clonedWings = [...state.wings];
+            let deepClonedOfWings: Wing[] = clonedWings.map(wing=>{
+                return {...wing};
+            })
 
+            deepClonedOfWings.map(wing=>{
+                if(wing.id === selectedWing.id) {
+                    wing.isCurrentlySelected = true;
+                    wing.selectedFlavor = selectedWing.selectedFlavor;
+                    wing.selectedPrice = selectedWing.selectedPrice;
+                    wing.selectedQty = selectedWing.selectedQty;
+                }
+            })
             return {
                 ...state,
-                wings: {...clonedWings}
+                wings: [...deepClonedOfWings]
             }
         default:
             return state;

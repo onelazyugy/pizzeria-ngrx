@@ -4,6 +4,7 @@ import _ from 'lodash';
 import * as fromApp from '../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import * as CartActions from '../cart/store/cart.action';
+import * as WingActions from '../wing/store/wing.action';
 import { HelperService } from 'src/app/service/pizzeria-helper.service';
 import { HttpClient } from '@angular/common/http';
 import { faCheck, faExclamation } from '@fortawesome/free-solid-svg-icons';
@@ -16,10 +17,6 @@ import { faCheck, faExclamation } from '@fortawesome/free-solid-svg-icons';
 export class WingComponent implements OnInit {
   wings: Wing[] = [];
   qtyToPriceMap: any[] = [];
-  
-
-  selectedQuantity: number;
-
 
   isAddingItemToCart: boolean = false;
   isError: boolean = false;
@@ -38,41 +35,34 @@ export class WingComponent implements OnInit {
       const wingCloned = response.wings.map(wing=>{
         return {...wing};
       });
+      //make a deep clone of qtyToPrice array
       const qtyToPriceMapCloned = response.qtyToPrice.map(price=>{
         return {...price};
       })
       this.wings = wingCloned;
       this.qtyToPriceMap = qtyToPriceMapCloned;
+    });
 
-
-
-
-
-      // if(response.addWingToOrderResponse.status.statusCd !== 0) {
-      //   if(response.addWingToOrderResponse.success) {
-      //     //show checked icon
-                  
-      //     //update cart count
-      //   } else {
-      //     //show 'error' icon
-      //     this.isError = true;
-      //   }
-      //   this.showStatus = true;
-      //   this.isAddingItemToCart = false;
-      //   this.message = response.addWingToOrderResponse.status.message;
-      // } 
-      // if(response.addWingToOrderResponse.status.statusCd === 403) {
-      //   this.showStatus = true;
-      //   this.isAddingItemToCart = false;
-      //   this.message = response.addWingToOrderResponse.status.message;
-      // }
+    this.store.select('cartReducer').subscribe(response => {
+      if(response.addWingToOrderResponse.status.statusCd === 403) {
+        this.isError = true;
+        this.showStatus = true;
+        this.message = response.addWingToOrderResponse.status.message;
+      } else if(response.addWingToOrderResponse.status.statusCd === 400) {
+        this.showStatus = true;
+        this.isError = true;
+        this.message = response.addWingToOrderResponse.status.message;
+      } else if(response.addWingToOrderResponse.status.statusCd === 200) {
+        this.showStatus = true;
+        this.isError = false;
+        this.message = response.addWingToOrderResponse.status.message;
+      }
+      this.isAddingItemToCart = false;
     });
   }
 
   addToOrder(selectedWing: Wing) {
-    console.log(selectedWing);
-
-    // this.isAddingItemToCart = true;
+    this.isAddingItemToCart = true;
     const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
     const wing: AddWingToOrderRequest = {
       name: selectedWing.name, 
@@ -88,9 +78,15 @@ export class WingComponent implements OnInit {
     this.store.dispatch(
       new CartActions.AddItemToCartTask(wing)
     );
+
+    selectedWing.isCurrentlySelected = true;
+    this.store.dispatch(
+      new WingActions.UpdateSelectedWing(selectedWing)
+    );
   }
 
   qtyDropdownSelect(qty: number, id: number) {
+    // this.showStatus = false;
     const qtyToPrice = _.filter(this.qtyToPriceMap, ['qty', +qty]);//should always be one
     this.wings.map(wing=>{
       if(wing.id === id) {

@@ -9,6 +9,7 @@ export class Wing {
     prices: number[];
     flavors: string[];
     selectedFlavor: string;
+    isCurrentlySelected: boolean;
 }
 
 export class AddWingToOrderRequest {
