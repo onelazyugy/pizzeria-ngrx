@@ -1,9 +1,11 @@
 import * as CartActions from './cart.action';
 import _ from 'lodash';
 import { AddWingToOrderResponse, Status } from 'src/app/model/wing.model';
+import { RetrieveCartResponse } from 'src/app/model/cart.model';
 
 export interface State {
     addWingToOrderResponse: AddWingToOrderResponse;
+    retrieveCartResponse: RetrieveCartResponse;
 }
 
 const initlaTasks: State = {
@@ -15,7 +17,17 @@ const initlaTasks: State = {
             statusCd: 0
         },
         success: false,
-        totalItemInCart: 0
+        totalItemInCart: 0,
+    },
+    retrieveCartResponse: {
+            status: {
+            timestamp: '',
+            message: '',
+            transactionId: '',
+            statusCd: 0
+        },
+        success: false,
+        cart: null
     }
 };
 
@@ -25,11 +37,23 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
             return {
                ...state
             }
+        case CartActions.RETRIEVE_ALL_ITEM_FROM_CART: 
+            return {
+                ...state
+            }    
+        case CartActions.RETRIEVE_ALL_ITEM_FROM_CART_SUCCESS:
+            const retrieveCartResponse = action.payload;
+            return {
+                ...state,
+                addWingToOrderResponse: {...state.addWingToOrderResponse},
+                retrieveCartResponse: {...retrieveCartResponse}
+            }
         case CartActions.CART_ACTION_SUCCESS:  
             const addWingToOrderResponse = action.payload;
             return {
                 ...state,
-                addWingToOrderResponse: {...addWingToOrderResponse}
+                addWingToOrderResponse: {...addWingToOrderResponse},
+                retrieveCartResp: {...state.retrieveCartResponse}
             }
         case CartActions.CART_ACTION_FAILURE:  
             const status: Status = action.payload;
@@ -45,7 +69,8 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
             }
             return {
                 ...state,
-                addWingToOrderResponse: {...failureResponse}
+                addWingToOrderResponse: {...failureResponse},
+                retrieveCartResp: {...failureResponse}
             }
         default:
             return state;

@@ -23,6 +23,6 @@ export const appReducer: ActionReducerMap<AppState> = {
     startReducer: fromStartReducer.startReducer,
     registerReducer: fromRegisterReducer.registerReducer,
     loginReducer: fromLoginReducer.loginReducer,
+    wingReducer: fromWingReducer.wingReducer,
     cartReducer: fromCartReducer.cartReducer,
-    wingReducer: fromWingReducer.wingReducer
 }

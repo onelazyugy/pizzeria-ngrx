@@ -86,7 +86,9 @@ export class WingComponent implements OnInit {
     const qtyToPrice = _.filter(this.qtyToPriceMap, ['qty', +qty]);//should always be one
     this.wings.map(wing=>{
       if(wing.id === id) {
-        wing.selectedPrice = qtyToPrice[0].price;
+        if(qtyToPrice[0] !== undefined) {
+          wing.selectedPrice = qtyToPrice[0].price;
+        }
       }
     });
 

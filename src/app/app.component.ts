@@ -64,7 +64,7 @@ export class AppComponent implements OnInit{
       //TODO: need to handle nzSelected when programmatically routed
     });
     //TOOD: when refresh, need to query total item in cart and display it
-
+    
     //below is a listener when there is an item get added to cart only but not when page refresh
     this.store.select('cartReducer').subscribe(response=>{
       this.totalItemInCart = response.addWingToOrderResponse.totalItemInCart;

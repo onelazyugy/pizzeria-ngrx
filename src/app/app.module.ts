@@ -27,6 +27,7 @@ import { AngularFlexLayoutModule } from './angular-flex-layout.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AntDesignCommonModule } from './ant-design-common.module';
 import { HttpRequestInterceptor } from './service/request.interceptor';
+import { CartModule } from './pages/cart/cart.module';
 
 registerLocaleData(en);
 
@@ -54,6 +55,7 @@ registerLocaleData(en);
     LoginModule,
     ShareModule,
     WingModule,
+    CartModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US }, 
