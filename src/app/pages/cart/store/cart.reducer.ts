@@ -53,7 +53,7 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
             return {
                 ...state,
                 addWingToOrderResponse: {...addWingToOrderResponse},
-                retrieveCartResp: {...state.retrieveCartResponse}
+                retrieveCartResponse: {...state.retrieveCartResponse}
             }
         case CartActions.CART_ACTION_FAILURE:  
             const status: Status = action.payload;
@@ -67,10 +67,20 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
                 success: false,
                 totalItemInCart: 0
             }
+            const failureResponseForRetrieve: RetrieveCartResponse = {
+                status: {
+                    timestamp: '',
+                    message: status.message,
+                    transactionId: '',
+                    statusCd: status.statusCd
+                },
+                success: false,
+                cart: null
+            }
             return {
                 ...state,
                 addWingToOrderResponse: {...failureResponse},
-                retrieveCartResp: {...failureResponse}
+                retrieveCartResponse: {...failureResponseForRetrieve}
             }
         default:
             return state;
