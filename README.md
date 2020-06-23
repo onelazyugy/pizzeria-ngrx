@@ -65,8 +65,8 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
     - ```"engines": {"node": "~8.15.1","npm": "~6.4.1"}```
     - *note: node version must be capatible with angular
 - note: ```"heroku-postbuild": "ng build --configuration=production"``` will build for prod using `envrionment.prod.ts`
-- final package.json file might look like below:
-```{
+- final package.json file might look like below:<br />
+{
   "name": "pizzeria",
   "version": "0.0.0",
   "scripts": {
@@ -131,4 +131,9 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
     "npm": "~6.4.1"
   }
 }
+- HOW TO DEPLOY TO HEROKU?
 - source: https://codemeals.com/angular-tutorials/deploy-angular-7-app-to-heroku
+- HOW TO DEPLOY USING NON-MASTER BRANCH?
+  - source: https://coderwall.com/p/1xforw/make-heroku-run-a-non-master-branch
+  - create a branch e.g: heroku-deployment
+  - ```$ git push heroku heroku-deployment:master```
