@@ -1,21 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { WingComponent } from './wing.component';
 import { AntDesignCommonModule } from 'src/app/ant-design-common.module';
 import { ShareModule } from 'src/app/share/share.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { StartComponent } from './start.component';
 import { AngularFlexLayoutModule } from 'src/app/angular-flex-layout.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [StartComponent],
+  declarations: [WingComponent],
   imports: [
+    CommonModule,
     AntDesignCommonModule,
     ShareModule,
     CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ShareModule,
-    AngularFlexLayoutModule
+    AngularFlexLayoutModule,
+    FontAwesomeModule,
+    FormsModule
   ]
 })
-export class StartModule { }
+export class WingModule { }

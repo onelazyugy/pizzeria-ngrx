@@ -7,6 +7,7 @@ import { Pizza, PizzaSize, DeliveryType } from 'src/app/model/pizza.model';
 import * as PizzaAction from './store/pizza.action';
 import _ from 'lodash';
 import { Router } from '@angular/router';
+import { faCar, faPizzaSlice, faCubes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-create',
@@ -37,7 +38,12 @@ export class CreateComponent implements OnInit, OnDestroy {
 
   toppingSubscription: Subscription;
   pizzaSubscription: Subscription;
-  
+
+  //icons
+  faCar = faCar;
+  faPizzaSlice = faPizzaSlice;
+  faCubes = faCubes;
+
   constructor(private store: Store<fromApp.AppState>, private router: Router) { }
 
   ngOnInit() {

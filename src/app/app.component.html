@@ -13,22 +13,33 @@
     </div>
     <div style="text-align: center;" *ngIf="isShowUserInfo; else elseBlock">
       <nz-avatar nzIcon="user" style="background-color:#87d068;"></nz-avatar>
-      <h3 style="color: white;">{{nickName | uppercaseTextPipe}} <span (click)="logout()"nzTooltipTitle="log out" nzTooltipPlacement="top" nz-tooltip><fa name="sign-out" size="lg"></fa></span></h3>
+      <h3 style="color: white;">{{nickName | uppercaseTextPipe}} <span (click)="logout()"nzTooltipTitle="log out" nzTooltipPlacement="top" nz-tooltip><fa-icon [icon]="faSignOutAlt"></fa-icon></span></h3>
     </div>
     <ng-template #elseBlock>
       <div style="text-align: center;">
         <nz-avatar nzIcon="user" style="background-color:orange;"></nz-avatar>
-        <h3 style="color: white;">GUESS <span routerLink="/login" nzTooltipTitle="log in" nzTooltipPlacement="top" nz-tooltip><fa name="sign-in" size="lg"></fa></span></h3>
+        <h3 style="color: white;">GUEST <span routerLink="/login" nzTooltipTitle="log in" nzTooltipPlacement="top" nz-tooltip><fa-icon [icon]="faSignInAlt"></fa-icon></span></h3>
       </div>
     </ng-template>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-submenu nzTitle="Pizza" nzIcon="appstore" [nzOpen]="true">
+      <li nz-submenu nzTitle="Menu" nzIcon="appstore" [nzOpen]="true">
         <ul>
           <!--ng-container does not append to DOM-->
           <ng-container *ngFor="let route of routes">
-              <li nz-menu-item *ngIf="route.showRoute" [nzSelected]="[route.isSelected]">
-                <a [routerLink]="[route.route]">{{route.label}}</a>
-              </li>
+              <ng-container *ngIf="route.label === 'Cart'; else elseBlock">
+                <li nz-menu-item *ngIf="route.showRoute" [nzSelected]="[route.isSelected]">
+                  <a [routerLink]="[route.route]"><fa-icon [icon]="route.icon"></fa-icon> {{route.label}}</a>
+                  <nz-badge style="margin-bottom: 20px;"
+                    [nzCount]="totalItemInCart"
+                    [nzStyle]="{ backgroundColor: 'green', color: '#fff', boxShadow: '0 0 0 1px #d9d9d9 inset', marginTop: '5px' }"
+                  ></nz-badge>
+                </li>
+              </ng-container>
+              <ng-template #elseBlock>
+                <li nz-menu-item *ngIf="route.showRoute" [nzSelected]="[route.isSelected]">
+                  <a [routerLink]="[route.route]"><fa-icon [icon]="route.icon"></fa-icon> {{route.label}}</a>
+                </li>
+              </ng-template>
           </ng-container>
         </ul>
       </li>

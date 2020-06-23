@@ -29,6 +29,13 @@ sudo npm install http-server -g <br>
 npx http-server dist/pizzeria
 http://192.168.1.76:8080
 
+## How to update 
+```$ ng update```<br />
+```ex: $ ng update @angular/cli @angular/core ng-zorro-antd rxjs```
+
+## Error I face with packages and angular 9+
+-Error: Failed to compile entry-point angular-font-awesome (es2015 as esm2015) due to compilation errors:
+-Solution: ```$ ng add @fortawesome/angular-fontawesome```
 
 ## Running unit tests
 
@@ -41,3 +48,8 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+## Example/References on angular flex layout
+- ```https://github.com/angular/flex-layout/wiki/fxFlex-API```
+- ```https://medium.com/angular-in-depth/angular-flex-layout-flexbox-and-grid-layout-for-angular-component-6e7c24457b63```

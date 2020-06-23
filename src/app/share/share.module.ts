@@ -3,13 +3,15 @@ import { CommonModule } from '@angular/common';
 import { TrimTextPipe, UppercaseTextPipe } from './pipe/app.pipe';
 import { ShareComponent } from './share.component';
 import { HighlightDirective } from './directive/highlight.directive';
+import { ItalicizeDirective } from './directive/italicize.directive';
 
 @NgModule({
     declarations: [
         TrimTextPipe,
         UppercaseTextPipe,
         ShareComponent,
-        HighlightDirective
+        HighlightDirective,
+        ItalicizeDirective
     ],
     imports: [
         CommonModule
@@ -18,7 +20,8 @@ import { HighlightDirective } from './directive/highlight.directive';
         TrimTextPipe,
         UppercaseTextPipe,
         ShareComponent,
-        HighlightDirective
+        HighlightDirective,
+        ItalicizeDirective
     ]
 })
 export class ShareModule {}

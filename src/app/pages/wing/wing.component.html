@@ -1,0 +1,48 @@
+<h1 fxLayoutAlign="center">CHOOSE YOUR WINGS</h1>
+<div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="20px">
+    <div *ngFor="let wing of wings">
+        <div class="wing-box" fxFlex="4 4 calc(12em + 20px)">
+            <nz-card [nzCover]="wingimage">
+                <nz-card-meta nzTitle="{{wing.name}}" nzDescription="{{wing.desc}} starting at {{wing.prices[0] | currency}}"></nz-card-meta>
+            </nz-card>
+            <ng-template #wingimage>
+                <img alt="{{wing.name}}" src="{{wing.img}}"/>
+            </ng-template>
+            <div class="ant-card-actions">
+                <div style="padding-bottom: 5px; padding-top: 5px;">
+                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="How Many?" [(ngModel)]="wing.selectedQty" (ngModelChange)="qtyDropdownSelect($event, wing.id)">
+                        <nz-option *ngFor="let qty of wing.quanties" nzLabel="{{qty}}" nzValue="{{qty}}"></nz-option>
+                    </nz-select>
+                </div>
+                <div style="padding-bottom: 5px; padding-top: 5px;" *ngIf="wing.flavors.length > 0">
+                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="What Flavor?" [(ngModel)]="wing.selectedFlavor" (ngModelChange)="flavorDropdownSelect($event, wing.id)">
+                        <nz-option *ngFor="let flavor of wing.flavors" nzLabel="{{flavor}}" nzValue="{{flavor}}"></nz-option>
+                    </nz-select>
+                </div>
+                <div *ngIf="wing.flavors.length > 0; else elseBlock">
+                    <button [nzLoading]="isAddingItemToCart" style="width: 100%;" nz-button nzType="primary" [disabled]="wing.selectedQty === null || wing.selectedFlavor === null" (click)="addToOrder(wing)">ADD TO ORDER</button>
+                </div>
+                <ng-template #elseBlock>
+                    <button [nzLoading]="isAddingItemToCart" style="width: 100%;" nz-button nzType="primary" [disabled]="wing.selectedQty === null" (click)="addToOrder(wing)">ADD TO ORDER</button>
+                </ng-template>
+                <div class="ant-card-actions" *ngIf="wing.isCurrentlySelected">
+                    <hr />
+                    <div fxLayoutAlign="center">{{wing.selectedQty}} pieces at {{wing.selectedPrice | currency}}</div>  
+                    <div *ngIf="showStatus">
+                        <hr />
+                        <div fxLayoutAlign="center">
+                            <span style="color: green;" *ngIf="!isError; else elseBlock">
+                                <fa-icon [icon]="faCheck"></fa-icon> {{message}}
+                            </span>
+                            <ng-template #elseBlock>
+                                <span style="color: red;">
+                                    <fa-icon [icon]="faExclamation"></fa-icon> {{message}}
+                                </span>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

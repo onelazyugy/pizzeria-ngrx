@@ -4,9 +4,12 @@ import { Router } from '@angular/router';
 import * as fromApp from './store/app.reducer';
 import { Store } from '@ngrx/store';
 import * as LoginActions from './pages/login/store/login.action';
+import * as CartActions from './pages/cart/store/cart.action';
 import { LoginStatus } from './model/login-user-request.model';
 import { Location } from "@angular/common";
 import { ResetStoreTask } from '../app/pages/pizza/checkout/start/store/start.action';
+import { faSignOutAlt, faSignInAlt, faPizzaSlice, faDrumstickBite, faList, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { RetrieveCartRequest } from './model/cart.model';
 
 @Component({
   selector: 'app-root',
@@ -19,10 +22,23 @@ export class AppComponent implements OnInit{
   isSelected = false;
   isShowUserInfo = false;
   nickName = '';
+
+  //cart count
+  totalItemInCart = 0;
+
+  //icons
+  faSignInAlt = faSignInAlt;
+  faSignOutAlt = faSignOutAlt;
+  faPizzaSlice = faPizzaSlice;
+  faDrumstickBite = faDrumstickBite;
+  faList = faList;
+  faShoppingCart = faShoppingCart;
   
   routes: any[] = [
-    {label: 'Create-Pizza', route: '', isSelected: false, showRoute: true},
-    {label: 'Summary', route: '/summary', isSelected: false, showRoute: true},
+    {label: 'Pizza', route: '', isSelected: false, showRoute: true, icon: faPizzaSlice},
+    {label: 'Wings', route: '/wings', isSelected: false, showRoute: true, icon: faDrumstickBite},
+    {label: 'Summary', route: '/summary', isSelected: false, showRoute: true, icon: faList},
+    {label: 'Cart', route: '/cart', isSelected: false, showRoute: true, icon: faShoppingCart},
   ]
 
   constructor(private helperService: HelperService, private route: Router, 
@@ -39,17 +55,33 @@ export class AppComponent implements OnInit{
       }
       const currentPath = this.location.path();
       if(currentPath === '') {
-        console.log('path: ', currentPath);
         this.routes[0].isSelected = true;
-      } else if(currentPath === '/summary') {
-        console.log('path: ', currentPath);
+      } else if(currentPath === '/wings') {
         this.routes[1].isSelected = true;
-      } else if(currentPath === '/register') {
-        console.log('path: ', currentPath);
+      } else if(currentPath === '/summary') {
         this.routes[2].isSelected = true;
+      } else if(currentPath === '/cart') {
+        this.routes[3].isSelected = true;
       }
       //TODO: need to handle nzSelected when programmatically routed
     });
+    //when refresh, query total item in cart and display it
+    this.retrieveTotalItemInCartCount();
+    //below is a listener when there is an item get added to cart only but not when page refresh
+    this.store.select('cartReducer').subscribe(response=>{
+      this.totalItemInCart = response.totalItemInCart;
+    });
+  }
+
+  retrieveTotalItemInCartCount() {
+    const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
+    const cartItemCountRequest: RetrieveCartRequest = {
+      userId: user.id,
+      email: user.email
+    }
+    this.store.dispatch(
+      new CartActions.RetrieveTotalItemCountInCartTask(cartItemCountRequest)
+    );
   }
 
   logout() {
