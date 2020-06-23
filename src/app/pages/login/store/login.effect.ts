@@ -15,7 +15,7 @@ export class LoginEffects {
     constructor(private actions$: Actions, private http: HttpClient, private helperService: HelperService){}
 
     @Effect() // this is for ngrx effect to pick up this effect handler
-    welcomeMessage = this.actions$.pipe(
+    loginEffect = this.actions$.pipe(
         // only trigger this effects if action is of type START_LOGIN_USER
         ofType(LoginActions.START_LOGIN_USER), // can add multiple action here inside the ofType
         switchMap((loginUserData: LoginActions.StartLoginUserTask) => {
