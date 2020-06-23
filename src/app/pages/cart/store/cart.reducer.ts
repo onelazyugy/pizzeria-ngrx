@@ -6,6 +6,7 @@ import { RetrieveCartResponse } from 'src/app/model/cart.model';
 export interface State {
     addWingToOrderResponse: AddWingToOrderResponse;
     retrieveCartResponse: RetrieveCartResponse;
+    totalItemInCart: number;
 }
 
 const initlaTasks: State = {
@@ -27,8 +28,10 @@ const initlaTasks: State = {
             statusCd: 0
         },
         success: false,
-        cart: null
-    }
+        cart: null,
+        totalItemInCart: 0
+    },
+    totalItemInCart: 0
 };
 
 export function cartReducer(state: State = initlaTasks, action: CartActions.CartTaskActions) {
@@ -46,14 +49,16 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
             return {
                 ...state,
                 addWingToOrderResponse: {...state.addWingToOrderResponse},
-                retrieveCartResponse: {...retrieveCartResponse}
+                retrieveCartResponse: {...retrieveCartResponse},
+                totalItemInCart: retrieveCartResponse.totalItemInCart
             }
         case CartActions.CART_ACTION_SUCCESS:  
             const addWingToOrderResponse = action.payload;
             return {
                 ...state,
                 addWingToOrderResponse: {...addWingToOrderResponse},
-                retrieveCartResponse: {...state.retrieveCartResponse}
+                retrieveCartResponse: {...state.retrieveCartResponse},
+                totalItemInCart: addWingToOrderResponse.totalItemInCart
             }
         case CartActions.CART_ACTION_FAILURE:  
             const status: Status = action.payload;
@@ -73,9 +78,11 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
                     message: status.message,
                     transactionId: '',
                     statusCd: status.statusCd
+                    
                 },
                 success: false,
-                cart: null
+                cart: null,
+                totalItemInCart: 0
             }
             return {
                 ...state,

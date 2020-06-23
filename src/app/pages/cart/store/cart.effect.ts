@@ -69,6 +69,32 @@ export class CartEffects {
         })
     )
 
+    @Effect()
+    retrieveTotalItemInCartCountEffect = this.actions$.pipe(
+        ofType(CartActions.RETRIEVE_TOTAL_ITEM_COUNT_IN_CART),
+        switchMap((requestPayload: CartActions.RetrieveTotalItemCountInCartTask)=>{
+            return this.http.post<any>(environment.retrieveTotalItemInCartUrl, requestPayload.payload)
+            .pipe(
+                map((response: RetrieveCartResponse)=>{
+                    return this.retrieveTotalItemInCartCountSuccess(response);
+                }),
+                catchError(err => {
+                    if(err.status === 403) {
+                        const status: Status = {
+                            message: 'session expired please log back in',
+                            timestamp: '',
+                            transactionId: '',
+                            statusCd: 403
+                        }
+                        return this.retrieveTotalItemInCartCountFailure(status);
+                    }
+                    const status: Status = err.error.status;
+                    return this.retrieveTotalItemInCartCountFailure(status);
+                })
+            )
+        })
+    )
+
     addToCartSuccess(response: AddWingToOrderResponse) {
         if(response.success) {           
             return new CartActions.CartActionSuccess(response);
@@ -105,6 +131,26 @@ export class CartEffects {
     }
 
     retrieveCartFailure(status: Status) {
+        console.error(status.message);
+        return of(new CartActions.CartActionFailure(status)); 
+    }
+
+    retrieveTotalItemInCartCountSuccess(response: RetrieveCartResponse) {
+        if(response.success) {
+            return new CartActions.RetrieveAllItemFromCartTaskSuccess(response);
+        } else {
+            console.error(response.status.message);
+            const status: Status = {
+                message: response.status.message,
+                statusCd: response.status.statusCd,
+                transactionId: response.status.transactionId,
+                timestamp: response.status.timestamp
+            }
+            return of(new CartActions.CartActionFailure(status));
+        }
+    }
+
+    retrieveTotalItemInCartCountFailure(status: Status) {
         console.error(status.message);
         return of(new CartActions.CartActionFailure(status)); 
     }

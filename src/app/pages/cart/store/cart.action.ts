@@ -7,7 +7,7 @@ export const CART_ACTION_SUCCESS = '[Cart] Add or Remove Item From Cart Success'
 export const CART_ACTION_FAILURE = '[Cart] Add or Remove Item From Cart Failure'
 export const RETRIEVE_ALL_ITEM_FROM_CART = '[Cart] Retrieve All Item From Cart'
 export const RETRIEVE_ALL_ITEM_FROM_CART_SUCCESS = '[Cart] Retrieve All Item From Cart Success';
-
+export const RETRIEVE_TOTAL_ITEM_COUNT_IN_CART = '[Cart] Retrieve Total Item Count In Cart';
 export class AddItemToCartTask implements Action {
     readonly type = ADD_ITEM_TO_CART;
     constructor(public payload: AddWingToOrderRequest){}
@@ -18,6 +18,10 @@ export class RemoveItemFromCartTask implements Action {
 }
 export class RetrieveAllItemFromCartTask implements Action {
     readonly type = RETRIEVE_ALL_ITEM_FROM_CART;
+    constructor(public payload: RetrieveCartRequest){}
+}
+export class RetrieveTotalItemCountInCartTask implements Action {
+    readonly type = RETRIEVE_TOTAL_ITEM_COUNT_IN_CART;
     constructor(public payload: RetrieveCartRequest){}
 }
 export class CartActionSuccess implements Action {
@@ -35,4 +39,4 @@ export class RetrieveAllItemFromCartTaskSuccess implements Action {
 
 export type CartTaskActions = AddItemToCartTask | RemoveItemFromCartTask | 
 CartActionSuccess | CartActionFailure | 
-RetrieveAllItemFromCartTask | RetrieveAllItemFromCartTaskSuccess;
+RetrieveAllItemFromCartTask | RetrieveAllItemFromCartTaskSuccess | RetrieveTotalItemCountInCartTask;

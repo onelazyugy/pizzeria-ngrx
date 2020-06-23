@@ -108,10 +108,4 @@ export class WingComponent implements OnInit {
       }
     });
   }
-
-  test() {
-    this.http.get<any>('http://localhost:8282/pizzeria/api/v1/user/topsecret').subscribe(res=>{
-      console.log(res);
-    });
-  }
 }

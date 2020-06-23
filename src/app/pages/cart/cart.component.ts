@@ -12,6 +12,8 @@ import { HelperService } from 'src/app/service/pizzeria-helper.service';
 })
 export class CartComponent implements OnInit {
   cart: Cart;
+  message: string;
+
   constructor(private store: Store<fromApp.AppState>, private helperService: HelperService) { }
 
   ngOnInit(): void {
@@ -25,20 +27,17 @@ export class CartComponent implements OnInit {
     );
     this.store.select('cartReducer').subscribe(response => {
       if(response.retrieveCartResponse.status.statusCd === 403) {
-        console.log('403: ', response);
+        this.message = response.retrieveCartResponse.status.message;
       } else if(response.retrieveCartResponse.status.statusCd === 400) {
-        console.log('400: ', response);
+        this.message = response.retrieveCartResponse.status.message;
       } else if(response.retrieveCartResponse.status.statusCd === 200) {
-        console.log('200: ', response);
         this.cart = response.retrieveCartResponse.cart;
+        if(response.retrieveCartResponse.totalItemInCart === 0) {
+          this.message = response.retrieveCartResponse.status.message;
+        }
+      } else {
+        this.message = response.retrieveCartResponse.status.message;
       }
     });
   }
-
-  retrieveItem() {
-    // this.store.dispatch(
-    //   new CartActions.RetrieveAllItemFromCartTask({})
-    // );
-  }
-
 }

@@ -1,23 +1,5 @@
-<!-- <h1 fxLayoutAlign="center">CART</h1>
-<div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="20px">
-    <div *ngIf="cart !== undefined">
-        <div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="20px">
-            <div *ngFor="let wing of cart.wings">
-                <div class="wing-box" fxFlex="4 4 calc(12em + 20px)">
-                    <nz-card [nzCover]="wingimage">
-                        <nz-card-meta nzTitle="{{wing.name}}" nzDescription="{{wing.desc}} starting at {{wing.selectedPrice | currency}}"></nz-card-meta>
-                    </nz-card>
-                    <ng-template #wingimage>
-                        <img alt="{{wing.name}}" src="{{wing.img}}"/>
-                    </ng-template>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-
 <h1 fxLayoutAlign="center">CART</h1>
+<div fxLayoutAlign="center">{{message}}</div>
 <div *ngIf="cart !== undefined" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="20px">
     <div *ngFor="let wing of cart.wings">
         <div class="wing-box" fxFlex="4 4 calc(12em + 20px)">

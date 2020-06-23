@@ -16,6 +16,7 @@ export class RetrieveCartResponse {
     status: Status;
     success: boolean;
     cart: Cart;
+    totalItemInCart: number;
 }
 
 export class Cart {

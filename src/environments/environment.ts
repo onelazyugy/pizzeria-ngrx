@@ -8,7 +8,8 @@ export const environment = {
   loginUrl: 'http://localhost:8282/pizzeria/api/v1/user/login',
   addWingToCartUrl: 'http://localhost:8282/pizzeria/api/v1/cart/add/wing',
   removeItemFromCartUrl: 'http://localhost:8282/pizzeria/api/v1/cart/remove',
-  retrieveCartUrl: 'http://localhost:8282/pizzeria/api/v1/cart/retrieve'
+  retrieveCartUrl: 'http://localhost:8282/pizzeria/api/v1/cart/retrieve',
+  retrieveTotalItemInCartUrl: 'http://localhost:8282/pizzeria/api/v1/cart/retrieve?isGetCountOnly=true'
 };
 
 /*

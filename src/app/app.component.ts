@@ -4,10 +4,12 @@ import { Router } from '@angular/router';
 import * as fromApp from './store/app.reducer';
 import { Store } from '@ngrx/store';
 import * as LoginActions from './pages/login/store/login.action';
+import * as CartActions from './pages/cart/store/cart.action';
 import { LoginStatus } from './model/login-user-request.model';
 import { Location } from "@angular/common";
 import { ResetStoreTask } from '../app/pages/pizza/checkout/start/store/start.action';
 import { faSignOutAlt, faSignInAlt, faPizzaSlice, faDrumstickBite, faList, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { RetrieveCartRequest } from './model/cart.model';
 
 @Component({
   selector: 'app-root',
@@ -63,12 +65,23 @@ export class AppComponent implements OnInit{
       }
       //TODO: need to handle nzSelected when programmatically routed
     });
-    //TOOD: when refresh, need to query total item in cart and display it
-    
+    //when refresh, query total item in cart and display it
+    this.retrieveTotalItemInCartCount();
     //below is a listener when there is an item get added to cart only but not when page refresh
     this.store.select('cartReducer').subscribe(response=>{
-      this.totalItemInCart = response.addWingToOrderResponse.totalItemInCart;
+      this.totalItemInCart = response.totalItemInCart;
     });
+  }
+
+  retrieveTotalItemInCartCount() {
+    const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
+    const cartItemCountRequest: RetrieveCartRequest = {
+      userId: user.id,
+      email: user.email
+    }
+    this.store.dispatch(
+      new CartActions.RetrieveTotalItemCountInCartTask(cartItemCountRequest)
+    );
   }
 
   logout() {
