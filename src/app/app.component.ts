@@ -74,14 +74,16 @@ export class AppComponent implements OnInit{
   }
 
   retrieveTotalItemInCartCount() {
-    const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
-    const cartItemCountRequest: RetrieveCartRequest = {
-      userId: user.id,
-      email: user.email
+    if(this.helperService.getObjectFromLocalStorage() !== undefined) {
+      const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
+      const cartItemCountRequest: RetrieveCartRequest = {
+        userId: user.id,
+        email: user.email
+      }
+      this.store.dispatch(
+        new CartActions.RetrieveTotalItemCountInCartTask(cartItemCountRequest)
+      );
     }
-    this.store.dispatch(
-      new CartActions.RetrieveTotalItemCountInCartTask(cartItemCountRequest)
-    );
   }
 
   logout() {

@@ -31,6 +31,7 @@
                   <a [routerLink]="[route.route]"><fa-icon [icon]="route.icon"></fa-icon> {{route.label}}</a>
                   <nz-badge style="margin-bottom: 20px;"
                     [nzCount]="totalItemInCart"
+                    [nzOverflowCount]="10"
                     [nzStyle]="{ backgroundColor: 'green', color: '#fff', boxShadow: '0 0 0 1px #d9d9d9 inset', marginTop: '5px' }"
                   ></nz-badge>
                 </li>

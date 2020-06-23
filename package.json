@@ -3,12 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
+    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "heroku-postbuild": "ng build --configuration=production"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -27,11 +26,9 @@
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@ngrx/effects": "^9.2.0",
     "@ngrx/store": "^9.2.0",
-    "express": "^4.17.1",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.15",
     "ng-zorro-antd": "^9.2.1",
-    "path": "^0.12.7",
     "rxjs": "~6.5.5",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
@@ -57,9 +54,5 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "^3.6.5"
-  },
-  "engines": {
-    "node": "~13.7.0",
-    "npm": "~6.4.1"
   }
 }

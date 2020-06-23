@@ -4,6 +4,8 @@ import { Store } from '@ngrx/store';
 import * as CartActions from '../cart/store/cart.action';
 import { RetrieveCartRequest, Cart } from 'src/app/model/cart.model';
 import { HelperService } from 'src/app/service/pizzeria-helper.service';
+import { faTrash, faPen } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-cart',
@@ -13,6 +15,10 @@ import { HelperService } from 'src/app/service/pizzeria-helper.service';
 export class CartComponent implements OnInit {
   cart: Cart;
   message: string;
+
+  //icons
+  faTrash = faTrash;
+  faPen = faPen;
 
   constructor(private store: Store<fromApp.AppState>, private helperService: HelperService) { }
 

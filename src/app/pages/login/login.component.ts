@@ -4,8 +4,11 @@ import { Router } from '@angular/router';
 import * as fromApp from '../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import * as LoginActions from './store/login.action';
+import * as CartActions from '../cart/store/cart.action';
 import { LoginUserRequest } from 'src/app/model/login-user-request.model';
 import { Subscription } from 'rxjs';
+import { HelperService } from 'src/app/service/pizzeria-helper.service';
+import { RetrieveCartRequest } from 'src/app/model/cart.model';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +21,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   isLoggingIn: boolean = false;
   status: string = '';
 
-  constructor(private store: Store<fromApp.AppState>, private fb: FormBuilder, private route: Router) {}
+  constructor(private store: Store<fromApp.AppState>, private fb: FormBuilder, private route: Router, private helperService: HelperService) {}
 
   ngOnInit(): void {
     this.userLoginForm = this.fb.group({
@@ -35,12 +38,27 @@ export class LoginComponent implements OnInit, OnDestroy {
           setTimeout(() => {
             //redirect to login page after 1 second to indicate register success
             this.route.navigate(['/']);
-          }, 1000);
+            //let fetch the cart item count
+            this.retrieveTotalItemInCartCount();
+          }, 500);
         } else if(!response.loginStatus.isLoginSuccess) {
           this.status = 'login fail';
         }
       }
     });
+  }
+
+  retrieveTotalItemInCartCount() {
+    if(this.helperService.getObjectFromLocalStorage() !== undefined) {
+      const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
+      const cartItemCountRequest: RetrieveCartRequest = {
+        userId: user.id,
+        email: user.email
+      }
+      this.store.dispatch(
+        new CartActions.RetrieveTotalItemCountInCartTask(cartItemCountRequest)
+      );
+    }
   }
 
   submitForm(): void {

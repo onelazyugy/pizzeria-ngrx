@@ -4,11 +4,14 @@
     <div *ngFor="let wing of cart.wings">
         <div class="wing-box" fxFlex="4 4 calc(12em + 20px)">
             <nz-card [nzCover]="wingimage">
-                <nz-card-meta nzTitle="{{wing.name}}" nzDescription="{{wing.desc}} starting at {{wing.selectedPrice | currency}}"></nz-card-meta>
+                <nz-card-meta nzTitle="{{wing.name}}" nzDescription="{{wing.selectedQty}} wings at {{wing.selectedPrice | currency}}"></nz-card-meta>
             </nz-card>
             <ng-template #wingimage>
                 <img alt="{{wing.name}}" src="{{wing.img}}"/>
             </ng-template>
+            <div fxLayoutAlign="center" class="ant-card-actions">
+                <span style="font-size: 20px;" nzTooltipTitle="Edit" nzTooltipPlacement="top" nz-tooltip><fa-icon [icon]="faPen"></fa-icon></span>&nbsp;&nbsp;&nbsp;<span style="color: red; font-size: 20px;" nzTooltipTitle="Remove" nzTooltipPlacement="top" nz-tooltip><fa-icon [icon]="faTrash"></fa-icon></span>
+            </div>
         </div>
     </div>
 </div>            
