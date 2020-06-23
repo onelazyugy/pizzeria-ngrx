@@ -64,6 +64,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
     - the above has 'start' and 'postinstall' properties 
     - ```"engines": {"node": "~8.15.1","npm": "~6.4.1"}```
     - *note: node version must be capatible with angular
+- note: ```"heroku-postbuild": "ng build --configuration=production"``` will build for prod using `envrionment.prod.ts`
 - final package.json file might look like below:
 ```{
   "name": "pizzeria",
@@ -75,7 +76,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ng build --prod"
+    "heroku-postbuild": "ng build --configuration=production"
   },
   "private": true,
   "dependencies": {
