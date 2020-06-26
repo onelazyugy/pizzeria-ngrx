@@ -16,13 +16,31 @@ export class CartComponent implements OnInit {
   cart: Cart;
   message: string;
 
+  selectedValue = null;
+  isRemovingItemFromCart = false;
+
   //icons
   faTrash = faTrash;
   faPen = faPen;
   faQuestionCircle = faQuestionCircle;
 
-  isVisible = false;
+  isRemoveModalVisible = false;
+  isEditModalVisible = false;
   selectedWing: Wing;
+  isUdating = false;
+
+  qtyToPrices = [
+    {'qty': 6, 'price': 7.59},
+    {'qty': 12, 'price': 14.79},
+    {'qty': 18, 'price': 20.99},
+    {'qty': 24, 'price': 25.89},
+    {'qty': 30, 'price': 30.99},
+  ];
+
+  quanties = [6, 12, 18, 24, 30];
+  flavors = ['Honey BBQ', 'Lemon Pepper', 'Sweet and Sour'];
+  orderQtys = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
 
   constructor(private store: Store<fromApp.AppState>, private helperService: HelperService) { }
 
@@ -53,17 +71,36 @@ export class CartComponent implements OnInit {
   }
 
   remove(wing: Wing) {
-    this.isVisible = true;
+    this.isRemoveModalVisible = true;
     this.selectedWing = wing;
 
   }
 
-  handleOk(): void {
-    this.isVisible = false;
+  edit(wing: Wing) {
+    this.isEditModalVisible = true;
+    this.selectedWing = wing;
+  }
+
+  //remove item modal
+  handleRemoveModalOk(): void {
+    this.isRemoveModalVisible = false;
     //call /delete on cart
   }
 
-  handleCancel(): void {
-    this.isVisible = false;
+  handleRemoveModalCancel(): void {
+    this.isRemoveModalVisible = false;
+  }
+
+  //update modal
+  handleEditModalCancel(): void {
+    this.isEditModalVisible = false;
+  }
+
+  handleEditModalUpdate(): void {
+    this.isEditModalVisible = false;
+  }
+
+  qtyDropdownSelect(qty: number) {
+    console.log(qty);
   }
 }

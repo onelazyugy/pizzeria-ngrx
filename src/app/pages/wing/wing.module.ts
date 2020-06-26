@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [WingComponent],
   imports: [
-    CommonModule,
     AntDesignCommonModule,
     ShareModule,
     CommonModule,
