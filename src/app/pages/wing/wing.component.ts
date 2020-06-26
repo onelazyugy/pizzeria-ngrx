@@ -17,11 +17,14 @@ import { faCheck, faExclamation } from '@fortawesome/free-solid-svg-icons';
 export class WingComponent implements OnInit {
   wings: Wing[] = [];
   qtyToPriceMap: any[] = [];
+  currentSelectedWingId: number;
 
   isAddingItemToCart: boolean = false;
   isError: boolean = false;
   showStatus: boolean = false;
+  showPriceAndQty: boolean = false;
   message: string = '';
+
   //icon 
   faCheck = faCheck;
   faExclamation = faExclamation;
@@ -44,20 +47,57 @@ export class WingComponent implements OnInit {
     });
 
     this.store.select('cartReducer').subscribe(response => {
+      this.isAddingItemToCart = false;
       if(response.addWingToOrderResponse.status.statusCd === 403) {
+        this.wings.map(wing=>{
+          if(wing.id == this.currentSelectedWingId) {
+            wing.isCurrentlySelected = true;
+          } else {
+            wing.isCurrentlySelected = false;
+          }
+          this.showPriceAndQty = false;
+          wing.selectedFlavor = null;
+          wing.selectedPrice = null;
+          wing.selectedQty = null;
+
+        })
         this.isError = true;
         this.showStatus = true;
         this.message = response.addWingToOrderResponse.status.message;
       } else if(response.addWingToOrderResponse.status.statusCd === 400) {
+        this.wings.map(wing=>{
+          if(wing.id == this.currentSelectedWingId) {
+            wing.isCurrentlySelected = true;
+          } else {
+            wing.isCurrentlySelected = false;
+          }
+          this.showPriceAndQty = false;
+          wing.selectedFlavor = null;
+          wing.selectedPrice = null;
+          wing.selectedQty = null;
+        })
         this.showStatus = true;
         this.isError = true;
         this.message = response.addWingToOrderResponse.status.message;
       } else if(response.addWingToOrderResponse.status.statusCd === 200) {
+        this.wings.map(wing=>{
+          if(wing.id == this.currentSelectedWingId) {
+            wing.isCurrentlySelected = true;
+          } else {
+            wing.isCurrentlySelected = false;
+          }
+          wing.selectedFlavor = null;
+          wing.selectedPrice = null;
+          wing.selectedQty = null;
+          this.showPriceAndQty = false;
+          setTimeout(() => {
+            this.showStatus = false;
+          }, 2000);
+        })
         this.showStatus = true;
         this.isError = false;
         this.message = response.addWingToOrderResponse.status.message;
       }
-      this.isAddingItemToCart = false;
     });
   }
 
@@ -75,37 +115,41 @@ export class WingComponent implements OnInit {
       wingId: selectedWing.id,
       hasFlavor: selectedWing.hasFlavor
     }
-
+    this.currentSelectedWingId = selectedWing.id;
     this.store.dispatch(
       new CartActions.AddItemToCartTask(wing)
     );
   }
 
   qtyDropdownSelect(qty: number, id: number) {
-    this.showStatus = false;
-    const qtyToPrice = _.filter(this.qtyToPriceMap, ['qty', +qty]);//should always be one
-    this.wings.map(wing=>{
-      if(wing.id === id) {
-        if(qtyToPrice[0] !== undefined) {
-          wing.selectedPrice = qtyToPrice[0].price;
+    if(qty !== null) {
+      this.showPriceAndQty = true;
+      this.currentSelectedWingId = id;
+      this.showStatus = false;
+      const qtyToPrice = _.filter(this.qtyToPriceMap, ['qty', +qty]);//should always be one
+      this.wings.map(wing=>{
+        if(wing.id === id) {
+          if(qtyToPrice[0] !== undefined) {
+            wing.selectedPrice = qtyToPrice[0].price;
+          }
         }
-      }
-    });
-
-    //let dispatch an action when update qty
-    let selectedWing: Wing[] = _.filter(this.wings, ['id', id]);
-    selectedWing[0].isCurrentlySelected = true;
-    this.store.dispatch(
-      new WingActions.QuantitySelectedAction(selectedWing[0])
-    );
+      });
+    } else {
+      this.showPriceAndQty = false;
+      this.showStatus = false;
+    }
   }
 
   flavorDropdownSelect(flavor: string, id: number) {
-    this.showStatus = false;
-    this.wings.map(wing=>{
-      if(wing.id === id) {
-        wing.selectedFlavor = flavor;
-      }
-    });
+    if(flavor !== null) {
+      this.showStatus = false;
+      this.wings.map(wing=>{
+        if(wing.id === id) {
+          wing.selectedFlavor = flavor;
+        }
+      });
+    } else {
+      this.showStatus = false;
+    }
   }
 }
