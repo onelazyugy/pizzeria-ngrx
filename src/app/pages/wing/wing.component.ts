@@ -55,6 +55,11 @@ export class WingComponent implements OnInit {
           } else {
             wing.isCurrentlySelected = false;
           }
+          this.showPriceAndQty = false;
+          wing.selectedFlavor = null;
+          wing.selectedPrice = null;
+          wing.selectedQty = null;
+
         })
         this.isError = true;
         this.showStatus = true;
@@ -66,6 +71,10 @@ export class WingComponent implements OnInit {
           } else {
             wing.isCurrentlySelected = false;
           }
+          this.showPriceAndQty = false;
+          wing.selectedFlavor = null;
+          wing.selectedPrice = null;
+          wing.selectedQty = null;
         })
         this.showStatus = true;
         this.isError = true;
@@ -77,6 +86,13 @@ export class WingComponent implements OnInit {
           } else {
             wing.isCurrentlySelected = false;
           }
+          wing.selectedFlavor = null;
+          wing.selectedPrice = null;
+          wing.selectedQty = null;
+          this.showPriceAndQty = false;
+          setTimeout(() => {
+            this.showStatus = false;
+          }, 2000);
         })
         this.showStatus = true;
         this.isError = false;
@@ -127,14 +143,12 @@ export class WingComponent implements OnInit {
   flavorDropdownSelect(flavor: string, id: number) {
     if(flavor !== null) {
       this.showStatus = false;
-      this.showPriceAndQty = true;
       this.wings.map(wing=>{
         if(wing.id === id) {
           wing.selectedFlavor = flavor;
         }
       });
     } else {
-      this.showPriceAndQty = false;
       this.showStatus = false;
     }
   }
