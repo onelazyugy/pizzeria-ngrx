@@ -12,13 +12,51 @@
                 <img alt="{{wing.name}}" src="{{wing.img}}"/>
             </ng-template>
             <div fxLayoutAlign="center" class="ant-card-actions">
-                <span style="font-size: 20px;" nzTooltipTitle="Edit" nzTooltipPlacement="top" nz-tooltip><fa-icon [icon]="faPen"></fa-icon></span>&nbsp;&nbsp;&nbsp;<span (click)="remove(wing)" style="color: red; font-size: 20px;" nzTooltipTitle="Remove" nzTooltipPlacement="top" nz-tooltip><fa-icon [icon]="faTrash"></fa-icon></span>
+                <span (click)="edit(wing)" style="font-size: 20px;" nzTooltipTitle="Edit" nzTooltipPlacement="top" nz-tooltip><fa-icon [icon]="faPen"></fa-icon></span>&nbsp;&nbsp;&nbsp;
+                <span (click)="remove(wing)" style="color: red; font-size: 20px;" nzTooltipTitle="Remove" nzTooltipPlacement="top" nz-tooltip><fa-icon [icon]="faTrash"></fa-icon></span>
             </div>
         </div>
     </div>
 </div>            
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Confirmation" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+<nz-modal [(nzVisible)]="isRemoveModalVisible" nzTitle="Confirmation" (nzOnCancel)="handleRemoveModalCancel()" (nzOnOk)="handleRemoveModalOk()">
     <div *ngIf="selectedWing !== undefined">
         <p><fa-icon style="color: orange" [icon]="faQuestionCircle"></fa-icon> Are you sure you want to remove <i><b>{{selectedWing.name}}</b></i>?</p>
     </div>
+</nz-modal>
+<nz-modal [(nzVisible)]="isEditModalVisible" nzTitle="Update Order" (nzOnCancel)="handleEditModalCancel()">
+    <div *ngIf="selectedWing !== undefined">
+        <div fxLayoutAlign="center" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="5px">
+            <!-- <div style="border-style: solid;" fxLayout="column" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="10px"> -->
+            <div fxLayout="column" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="10px">
+                <div>
+                    <h3>{{selectedWing.name}}</h3>
+                </div>
+                <div>
+                    <!-- order qty -->
+                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="How Many Wing?" [(ngModel)]="selectedValue" (ngModelChange)="qtyDropdownSelect($event)">
+                        <nz-option *ngFor="let qty of quanties" nzLabel="{{qty}}" nzValue="{{qty}}"></nz-option>
+                    </nz-select>
+                </div>
+                <div>
+                    <!-- flavor -->
+                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="What Flavor?" [(ngModel)]="selectedValue">
+                        <nz-option *ngFor="let flavor of flavors" nzLabel="{{flavor}}" nzValue="{{flavor}}"></nz-option>
+                    </nz-select>
+                </div>
+                <div>
+                    <!-- qty -->
+                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="How many order?" [(ngModel)]="selectedValue">
+                        <nz-option *ngFor="let order of orderQtys" nzLabel="{{order}}" nzValue="{{order}}"></nz-option>
+                    </nz-select>
+                </div>
+            </div>
+            <!-- <div style="border-style: solid;"> -->
+            <div>
+                <img src="{{selectedWing.img}}">
+            </div>
+        </div>
+    </div>
+    <div *nzModalFooter>
+        <button style="width: 100%;" nz-button nzType="primary" (click)="handleEditModalUpdate()" [nzLoading]="isUdating">UPDATE</button>
+      </div>
 </nz-modal>
