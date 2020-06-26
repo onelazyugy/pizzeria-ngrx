@@ -107,14 +107,8 @@ export class WingComponent implements OnInit {
 
   qtyDropdownSelect(qty: number, id: number) {
     if(qty !== null) {
-      this.showPriceAndQty = true
-    }
-    // if(qty === null) {
-    //   this.showPriceAndQty = false;
-    // }
-    // if(qty !== null) {
-    //   this.showPriceAndQty = true
-    // } else {
+      this.showPriceAndQty = true;
+      this.currentSelectedWingId = id;
       this.showStatus = false;
       const qtyToPrice = _.filter(this.qtyToPriceMap, ['qty', +qty]);//should always be one
       this.wings.map(wing=>{
@@ -124,15 +118,24 @@ export class WingComponent implements OnInit {
           }
         }
       });
-    // }
+    } else {
+      this.showPriceAndQty = false;
+      this.showStatus = false;
+    }
   }
 
   flavorDropdownSelect(flavor: string, id: number) {
-    this.showStatus = false;
-    this.wings.map(wing=>{
-      if(wing.id === id) {
-        wing.selectedFlavor = flavor;
-      }
-    });
+    if(flavor !== null) {
+      this.showStatus = false;
+      this.showPriceAndQty = true;
+      this.wings.map(wing=>{
+        if(wing.id === id) {
+          wing.selectedFlavor = flavor;
+        }
+      });
+    } else {
+      this.showPriceAndQty = false;
+      this.showStatus = false;
+    }
   }
 }

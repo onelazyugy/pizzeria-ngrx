@@ -25,12 +25,11 @@
                 <ng-template #elseBlock>
                     <button [nzLoading]="isAddingItemToCart" style="width: 100%;" nz-button nzType="primary" [disabled]="wing.selectedQty === null" (click)="addToOrder(wing)">ADD TO ORDER</button>
                 </ng-template>
-                <!-- <div *ngIf="showPriceAndQty" class="ant-card-actions">
-                    <div fxLayoutAlign="center">id: {{wing.currentSelectedWingId}} {{wing.selectedQty}} pieces at {{wing.selectedPrice | currency}}</div>  
-                </div> -->
-                <div class="ant-card-actions" *ngIf="wing.isCurrentlySelected && !isAddingItemToCart">
+                <div *ngIf="showPriceAndQty && currentSelectedWingId===wing.id" class="ant-card-actions">
                     <hr />
-                    <div fxLayoutAlign="center">{{wing.selectedQty}} pieces at {{wing.selectedPrice | currency}}</div>  
+                    <div fxLayoutAlign="center">{{wing.selectedQty}} pieces at {{wing.selectedPrice | currency}}</div>
+                </div>
+                <div class="ant-card-actions" *ngIf="wing.isCurrentlySelected && !isAddingItemToCart">
                     <div *ngIf="showStatus">
                         <hr />
                         <div fxLayoutAlign="center">
