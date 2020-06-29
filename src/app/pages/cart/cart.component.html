@@ -1,8 +1,8 @@
 <h1 fxLayoutAlign="center">CART</h1>
 <div fxLayoutAlign="center">{{message}}</div>
-<div *ngIf="cart !== undefined" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="20px">
+<div *ngIf="cart !== undefined" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayoutGap="10px">
     <div *ngFor="let wing of cart.wings">
-        <div class="wing-box" fxFlex="4 4 calc(12em + 20px)">
+        <div class="wing-box" fxFlex="4 4 calc(12em + 20px)" style="margin-bottom: 5px;">
             <nz-card [nzCover]="wingimage">
                 <nz-card-meta nzTitle="{{wing.name}}" nzDescription="{{wing.selectedQty}} wings at {{wing.selectedPrice | currency}}"></nz-card-meta>
                 <nz-card-meta nzDescription="{{wing.selectedFlavor}}"></nz-card-meta>
@@ -17,13 +17,29 @@
             </div>
         </div>
     </div>
-</div>            
-<nz-modal [(nzVisible)]="isRemoveModalVisible" nzTitle="Confirmation" (nzOnCancel)="handleRemoveModalCancel()" (nzOnOk)="handleRemoveModalOk()">
+    <div class="wing-box" fxLayout="column" style="width: 100%;">
+        <div>
+            <span>Subtotal</span> <span style="float: right;">{{cartSummary.subTotal | currency}}</span>
+        </div>
+        <div>
+            <span>Tax</span> <span style="float: right;">{{cartSummary.tax | currency}}</span>
+        </div>
+        <div>
+            <span>Total</span> <span style="float: right;">{{cartSummary.total | currency}}</span>
+        </div>
+        <button style="width: 100%;" nz-button nzType="primary" (click)="checkout()">CHECKOUT</button>
+    </div>
+</div>  
+
+<nz-modal [(nzVisible)]="isRemoveModalVisible" nzTitle="Confirmation" nzMaskClosable="false" (nzOnCancel)="handleRemoveModalCancel()">
     <div *ngIf="selectedWing !== undefined">
         <p><fa-icon style="color: orange" [icon]="faQuestionCircle"></fa-icon> Are you sure you want to remove <i><b>{{selectedWing.name}}</b></i>?</p>
     </div>
+    <div *nzModalFooter>
+        <button style="width: 100%;" nz-button nzType="primary" (click)="handleRemoveModalOk()" [nzLoading]="isRemoving" nzDanger>REMOVE</button>
+    </div>
 </nz-modal>
-<nz-modal [(nzVisible)]="isEditModalVisible" nzTitle="Update Order" (nzOnCancel)="handleEditModalCancel()">
+<nz-modal [(nzVisible)]="isEditModalVisible" nzMaskClosable="false" nzTitle="Update Order" (nzOnCancel)="handleEditModalCancel()">
     <div *ngIf="selectedWing !== undefined">
         <div fxLayoutAlign="center" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="5px">
             <!-- <div style="border-style: solid;" fxLayout="column" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="10px"> -->
@@ -57,6 +73,6 @@
         </div>
     </div>
     <div *nzModalFooter>
-        <button style="width: 100%;" nz-button nzType="primary" (click)="handleEditModalUpdate()" [nzLoading]="isUdating">UPDATE</button>
-      </div>
+        <button style="width: 100%;" nz-button nzType="primary" (click)="handleEditModalUpdate()" [nzLoading]="isUpdating">UPDATE</button>
+    </div>
 </nz-modal>
