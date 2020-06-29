@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as fromApp from '../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import * as CartActions from '../cart/store/cart.action';
-import { RetrieveCartRequest, Cart } from 'src/app/model/cart.model';
+import { RetrieveCartRequest, Cart, CartSummary } from 'src/app/model/cart.model';
 import { HelperService } from 'src/app/service/pizzeria-helper.service';
 import { faTrash, faPen, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { Wing } from 'src/app/model/wing.model';
@@ -14,6 +14,7 @@ import { Wing } from 'src/app/model/wing.model';
 })
 export class CartComponent implements OnInit {
   cart: Cart;
+  cartSummary: CartSummary;
   message: string;
 
   selectedValue = null;
@@ -27,7 +28,8 @@ export class CartComponent implements OnInit {
   isRemoveModalVisible = false;
   isEditModalVisible = false;
   selectedWing: Wing;
-  isUdating = false;
+  isRemoving = false;
+  isUpdating = false;
 
   qtyToPrices = [
     {'qty': 6, 'price': 7.59},
@@ -41,6 +43,7 @@ export class CartComponent implements OnInit {
   flavors = ['Honey BBQ', 'Lemon Pepper', 'Sweet and Sour'];
   orderQtys = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+  tests = ['testing', 'testing', 'testing', 'testing', 'testing','testing', 'testing', 'testing', 'testing', 'testing', 'testing'];
 
   constructor(private store: Store<fromApp.AppState>, private helperService: HelperService) { }
 
@@ -60,6 +63,7 @@ export class CartComponent implements OnInit {
         this.message = response.retrieveCartResponse.status.message;
       } else if(response.retrieveCartResponse.status.statusCd === 200) {
         this.cart = response.retrieveCartResponse.cart;
+        this.cartSummary = response.retrieveCartResponse.cartSummary;
         this.message = '';
         if(response.retrieveCartResponse.totalItemInCart === 0) {
           this.message = response.retrieveCartResponse.status.message;
@@ -102,5 +106,9 @@ export class CartComponent implements OnInit {
 
   qtyDropdownSelect(qty: number) {
     console.log(qty);
+  }
+
+  checkout() {
+    //go to checkout page
   }
 }

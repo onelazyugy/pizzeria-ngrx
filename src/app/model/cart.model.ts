@@ -17,10 +17,17 @@ export class RetrieveCartResponse {
     success: boolean;
     cart: Cart;
     totalItemInCart: number;
+    cartSummary: CartSummary;
 }
 
 export class Cart {
     id: number;
     userId: number;
     wings: Wing[];
+}
+
+export class CartSummary {
+    subTotal: number;
+    total: number;
+    tax: number;
 }

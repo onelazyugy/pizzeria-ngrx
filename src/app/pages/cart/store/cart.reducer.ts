@@ -1,7 +1,7 @@
 import * as CartActions from './cart.action';
 import _ from 'lodash';
 import { AddWingToOrderResponse, Status } from 'src/app/model/wing.model';
-import { RetrieveCartResponse } from 'src/app/model/cart.model';
+import { RetrieveCartResponse, CartSummary } from 'src/app/model/cart.model';
 
 export interface State {
     addWingToOrderResponse: AddWingToOrderResponse;
@@ -18,7 +18,7 @@ const initlaTasks: State = {
             statusCd: 0
         },
         success: false,
-        totalItemInCart: 0,
+        totalItemInCart: 0
     },
     retrieveCartResponse: {
             status: {
@@ -29,9 +29,10 @@ const initlaTasks: State = {
         },
         success: false,
         cart: null,
-        totalItemInCart: 0
+        totalItemInCart: 0,
+        cartSummary: null
     },
-    totalItemInCart: 0
+    totalItemInCart: 0,
 };
 
 export function cartReducer(state: State = initlaTasks, action: CartActions.CartTaskActions) {
@@ -82,7 +83,8 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
                 },
                 success: false,
                 cart: null,
-                totalItemInCart: 0
+                totalItemInCart: 0,
+                cartSummary: null
             }
             return {
                 ...state,
