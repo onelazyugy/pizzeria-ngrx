@@ -18,6 +18,7 @@ export class RetrieveCartResponse {
     cart: Cart;
     totalItemInCart: number;
     cartSummary: CartSummary;
+    isShowMessage: boolean;
 }
 
 export class Cart {
@@ -30,4 +31,18 @@ export class CartSummary {
     subTotal: number;
     total: number;
     tax: number;
+}
+
+export class RemoveItemFromCartRequest {
+    enc: string;
+    type: string;
+    itemId: number;
+}
+
+export class RemoveItemFromCartResponse {
+    status: Status;
+    success: boolean;
+    cart: Cart;
+    totalItemInCart: number;
+    cartSummary: CartSummary;
 }

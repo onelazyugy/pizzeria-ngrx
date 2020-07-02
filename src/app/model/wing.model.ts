@@ -1,5 +1,5 @@
 export class Wing {
-    id: number;
+    wingId: number;
     name: string;
     desc: string;
     img: string;

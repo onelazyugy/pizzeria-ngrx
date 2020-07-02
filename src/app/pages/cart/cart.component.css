@@ -3,3 +3,10 @@
     border-width: thin;
     padding: 5px;
 }
+
+.remove-item-message-box {
+    border: 2px solid #C1C1C1;
+    border-width: thin;
+    padding: 5px;
+    margin-top: 10px;
+}

@@ -50,7 +50,7 @@ export class WingComponent implements OnInit {
       this.isAddingItemToCart = false;
       if(response.addWingToOrderResponse.status.statusCd === 403) {
         this.wings.map(wing=>{
-          if(wing.id == this.currentSelectedWingId) {
+          if(wing.wingId == this.currentSelectedWingId) {
             wing.isCurrentlySelected = true;
           } else {
             wing.isCurrentlySelected = false;
@@ -66,7 +66,7 @@ export class WingComponent implements OnInit {
         this.message = response.addWingToOrderResponse.status.message;
       } else if(response.addWingToOrderResponse.status.statusCd === 400) {
         this.wings.map(wing=>{
-          if(wing.id == this.currentSelectedWingId) {
+          if(wing.wingId == this.currentSelectedWingId) {
             wing.isCurrentlySelected = true;
           } else {
             wing.isCurrentlySelected = false;
@@ -81,7 +81,7 @@ export class WingComponent implements OnInit {
         this.message = response.addWingToOrderResponse.status.message;
       } else if(response.addWingToOrderResponse.status.statusCd === 200) {
         this.wings.map(wing=>{
-          if(wing.id == this.currentSelectedWingId) {
+          if(wing.wingId == this.currentSelectedWingId) {
             wing.isCurrentlySelected = true;
           } else {
             wing.isCurrentlySelected = false;
@@ -112,10 +112,10 @@ export class WingComponent implements OnInit {
       selectedQty: +selectedWing.selectedQty,
       selectedFlavor: selectedWing.selectedFlavor,
       userId: user.id,
-      wingId: selectedWing.id,
+      wingId: selectedWing.wingId,
       hasFlavor: selectedWing.hasFlavor
     }
-    this.currentSelectedWingId = selectedWing.id;
+    this.currentSelectedWingId = selectedWing.wingId;
     this.store.dispatch(
       new CartActions.AddItemToCartTask(wing)
     );
@@ -128,7 +128,7 @@ export class WingComponent implements OnInit {
       this.showStatus = false;
       const qtyToPrice = _.filter(this.qtyToPriceMap, ['qty', +qty]);//should always be one
       this.wings.map(wing=>{
-        if(wing.id === id) {
+        if(wing.wingId === id) {
           if(qtyToPrice[0] !== undefined) {
             wing.selectedPrice = qtyToPrice[0].price;
           }
@@ -144,7 +144,7 @@ export class WingComponent implements OnInit {
     if(flavor !== null) {
       this.showStatus = false;
       this.wings.map(wing=>{
-        if(wing.id === id) {
+        if(wing.wingId === id) {
           wing.selectedFlavor = flavor;
         }
       });

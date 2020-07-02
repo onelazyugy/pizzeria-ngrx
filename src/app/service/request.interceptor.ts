@@ -11,7 +11,6 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     constructor(private helperService: HelperService){}
     
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log('URL: ', req.url);
         //not yet login, nothing is in localstorage doesn't exist
         //TODO: need to handle when token expired
         if(this.helperService.getObjectFromLocalStorage() === undefined) {

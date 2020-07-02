@@ -43,7 +43,8 @@ export class LoginEffects {
                 token: response.token.accessToken,
                 id: response.id,
                 nickName: response.nickName,
-                email: response.email
+                email: response.email,
+                enc: response.enc
             }
             this.helperService.writeToLocalStorage(user);
             return new LoginActions.LoginUserTaskSuccess(loginSuccessStatus);

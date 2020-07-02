@@ -10,7 +10,7 @@ export interface State {
 const initlaTasks: State = {
     wings: [
         {
-          'id': 0, 'name': 'Tradition Wings', 'desc': 'Juicy and tasty', 'img': 'assets/wings/wing.jpg',
+          'wingId': 0, 'name': 'Tradition Wings', 'desc': 'Juicy and tasty', 'img': 'assets/wings/wing.jpg',
           quanties: [6, 12, 18, 24, 30],
           selectedQty: null,
           selectedPrice: null,
@@ -21,7 +21,7 @@ const initlaTasks: State = {
           hasFlavor: true
         },
         {
-          'id': 1, 'name': 'Boneless Wings', 'desc': 'Juicy and tasty', 'img': 'assets/wings/wing_boneless.jpg', 
+          'wingId': 1, 'name': 'Boneless Wings', 'desc': 'Juicy and tasty', 'img': 'assets/wings/wing_boneless.jpg', 
           quanties: [6, 12, 18, 24, 30],
           selectedQty: null,
           selectedPrice: null,
@@ -32,7 +32,7 @@ const initlaTasks: State = {
           hasFlavor: true
         },
         {
-          'id': 2, 'name': 'Hot Wings', 'desc': 'Hot and delicious', 'img': 'assets/wings/hotwing.jpg', 
+          'wingId': 2, 'name': 'Hot Wings', 'desc': 'Hot and delicious', 'img': 'assets/wings/hotwing.jpg', 
           quanties: [6, 12, 18, 24, 30],
           selectedQty: null,
           selectedPrice: null,
@@ -62,7 +62,7 @@ export function wingReducer(state: State = initlaTasks, action: WingActions.Wing
                 return {...wing};
             })
             deepClonedOfWingsForQty.map(wing=>{
-                if(wing.id === selectedWingForQty.id) {
+                if(wing.wingId === selectedWingForQty.wingId) {
                     wing.isCurrentlySelected = true;
                     wing.selectedFlavor = selectedWingForQty.selectedFlavor;
                     wing.selectedPrice = selectedWingForQty.selectedPrice;
