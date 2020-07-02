@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { of } from 'rxjs';
 import { AddWingToOrderResponse, Status } from 'src/app/model/wing.model';
+import { RemoveItemFromCartResponse } from 'src/app/model/cart.model';
 import { RetrieveCartResponse } from 'src/app/model/cart.model';
 
 // effect is nothing much but piece of code that is similar to service for making http request or localstorage
@@ -95,6 +96,32 @@ export class CartEffects {
         })
     )
 
+    @Effect()
+    removeItemFromCart = this.actions$.pipe(
+        ofType(CartActions.REMOVE_ITEM_FROM_CART),
+        switchMap((requestPayload: CartActions.RemoveItemFromCartTask)=>{
+            return this.http.post<any>(environment.removeItemFromCartUrl, requestPayload.payload)
+            .pipe(
+                map((response: RemoveItemFromCartResponse)=>{
+                    return this.removeItemFromCartSuccess(response);
+                }),
+                catchError(err => {
+                    if(err.status === 403) {
+                        const status: Status = {
+                            message: 'session expired please log back in',
+                            timestamp: '',
+                            transactionId: '',
+                            statusCd: 403
+                        }
+                        return this.removeItemFromCartFailure(status);
+                    }
+                    const status: Status = err.error.status;
+                    return this.removeItemFromCartFailure(status);
+                })
+            )
+        })
+    )
+
     addToCartSuccess(response: AddWingToOrderResponse) {
         if(response.success) {           
             return new CartActions.CartActionSuccess(response);
@@ -153,5 +180,25 @@ export class CartEffects {
     retrieveTotalItemInCartCountFailure(status: Status) {
         console.error(status.message);
         return of(new CartActions.CartActionFailure(status)); 
+    }
+
+    removeItemFromCartSuccess(response: RemoveItemFromCartResponse) {
+        if(response.success) {
+            return new CartActions.RemoveItemFromCartTaskSuccess(response);
+        } else {
+            console.error(response.status.message);
+            const status: Status = {
+                message: response.status.message,
+                statusCd: response.status.statusCd,
+                transactionId: response.status.transactionId,
+                timestamp: response.status.timestamp
+            }
+            return of(new CartActions.CartActionFailure(status));
+        }
+    }
+
+    removeItemFromCartFailure(status: Status) {
+        console.error(status.message);
+        return of(new CartActions.CartActionFailure(status));
     }
 }

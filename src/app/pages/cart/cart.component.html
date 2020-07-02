@@ -1,6 +1,5 @@
 <h1 fxLayoutAlign="center">CART</h1>
-<div fxLayoutAlign="center">{{message}}</div>
-<div *ngIf="cart !== undefined" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayoutGap="10px">
+<div *ngIf="cart !== undefined && cart.wings.length !== 0" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayoutGap="10px">
     <div *ngFor="let wing of cart.wings">
         <div class="wing-box" fxFlex="4 4 calc(12em + 20px)" style="margin-bottom: 5px;">
             <nz-card [nzCover]="wingimage">
@@ -12,8 +11,8 @@
                 <img alt="{{wing.name}}" src="{{wing.img}}"/>
             </ng-template>
             <div fxLayoutAlign="center" class="ant-card-actions">
-                <span (click)="edit(wing)" style="font-size: 20px;" nzTooltipTitle="Edit" nzTooltipPlacement="top" nz-tooltip><fa-icon [icon]="faPen"></fa-icon></span>&nbsp;&nbsp;&nbsp;
-                <span (click)="remove(wing)" style="color: red; font-size: 20px;" nzTooltipTitle="Remove" nzTooltipPlacement="top" nz-tooltip><fa-icon [icon]="faTrash"></fa-icon></span>
+                <span (click)="editWing(wing)" style="font-size: 20px;" nzTooltipTitle="Edit" nzTooltipPlacement="top" nz-tooltip><fa-icon [icon]="faPen"></fa-icon></span>&nbsp;&nbsp;&nbsp;
+                <span (click)="removeWing(wing)" style="color: red; font-size: 20px;" nzTooltipTitle="Remove" nzTooltipPlacement="top" nz-tooltip><fa-icon [icon]="faTrash"></fa-icon></span>
             </div>
         </div>
     </div>
@@ -30,7 +29,7 @@
         <button style="width: 100%;" nz-button nzType="primary" (click)="checkout()">CHECKOUT</button>
     </div>
 </div>  
-
+<div *ngIf="isShowMessage" class="remove-item-message-box" fxLayoutAlign="center">{{message}}</div>
 <nz-modal [(nzVisible)]="isRemoveModalVisible" nzTitle="Confirmation" nzMaskClosable="false" (nzOnCancel)="handleRemoveModalCancel()">
     <div *ngIf="selectedWing !== undefined">
         <p><fa-icon style="color: orange" [icon]="faQuestionCircle"></fa-icon> Are you sure you want to remove <i><b>{{selectedWing.name}}</b></i>?</p>

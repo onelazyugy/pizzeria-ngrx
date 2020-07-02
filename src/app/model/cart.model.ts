@@ -31,3 +31,17 @@ export class CartSummary {
     total: number;
     tax: number;
 }
+
+export class RemoveItemFromCartRequest {
+    enc: string;
+    type: string;
+    itemId: number;
+}
+
+export class RemoveItemFromCartResponse {
+    status: Status;
+    success: boolean;
+    cart: Cart;
+    totalItemInCart: number;
+    cartSummary: CartSummary;
+}

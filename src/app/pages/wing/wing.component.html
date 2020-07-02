@@ -10,12 +10,12 @@
             </ng-template>
             <div class="ant-card-actions">
                 <div style="padding-bottom: 5px; padding-top: 5px;">
-                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="How Many?" [(ngModel)]="wing.selectedQty" (ngModelChange)="qtyDropdownSelect($event, wing.id)">
+                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="How Many?" [(ngModel)]="wing.selectedQty" (ngModelChange)="qtyDropdownSelect($event, wing.wingId)">
                         <nz-option *ngFor="let qty of wing.quanties" nzLabel="{{qty}}" nzValue="{{qty}}"></nz-option>
                     </nz-select>
                 </div>
                 <div style="padding-bottom: 5px; padding-top: 5px;" *ngIf="wing.flavors.length > 0">
-                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="What Flavor?" [(ngModel)]="wing.selectedFlavor" (ngModelChange)="flavorDropdownSelect($event, wing.id)">
+                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="What Flavor?" [(ngModel)]="wing.selectedFlavor" (ngModelChange)="flavorDropdownSelect($event, wing.wingId)">
                         <nz-option *ngFor="let flavor of wing.flavors" nzLabel="{{flavor}}" nzValue="{{flavor}}"></nz-option>
                     </nz-select>
                 </div>
@@ -25,7 +25,7 @@
                 <ng-template #elseBlock>
                     <button [nzLoading]="isAddingItemToCart" style="width: 100%;" nz-button nzType="primary" [disabled]="wing.selectedQty === null" (click)="addToOrder(wing)">ADD TO ORDER</button>
                 </ng-template>
-                <div *ngIf="showPriceAndQty && currentSelectedWingId===wing.id" class="ant-card-actions">
+                <div *ngIf="showPriceAndQty && currentSelectedWingId===wing.wingId" class="ant-card-actions">
                     <hr />
                     <div fxLayoutAlign="center">{{wing.selectedQty}} pieces at {{wing.selectedPrice | currency}}</div>
                 </div>

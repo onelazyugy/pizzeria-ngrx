@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as fromApp from '../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import * as CartActions from '../cart/store/cart.action';
-import { RetrieveCartRequest, Cart, CartSummary } from 'src/app/model/cart.model';
+import { RetrieveCartRequest, Cart, CartSummary, RemoveItemFromCartRequest } from 'src/app/model/cart.model';
 import { HelperService } from 'src/app/service/pizzeria-helper.service';
 import { faTrash, faPen, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { Wing } from 'src/app/model/wing.model';
@@ -30,6 +30,7 @@ export class CartComponent implements OnInit {
   selectedWing: Wing;
   isRemoving = false;
   isUpdating = false;
+  isShowMessage = false;
 
   qtyToPrices = [
     {'qty': 6, 'price': 7.59},
@@ -48,47 +49,66 @@ export class CartComponent implements OnInit {
   constructor(private store: Store<fromApp.AppState>, private helperService: HelperService) { }
 
   ngOnInit(): void {
-    const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
-    const cartRequest: RetrieveCartRequest = {
-      userId: user.id,
-      email: user.email
-    }
-    this.store.dispatch(
-      new CartActions.RetrieveAllItemFromCartTask(cartRequest)
-    );
-    this.store.select('cartReducer').subscribe(response => {
-      if(response.retrieveCartResponse.status.statusCd === 403) {
-        this.message = response.retrieveCartResponse.status.message;
-      } else if(response.retrieveCartResponse.status.statusCd === 400) {
-        this.message = response.retrieveCartResponse.status.message;
-      } else if(response.retrieveCartResponse.status.statusCd === 200) {
-        this.cart = response.retrieveCartResponse.cart;
-        this.cartSummary = response.retrieveCartResponse.cartSummary;
-        this.message = '';
-        if(response.retrieveCartResponse.totalItemInCart === 0) {
-          this.message = response.retrieveCartResponse.status.message;
-        }
-      } else {
-        this.message = response.retrieveCartResponse.status.message;
+    if(this.helperService.getObjectFromLocalStorage() === undefined) {
+      this.isShowMessage = true;
+      this.message = 'session expired, please log back in';
+    } else {
+      const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
+      const cartRequest: RetrieveCartRequest = {
+        userId: user.id,
+        email: user.email
       }
-    });
+      this.store.dispatch(
+        new CartActions.RetrieveAllItemFromCartTask(cartRequest)
+      );
+      this.store.select('cartReducer').subscribe(response => { //TOOD: need to handle show/not show message like login
+        if(response.retrieveCartResponse.status.statusCd === 403) {
+          this.message = response.retrieveCartResponse.status.message;
+          this.isShowMessage = true;
+        } else if(response.retrieveCartResponse.status.statusCd === 400) {
+          this.message = response.retrieveCartResponse.status.message;
+          this.isShowMessage = true;
+        } else if(response.retrieveCartResponse.status.statusCd === 200) {
+          this.cart = response.retrieveCartResponse.cart;
+          this.cartSummary = response.retrieveCartResponse.cartSummary;
+          this.message = '';
+          if(response.retrieveCartResponse.totalItemInCart === 0) {
+            this.message = response.retrieveCartResponse.status.message; //empty cart
+            this.isShowMessage = true;
+          }
+        } else if(response.retrieveCartResponse.status.statusCd === 500) {
+          this.message = response.retrieveCartResponse.status.message;
+          this.isShowMessage = true;
+        }
+      });
+    }
   }
 
-  remove(wing: Wing) {
+  removeWing(wing: Wing) {
     this.isRemoveModalVisible = true;
     this.selectedWing = wing;
 
   }
 
-  edit(wing: Wing) {
+  editWing(wing: Wing) {
     this.isEditModalVisible = true;
     this.selectedWing = wing;
   }
 
   //remove item modal
   handleRemoveModalOk(): void {
+    this.isRemoving = true;
+    const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
+    const request: RemoveItemFromCartRequest = {
+      enc: user.enc,
+      type: 'wing',
+      itemId: this.selectedWing.wingId
+    }
+    this.store.dispatch(
+      new CartActions.RemoveItemFromCartTask(request)
+    );
     this.isRemoveModalVisible = false;
-    //call /delete on cart
+    this.isRemoving = false;
   }
 
   handleRemoveModalCancel(): void {
