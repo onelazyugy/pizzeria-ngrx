@@ -137,3 +137,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
   - source: https://coderwall.com/p/1xforw/make-heroku-run-a-non-master-branch
   - create a branch e.g: heroku-deployment
   - ```$ git push heroku heroku-deployment:master```
+  - ```$ heroku git:remote -a pizzeria-ui``` to add heroku back for deployment 
