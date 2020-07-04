@@ -9,16 +9,14 @@ import { AddWingToOrderResponse, Status } from 'src/app/model/wing.model';
 import { RemoveItemFromCartResponse } from 'src/app/model/cart.model';
 import { RetrieveCartResponse } from 'src/app/model/cart.model';
 
-// effect is nothing much but piece of code that is similar to service for making http request or localstorage
-// up to you to use effect or not since it is a matter of preference if you want to stick with ngrx rather than angular
-@Injectable() // because we are injection services in the constructor 
+@Injectable() 
 export class CartEffects {
     constructor(private actions$: Actions, private http: HttpClient){}
 
-    @Effect() // this is for ngrx effect to pick up this effect handler
+    //add item
+    @Effect()
     addItemToCartEffects = this.actions$.pipe(
-        // only trigger this effects if action is of type ADD_WELCOME_MESSAGE
-        ofType(CartActions.ADD_ITEM_TO_CART), // can add multiple action here inside the ofType
+        ofType(CartActions.ADD_ITEM_TO_CART),
         switchMap((cartData: CartActions.AddItemToCartTask) => {
             const cartPayload = cartData.payload;
             return this.http.post<any>(environment.addWingToCartUrl, cartPayload)
@@ -44,6 +42,7 @@ export class CartEffects {
         }),
     );
 
+    //retrieve all item
     @Effect()
     retrieveCartEffect = this.actions$.pipe(
         ofType(CartActions.RETRIEVE_ALL_ITEM_FROM_CART),
@@ -55,21 +54,55 @@ export class CartEffects {
                 }),
                 catchError(err => {
                     if(err.status === 403) {
+                        let status: Status;
+                        if(err.error === null) {
+                            //generic response from server not custom
+                            status = {
+                                message: err.message,
+                                timestamp: '',
+                                transactionId: '',
+                                statusCd: err.status
+                            } 
+                        } else {
+                            status = {
+                                message: err.error.status.message,
+                                timestamp: '',
+                                transactionId: '',
+                                statusCd: err.status
+                            } 
+                        }
+                        return this.retrieveCartFailure(status);
+                    } else if(err.status === 500) {
                         const status: Status = {
-                            message: 'session expired please log back in',
+                            message: err.error.status.message,
                             timestamp: '',
                             transactionId: '',
-                            statusCd: 403
+                            statusCd: err.status
+                        }
+                        return this.retrieveCartFailure(status);
+                    } else if(err.status === 400) {
+                        const status: Status = {
+                            message: err.error.status.message,
+                            timestamp: '',
+                            transactionId: '',
+                            statusCd: err.status
+                        }
+                        return this.retrieveCartFailure(status);
+                    } else {
+                        const status: Status = {
+                            message: 'unknow error',
+                            timestamp: '',
+                            transactionId: '',
+                            statusCd: err.status
                         }
                         return this.retrieveCartFailure(status);
                     }
-                    const status: Status = err.error.status;
-                    return this.addToCartFailure(status);
                 })
             )
         })
     )
 
+    //retrieve count
     @Effect()
     retrieveTotalItemInCartCountEffect = this.actions$.pipe(
         ofType(CartActions.RETRIEVE_TOTAL_ITEM_COUNT_IN_CART),
@@ -81,21 +114,55 @@ export class CartEffects {
                 }),
                 catchError(err => {
                     if(err.status === 403) {
+                        let status: Status;
+                        if(err.error === null) {
+                            //generic response from server not custom
+                            status = {
+                                message: err.message,
+                                timestamp: '',
+                                transactionId: '',
+                                statusCd: err.status
+                            } 
+                        } else {
+                            status = {
+                                message: err.error.status.message,
+                                timestamp: '',
+                                transactionId: '',
+                                statusCd: err.status
+                            } 
+                        }
+                        return this.retrieveTotalItemInCartCountFailure(status);
+                    } else if(err.status === 500) {
                         const status: Status = {
-                            message: 'session expired please log back in',
+                            message: err.error.status.message,
                             timestamp: '',
                             transactionId: '',
-                            statusCd: 403
+                            statusCd: err.status
+                        }
+                        return this.retrieveTotalItemInCartCountFailure(status);
+                    } else if(err.status === 400) {
+                        const status: Status = {
+                            message: err.error.status.message,
+                            timestamp: '',
+                            transactionId: '',
+                            statusCd: err.status
+                        }
+                        return this.retrieveTotalItemInCartCountFailure(status);
+                    } else {
+                        const status: Status = {
+                            message: 'unknow error',
+                            timestamp: '',
+                            transactionId: '',
+                            statusCd: err.status
                         }
                         return this.retrieveTotalItemInCartCountFailure(status);
                     }
-                    const status: Status = err.error.status;
-                    return this.retrieveTotalItemInCartCountFailure(status);
                 })
             )
         })
     )
 
+    //remove
     @Effect()
     removeItemFromCart = this.actions$.pipe(
         ofType(CartActions.REMOVE_ITEM_FROM_CART),
@@ -107,21 +174,55 @@ export class CartEffects {
                 }),
                 catchError(err => {
                     if(err.status === 403) {
+                        let status: Status;
+                        if(err.error === null) {
+                            //generic response from server not custom
+                            status = {
+                                message: err.message,
+                                timestamp: '',
+                                transactionId: '',
+                                statusCd: err.status
+                            } 
+                        } else {
+                            status = {
+                                message: err.error.status.message,
+                                timestamp: '',
+                                transactionId: '',
+                                statusCd: err.status
+                            } 
+                        }
+                        return this.removeItemFromCartFailure(status);
+                    } else if(err.status === 500) {
                         const status: Status = {
-                            message: 'session expired please log back in',
+                            message: err.error.status.message,
                             timestamp: '',
                             transactionId: '',
-                            statusCd: 403
+                            statusCd: err.status
+                        }
+                        return this.removeItemFromCartFailure(status);
+                    } else if(err.status === 400) {
+                        const status: Status = {
+                            message: err.error.status.message,
+                            timestamp: '',
+                            transactionId: '',
+                            statusCd: err.status
+                        }
+                        return this.removeItemFromCartFailure(status);
+                    } else {
+                        const status: Status = {
+                            message: 'unkown error',
+                            timestamp: '',
+                            transactionId: '',
+                            statusCd: err.status
                         }
                         return this.removeItemFromCartFailure(status);
                     }
-                    const status: Status = err.error.status;
-                    return this.removeItemFromCartFailure(status);
                 })
             )
         })
     )
 
+    //--add to cart
     addToCartSuccess(response: AddWingToOrderResponse) {
         if(response.success) {           
             return new CartActions.CartActionSuccess(response);
@@ -136,14 +237,16 @@ export class CartEffects {
             return of(new CartActions.CartActionFailure(status));
         }
     }
-
     addToCartFailure(status: Status) {
         console.error(status.message);
         return of(new CartActions.CartActionFailure(status)); 
     }
 
+    //--retrieve all items
     retrieveCartSuccess(response: RetrieveCartResponse) {
         if(response.success) {
+            response.isRequestFromModal = false;
+            response.action = 'RETRIEVE_ALL';
             return new CartActions.RetrieveAllItemFromCartTaskSuccess(response);
         } else {
             console.error(response.status.message);
@@ -153,17 +256,37 @@ export class CartEffects {
                 transactionId: response.status.transactionId,
                 timestamp: response.status.timestamp
             }
-            return of(new CartActions.CartActionFailure(status));
+            const retrieveCartResponse: RetrieveCartResponse = {
+                status: status,
+                success: false,
+                cart: null,
+                totalItemInCart: 0,
+                cartSummary: null,
+                isRequestFromModal: false,
+                action: 'RETRIEVE_ALL'
+            }
+            return of(new CartActions.RetrieveAllItemFromCartTaskFailure(retrieveCartResponse));
         }
     }
-
     retrieveCartFailure(status: Status) {
         console.error(status.message);
-        return of(new CartActions.CartActionFailure(status)); 
+        const retrieveCartResponse: RetrieveCartResponse = {
+            status: status,
+            success: false,
+            cart: null,
+            totalItemInCart: 0,
+            cartSummary: null,
+            isRequestFromModal: false,
+            action: 'RETRIEVE_ALL'
+        }
+        return of(new CartActions.RetrieveAllItemFromCartTaskFailure(retrieveCartResponse)); 
     }
 
+    //--retrieve count
     retrieveTotalItemInCartCountSuccess(response: RetrieveCartResponse) {
         if(response.success) {
+            response.isRequestFromModal = false;
+            response.action = 'RETRIEVE_COUNT';
             return new CartActions.RetrieveAllItemFromCartTaskSuccess(response);
         } else {
             console.error(response.status.message);
@@ -173,32 +296,67 @@ export class CartEffects {
                 transactionId: response.status.transactionId,
                 timestamp: response.status.timestamp
             }
-            return of(new CartActions.CartActionFailure(status));
+            const retrieveTotalItemInCartCountResponse: RetrieveCartResponse = {
+                status: status,
+                success: false,
+                cart: null,
+                totalItemInCart: 0,
+                cartSummary: null,
+                isRequestFromModal: false,
+                action: 'RETRIEVE_COUNT'
+            }
+            return of(new CartActions.RetrieveAllItemFromCartTaskFailure(retrieveTotalItemInCartCountResponse));
         }
     }
-
     retrieveTotalItemInCartCountFailure(status: Status) {
-        console.error(status.message);
-        return of(new CartActions.CartActionFailure(status)); 
+        const retrieveTotalItemIntCartCountResponse: RemoveItemFromCartResponse = {
+            status: status,
+            success: false,
+            cart: null,
+            totalItemInCart: null,
+            cartSummary: null,
+            isRequestFromModal: false,
+            action: 'RETRIEVE_COUNT'
+        }
+        return of(new CartActions.RetrieveAllItemFromCartTaskFailure(retrieveTotalItemIntCartCountResponse)); 
     }
 
+    //--remove
     removeItemFromCartSuccess(response: RemoveItemFromCartResponse) {
         if(response.success) {
+            response.isRequestFromModal = true;
+            response.action = 'REMOVE';
             return new CartActions.RemoveItemFromCartTaskSuccess(response);
         } else {
-            console.error(response.status.message);
             const status: Status = {
                 message: response.status.message,
                 statusCd: response.status.statusCd,
                 transactionId: response.status.transactionId,
                 timestamp: response.status.timestamp
             }
-            return of(new CartActions.CartActionFailure(status));
+            const removeItemFromCartResponse: RemoveItemFromCartResponse = {
+                status: status,
+                success: false,
+                cart: null,
+                totalItemInCart: null,
+                cartSummary: null,
+                isRequestFromModal: true,
+                action: 'REMOVE'
+            }
+            return of(new CartActions.RemoveItemFromCartTaskFailure(removeItemFromCartResponse));
         }
     }
-
     removeItemFromCartFailure(status: Status) {
-        console.error(status.message);
-        return of(new CartActions.CartActionFailure(status));
+        const response: RemoveItemFromCartResponse = {
+            status: status,
+            success: false,
+            cart: null,
+            totalItemInCart: null,
+            cartSummary: null,
+            isRequestFromModal: true,
+            action: 'REMOVE'
+        }
+        return of(new CartActions.RemoveItemFromCartTaskFailure(response));
     }
+    //--
 }
