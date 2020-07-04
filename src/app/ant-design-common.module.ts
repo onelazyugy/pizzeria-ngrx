@@ -19,6 +19,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
 
 @NgModule({
     declarations: [],
@@ -42,7 +43,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
         NzCardModule,
         NzLayoutModule,
         NzBadgeModule,
-        NzModalModule
+        NzModalModule,
+        NzAlertModule
     ]
 })
 export class AntDesignCommonModule {}

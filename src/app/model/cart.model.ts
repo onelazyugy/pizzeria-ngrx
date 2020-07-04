@@ -18,6 +18,8 @@ export class RetrieveCartResponse {
     cart: Cart;
     totalItemInCart: number;
     cartSummary: CartSummary;
+    isRequestFromModal: boolean;
+    action: string;
 }
 
 export class Cart {
@@ -36,6 +38,7 @@ export class RemoveItemFromCartRequest {
     enc: string;
     type: string;
     itemId: number;
+    numberOfOrder: number;
 }
 
 export class RemoveItemFromCartResponse {
@@ -44,4 +47,6 @@ export class RemoveItemFromCartResponse {
     cart: Cart;
     totalItemInCart: number;
     cartSummary: CartSummary;
+    isRequestFromModal: boolean;
+    action: string;
 }

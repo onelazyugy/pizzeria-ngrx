@@ -11,6 +11,7 @@ export class Wing {
     selectedFlavor: string;
     isCurrentlySelected: boolean;
     hasFlavor: boolean;
+    numberOfOrder: number;
 }
 
 export class AddWingToOrderRequest {

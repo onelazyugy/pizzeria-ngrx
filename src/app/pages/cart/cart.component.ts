@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as fromApp from '../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import * as CartActions from '../cart/store/cart.action';
-import { RetrieveCartRequest, Cart, CartSummary, RemoveItemFromCartRequest } from 'src/app/model/cart.model';
+import { RetrieveCartRequest, Cart, CartSummary, RemoveItemFromCartRequest, RetrieveCartResponse } from 'src/app/model/cart.model';
 import { HelperService } from 'src/app/service/pizzeria-helper.service';
 import { faTrash, faPen, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { Wing } from 'src/app/model/wing.model';
@@ -15,22 +15,32 @@ import { Wing } from 'src/app/model/wing.model';
 export class CartComponent implements OnInit {
   cart: Cart;
   cartSummary: CartSummary;
-  message: string;
-
+  selectedWing: Wing;
+  
   selectedValue = null;
-  isRemovingItemFromCart = false;
 
   //icons
   faTrash = faTrash;
   faPen = faPen;
   faQuestionCircle = faQuestionCircle;
 
+  //remove item
   isRemoveModalVisible = false;
-  isEditModalVisible = false;
-  selectedWing: Wing;
   isRemoving = false;
+  isRemovedBtnDisabled = false;
+  
+  //update item
+  isEditModalVisible = false;
   isUpdating = false;
-  isShowMessage = false;
+
+  //mesages and status
+  statusMessageOnModal: string;
+  statusMessageOnNonModal: string;
+  isShowSuccessStatusMessageOnModal = false;
+  isShowFailureStatusMessageOnModal = false;
+  isShowStatusMessageOnNonModal = false;
+
+  // isSuccess = false;
 
   qtyToPrices = [
     {'qty': 6, 'price': 7.59},
@@ -49,9 +59,12 @@ export class CartComponent implements OnInit {
   constructor(private store: Store<fromApp.AppState>, private helperService: HelperService) { }
 
   ngOnInit(): void {
+    this.isShowSuccessStatusMessageOnModal = false;
+    this.isShowFailureStatusMessageOnModal = false;
+    this.isShowStatusMessageOnNonModal = false;
     if(this.helperService.getObjectFromLocalStorage() === undefined) {
-      this.isShowMessage = true;
-      this.message = 'session expired, please log back in';
+      this.isShowStatusMessageOnNonModal = true;
+      this.statusMessageOnNonModal = 'session expired, please log back in';
     } else {
       const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
       const cartRequest: RetrieveCartRequest = {
@@ -61,24 +74,71 @@ export class CartComponent implements OnInit {
       this.store.dispatch(
         new CartActions.RetrieveAllItemFromCartTask(cartRequest)
       );
-      this.store.select('cartReducer').subscribe(response => { //TOOD: need to handle show/not show message like login
-        if(response.retrieveCartResponse.status.statusCd === 403) {
-          this.message = response.retrieveCartResponse.status.message;
-          this.isShowMessage = true;
-        } else if(response.retrieveCartResponse.status.statusCd === 400) {
-          this.message = response.retrieveCartResponse.status.message;
-          this.isShowMessage = true;
-        } else if(response.retrieveCartResponse.status.statusCd === 200) {
-          this.cart = response.retrieveCartResponse.cart;
-          this.cartSummary = response.retrieveCartResponse.cartSummary;
-          this.message = '';
-          if(response.retrieveCartResponse.totalItemInCart === 0) {
-            this.message = response.retrieveCartResponse.status.message; //empty cart
-            this.isShowMessage = true;
-          }
-        } else if(response.retrieveCartResponse.status.statusCd === 500) {
-          this.message = response.retrieveCartResponse.status.message;
-          this.isShowMessage = true;
+      this.store.select('cartReducer').subscribe(response => {
+        const retrieveCartResponse: RetrieveCartResponse = response.retrieveCartResponse;
+        // console.log('retrieveCartResponse: ', response.retrieveCartResponse);
+        console.log('action: ', response.retrieveCartResponse.action);
+        const action = response.retrieveCartResponse.action;
+        const statusCd = response.retrieveCartResponse.status.statusCd;
+        switch(action) {
+          case 'RETRIEVE_ALL':
+            if(statusCd === 403 || statusCd === 400 || statusCd === 500) {
+              this.isShowStatusMessageOnNonModal = true;
+              this.statusMessageOnNonModal = response.retrieveCartResponse.status.message;
+            } else if(statusCd === 200) {
+              const totalItemInCart = response.retrieveCartResponse.totalItemInCart
+              if(totalItemInCart === 0) {
+                this.isShowStatusMessageOnNonModal = true;
+                this.statusMessageOnNonModal = response.retrieveCartResponse.status.message;
+              } else {
+                this.cart = response.retrieveCartResponse.cart;
+                this.cartSummary = response.retrieveCartResponse.cartSummary;
+                this.isShowStatusMessageOnNonModal = false;
+              }
+            } else {
+              this.isShowStatusMessageOnNonModal = true;
+              this.statusMessageOnNonModal = 'unknow error, contact support';
+            }
+            break;
+          case 'REMOVE':
+            if(statusCd === 403 || statusCd === 400 || statusCd === 500) {
+              this.isShowStatusMessageOnNonModal = false;
+              this.isShowSuccessStatusMessageOnModal = false;
+              this.isShowFailureStatusMessageOnModal = true;
+              this.statusMessageOnModal = response.retrieveCartResponse.status.message;
+              this.isRemoving = false;
+              this.isRemovedBtnDisabled = true;
+            } else if(statusCd === 200) {
+              this.isShowSuccessStatusMessageOnModal = true;
+              this.isShowFailureStatusMessageOnModal = false;
+              this.statusMessageOnModal = response.retrieveCartResponse.status.message;
+              const totalItemInCart = response.retrieveCartResponse.totalItemInCart
+              if(totalItemInCart === 0) {
+                console.log('CART IS EMPTY');
+                this.isShowStatusMessageOnNonModal = true;
+                this.statusMessageOnNonModal = 'your cart is empty';//response.retrieveCartResponse.status.message;
+                this.cart = response.retrieveCartResponse.cart;
+                this.cartSummary = response.retrieveCartResponse.cartSummary;
+              } else {
+                console.log('CART IS NOT EMPTY');
+                this.isShowStatusMessageOnNonModal = false;
+                this.isShowSuccessStatusMessageOnModal = true;
+                this.statusMessageOnModal = response.retrieveCartResponse.status.message;
+                this.cart = response.retrieveCartResponse.cart;
+                this.cartSummary = response.retrieveCartResponse.cartSummary;
+              }
+              this.isRemoving = false;
+              this.isRemovedBtnDisabled = true;
+            } else {
+              this.isShowStatusMessageOnNonModal = false;
+              this.isShowSuccessStatusMessageOnModal = true;
+              this.statusMessageOnModal = 'unknow error, contact support';
+              this.isRemoving = false;
+              this.isRemovedBtnDisabled = true;
+            }
+            break;
+          default:
+            break;
         }
       });
     }
@@ -87,7 +147,10 @@ export class CartComponent implements OnInit {
   removeWing(wing: Wing) {
     this.isRemoveModalVisible = true;
     this.selectedWing = wing;
-
+    this.isShowStatusMessageOnNonModal = false;
+    this.isShowSuccessStatusMessageOnModal = false;
+    this.isShowFailureStatusMessageOnModal = false;
+    this.isRemovedBtnDisabled = false;
   }
 
   editWing(wing: Wing) {
@@ -97,22 +160,28 @@ export class CartComponent implements OnInit {
 
   //remove item modal
   handleRemoveModalOk(): void {
+    this.isShowStatusMessageOnNonModal = true;
+    this.isShowFailureStatusMessageOnModal = true;
     this.isRemoving = true;
+    this.isRemovedBtnDisabled = true;
     const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
     const request: RemoveItemFromCartRequest = {
       enc: user.enc,
       type: 'wing',
-      itemId: this.selectedWing.wingId
+      itemId: this.selectedWing.wingId,
+      numberOfOrder: this.selectedWing.numberOfOrder
     }
     this.store.dispatch(
       new CartActions.RemoveItemFromCartTask(request)
     );
-    this.isRemoveModalVisible = false;
-    this.isRemoving = false;
   }
 
   handleRemoveModalCancel(): void {
     this.isRemoveModalVisible = false;
+    this.isShowSuccessStatusMessageOnModal = false;
+    this.isShowFailureStatusMessageOnModal = false;
+    this.isRemoving = false;
+    this.isRemovedBtnDisabled = false;
   }
 
   //update modal

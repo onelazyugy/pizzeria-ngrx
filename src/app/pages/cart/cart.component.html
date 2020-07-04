@@ -29,19 +29,26 @@
         <button style="width: 100%;" nz-button nzType="primary" (click)="checkout()">CHECKOUT</button>
     </div>
 </div>  
-<div *ngIf="isShowMessage" class="remove-item-message-box" fxLayoutAlign="center">{{message}}</div>
+
+<div *ngIf="isShowStatusMessageOnNonModal" class="remove-item-message-box" fxLayoutAlign="center">{{statusMessageOnNonModal}}</div>
+
+<!-- remove item modal -->
 <nz-modal [(nzVisible)]="isRemoveModalVisible" nzTitle="Confirmation" nzMaskClosable="false" (nzOnCancel)="handleRemoveModalCancel()">
     <div *ngIf="selectedWing !== undefined">
         <p><fa-icon style="color: orange" [icon]="faQuestionCircle"></fa-icon> Are you sure you want to remove <i><b>{{selectedWing.name}}</b></i>?</p>
     </div>
+    <nz-alert *ngIf="isShowSuccessStatusMessageOnModal" nzType="success" nzMessage="{{statusMessageOnModal}}" nzShowIcon></nz-alert>
+    <nz-alert *ngIf="isShowFailureStatusMessageOnModal" nzType="error" nzMessage="{{statusMessageOnModal}}" nzShowIcon></nz-alert>
+    
     <div *nzModalFooter>
-        <button style="width: 100%;" nz-button nzType="primary" (click)="handleRemoveModalOk()" [nzLoading]="isRemoving" nzDanger>REMOVE</button>
+        <button [disabled]="isRemovedBtnDisabled" style="width: 100%;" nz-button nzType="primary" (click)="handleRemoveModalOk()" [nzLoading]="isRemoving" nzDanger>REMOVE</button>
     </div>
 </nz-modal>
+
+<!-- update item modal -->
 <nz-modal [(nzVisible)]="isEditModalVisible" nzMaskClosable="false" nzTitle="Update Order" (nzOnCancel)="handleEditModalCancel()">
     <div *ngIf="selectedWing !== undefined">
         <div fxLayoutAlign="center" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="5px">
-            <!-- <div style="border-style: solid;" fxLayout="column" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="10px"> -->
             <div fxLayout="column" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="10px">
                 <div>
                     <h3>{{selectedWing.name}}</h3>

@@ -18,7 +18,8 @@ const initlaTasks: State = {
           flavors: ['Honey BBQ', 'Lemon Pepper', 'Sweet and Sour'],
           selectedFlavor: null,
           isCurrentlySelected: false,
-          hasFlavor: true
+          hasFlavor: true,
+          numberOfOrder: 0
         },
         {
           'wingId': 1, 'name': 'Boneless Wings', 'desc': 'Juicy and tasty', 'img': 'assets/wings/wing_boneless.jpg', 
@@ -29,7 +30,8 @@ const initlaTasks: State = {
           flavors: ['Honey BBQ', 'Lemon Pepper', 'Sweet and Sour'],
           selectedFlavor: null,
           isCurrentlySelected: false,
-          hasFlavor: true
+          hasFlavor: true,
+          numberOfOrder: 0
         },
         {
           'wingId': 2, 'name': 'Hot Wings', 'desc': 'Hot and delicious', 'img': 'assets/wings/hotwing.jpg', 
@@ -40,7 +42,8 @@ const initlaTasks: State = {
           flavors: [],
           selectedFlavor: null,
           isCurrentlySelected: false,
-          hasFlavor: false
+          hasFlavor: false,
+          numberOfOrder: 0
         }
       ],
       qtyToPrice: [
