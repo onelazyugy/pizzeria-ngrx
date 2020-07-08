@@ -152,6 +152,28 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
                 retrieveCartResponse: {...failureResponseForRetrieve}
             }
         //--
+
+        //--update item
+        case CartActions.UPDATE_ITEM_FROM_CART_TASK:
+            return {
+                ...state
+            }
+            case CartActions.UPDATE_ITEM_FROM_CART_SUCCESS:
+                const updateItemFromCartResponseSuccess = action.payload;
+                return {
+                    ...state,
+                    addWingToOrderResponse: {...state.addWingToOrderResponse},
+                    retrieveCartResponse: {...updateItemFromCartResponseSuccess},
+                    totalItemInCart: updateItemFromCartResponseSuccess.totalItemInCart
+                }
+            case CartActions.UPDATE_ITEM_FROM_CART_FAILURE:
+                const updateItemFromCartResponseFailure = action.payload;
+                return {
+                    ...state,
+                    addWingToOrderResponse: {...state.addWingToOrderResponse},
+                    retrieveCartResponse: {...updateItemFromCartResponseFailure},
+                    totalItemInCart: updateItemFromCartResponseFailure.totalItemInCart
+                }
         default:
             return state;
     }

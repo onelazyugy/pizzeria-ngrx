@@ -33,7 +33,6 @@ export class WingComponent implements OnInit {
 
   ngOnInit() {
     this.store.select('wingReducer').subscribe(response => {
-      console.log(response);
       //make a deep clone of wings array
       const wingCloned = response.wings.map(wing=>{
         return {...wing};

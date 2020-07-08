@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as fromApp from '../../store/app.reducer';
+import _ from 'lodash';
 import { Store } from '@ngrx/store';
 import * as CartActions from '../cart/store/cart.action';
-import { RetrieveCartRequest, Cart, CartSummary, RemoveItemFromCartRequest, RetrieveCartResponse } from 'src/app/model/cart.model';
+import { RetrieveCartRequest, Cart, CartSummary, RemoveItemFromCartRequest, RetrieveCartResponse, UpdateItemFromCartRequest } from 'src/app/model/cart.model';
 import { HelperService } from 'src/app/service/pizzeria-helper.service';
 import { faTrash, faPen, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { Wing } from 'src/app/model/wing.model';
@@ -13,11 +15,15 @@ import { Wing } from 'src/app/model/wing.model';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
+  updateItemInCartForm: FormGroup;
+
   cart: Cart;
   cartSummary: CartSummary;
   selectedWing: Wing;
-  
-  selectedValue = null;
+
+  selectedQty: any;//should be number but select ui is expecting string
+  selectedFlavor: string;
+  numberOfOrder: any;
 
   //icons
   faTrash = faTrash;
@@ -32,6 +38,12 @@ export class CartComponent implements OnInit {
   //update item
   isEditModalVisible = false;
   isUpdating = false;
+  isUpdateBtnDisabled = false;
+  isShowMessageIndicator = false;
+  messageIndicator = {
+      type: '',
+      message: ''
+  };
 
   //mesages and status
   statusMessageOnModal: string;
@@ -40,25 +52,29 @@ export class CartComponent implements OnInit {
   isShowFailureStatusMessageOnModal = false;
   isShowStatusMessageOnNonModal = false;
 
-  // isSuccess = false;
-
-  qtyToPrices = [
-    {'qty': 6, 'price': 7.59},
-    {'qty': 12, 'price': 14.79},
-    {'qty': 18, 'price': 20.99},
-    {'qty': 24, 'price': 25.89},
-    {'qty': 30, 'price': 30.99},
-  ];
+  qtyToPriceMap: any[] = [];
 
   quanties = [6, 12, 18, 24, 30];
   flavors = ['Honey BBQ', 'Lemon Pepper', 'Sweet and Sour'];
   orderQtys = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  tests = ['testing', 'testing', 'testing', 'testing', 'testing','testing', 'testing', 'testing', 'testing', 'testing', 'testing'];
-
-  constructor(private store: Store<fromApp.AppState>, private helperService: HelperService) { }
+  constructor(private store: Store<fromApp.AppState>, private fb: FormBuilder, private helperService: HelperService) { }
 
   ngOnInit(): void {
+    this.store.select('wingReducer').subscribe(response => {
+      //make a deep clone of qtyToPrice array
+      const qtyToPriceMapCloned = response.qtyToPrice.map(price=>{
+        return {...price};
+      });
+      this.qtyToPriceMap = qtyToPriceMapCloned;
+    });
+
+    this.updateItemInCartForm = this.fb.group({
+      qty: [null],
+      flavor: [null],
+      nbrOfOrder: [null]
+    });
+
     this.isShowSuccessStatusMessageOnModal = false;
     this.isShowFailureStatusMessageOnModal = false;
     this.isShowStatusMessageOnNonModal = false;
@@ -76,8 +92,6 @@ export class CartComponent implements OnInit {
       );
       this.store.select('cartReducer').subscribe(response => {
         const retrieveCartResponse: RetrieveCartResponse = response.retrieveCartResponse;
-        // console.log('retrieveCartResponse: ', response.retrieveCartResponse);
-        console.log('action: ', response.retrieveCartResponse.action);
         const action = response.retrieveCartResponse.action;
         const statusCd = response.retrieveCartResponse.status.statusCd;
         switch(action) {
@@ -114,13 +128,11 @@ export class CartComponent implements OnInit {
               this.statusMessageOnModal = response.retrieveCartResponse.status.message;
               const totalItemInCart = response.retrieveCartResponse.totalItemInCart
               if(totalItemInCart === 0) {
-                console.log('CART IS EMPTY');
                 this.isShowStatusMessageOnNonModal = true;
                 this.statusMessageOnNonModal = 'your cart is empty';//response.retrieveCartResponse.status.message;
                 this.cart = response.retrieveCartResponse.cart;
                 this.cartSummary = response.retrieveCartResponse.cartSummary;
               } else {
-                console.log('CART IS NOT EMPTY');
                 this.isShowStatusMessageOnNonModal = false;
                 this.isShowSuccessStatusMessageOnModal = true;
                 this.statusMessageOnModal = response.retrieveCartResponse.status.message;
@@ -136,6 +148,28 @@ export class CartComponent implements OnInit {
               this.isRemoving = false;
               this.isRemovedBtnDisabled = true;
             }
+            break;
+          case 'UPDATE':
+            this.isShowMessageIndicator = true;
+            if(statusCd === 403 || statusCd === 400 || statusCd === 500) {
+              this.messageIndicator = {
+                type: 'error',
+                message: response.retrieveCartResponse.status.message
+              }
+            } else if(statusCd === 200) { 
+              this.messageIndicator = {
+                type: 'success',
+                message: response.retrieveCartResponse.status.message
+              }
+              this.cart = response.retrieveCartResponse.cart;
+              this.cartSummary = response.retrieveCartResponse.cartSummary;
+            } else {
+              this.messageIndicator = {
+                type: 'success',
+                message: 'unknow error, contact support'
+              }
+            }
+            this.isUpdating = false;
             break;
           default:
             break;
@@ -156,6 +190,10 @@ export class CartComponent implements OnInit {
   editWing(wing: Wing) {
     this.isEditModalVisible = true;
     this.selectedWing = wing;
+    
+    this.selectedQty = wing.selectedQty.toString();
+    this.selectedFlavor = wing.selectedFlavor;
+    this.numberOfOrder = wing.numberOfOrder.toString();
   }
 
   //remove item modal
@@ -187,14 +225,92 @@ export class CartComponent implements OnInit {
   //update modal
   handleEditModalCancel(): void {
     this.isEditModalVisible = false;
+    //reset back to original 
+    this.selectedFlavor = this.selectedFlavor;
+    this.selectedQty = this.selectedQty;
+    this.numberOfOrder = this.numberOfOrder;
+    this.isShowMessageIndicator = false;
+
+    this.isUpdateBtnDisabled = false;
+    this.isUpdating = false;
   }
 
   handleEditModalUpdate(): void {
-    this.isEditModalVisible = false;
+    this.isUpdating = true;
+    this.isUpdateBtnDisabled = true;
+    const qty = this.updateItemInCartForm.value.qty.toString();
+    let flavor;
+    if(!this.selectedWing.hasFlavor) {
+      flavor = null;
+    } else {
+      flavor = this.updateItemInCartForm.value.flavor.toString();
+    }
+    const nbrOfOrder = this.updateItemInCartForm.value.nbrOfOrder.toString();
+    
+    //wing w/out flavor
+    if(!this.selectedWing.hasFlavor) {
+      if(qty === this.selectedWing.selectedQty.toString() && nbrOfOrder === this.selectedWing.numberOfOrder.toString()) {
+        this.isShowMessageIndicator = true;
+        this.messageIndicator = {
+          type: 'warning',
+          message: 'Please change your selection to something different!'
+        }
+        this.isUpdating = false;
+        this.isUpdateBtnDisabled = false;
+      } else {
+        //make update request
+        this.updateItem(flavor, nbrOfOrder, qty);
+      }
+    } else {
+      if(qty === this.selectedWing.selectedQty.toString() && flavor === this.selectedWing.selectedFlavor.toString() && nbrOfOrder === this.selectedWing.numberOfOrder.toString()) {
+        this.isShowMessageIndicator = true;
+        this.messageIndicator = {
+          type: 'warning',
+          message: 'Please change your selection to something different!'
+        }
+        this.isUpdating = false;
+        this.isUpdateBtnDisabled = false;
+      } else {
+        //make update request
+        this.updateItem(flavor, nbrOfOrder, qty);
+      }
+    }
   }
 
-  qtyDropdownSelect(qty: number) {
-    console.log(qty);
+  updateItem(flavor: string, nbrOfOrder: string, qty: string) {
+    //make update request
+    let wingToUpdate: Wing = {...this.selectedWing};
+    wingToUpdate.selectedFlavor = flavor;
+    wingToUpdate.numberOfOrder = +nbrOfOrder;
+    wingToUpdate.selectedQty = +qty;
+    //make qty to price
+    const qtyToPrice = _.filter(this.qtyToPriceMap, ['qty', +qty]);//should always be one
+    wingToUpdate.selectedPrice = qtyToPrice[0].price;;
+
+    const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
+    const request: UpdateItemFromCartRequest = {
+      enc: user.enc,
+      type: 'wing',
+      originalSelectedQty: this.selectedWing.selectedQty,
+      originalSelectedFlavor: this.selectedWing.selectedFlavor,
+      originalNumberOfOrder: this.selectedWing.numberOfOrder,
+      wing: wingToUpdate
+    }
+    this.store.dispatch(
+      new CartActions.UpdateItemFromCartTask(request)
+    );
+  }
+
+  qtyDropdownSelect(qty: string) {
+    // console.log(qty);
+  }
+
+  flavorDropdownSelect(flavor: string) {
+    // console.log(flavor);
+  }
+
+  numberOfOrderDropdownSelect(numberOfOrder: number) {
+    // console.log(numberOfOrder);
   }
 
   checkout() {

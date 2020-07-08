@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { AddWingToOrderRequest, AddWingToOrderResponse, Status } from 'src/app/model/wing.model';
-import { RemoveItemFromCartResponse } from 'src/app/model/cart.model';
+import { RemoveItemFromCartResponse, UpdateItemFromCartResponse, UpdateItemFromCartRequest } from 'src/app/model/cart.model';
 import { RetrieveCartRequest, RetrieveCartResponse } from 'src/app/model/cart.model';
 export const ADD_ITEM_TO_CART = '[Cart] Add Item To Cart';
 export const REMOVE_ITEM_FROM_CART = '[Cart] Remove Item From Cart';
@@ -14,6 +14,9 @@ export const RETRIEVE_ALL_ITEM_FROM_CART_FAILURE = '[Cart] Retrieve All Item Fro
 export const RETRIEVE_TOTAL_ITEM_COUNT_IN_CART = '[Cart] Retrieve Total Item Count In Cart';
 export const RETRIEVE_TOTAL_ITEM_COUNT_IN_CART_TASK_FAILURE = '[Cart] Retrieve Total Item Count In Cart Task Failure';
 export const RETRIEVE_TOTAL_ITEM_COUNT_IN_CART_TASK_SUCCESS = '[Cart] Retrieve Total Item Count In Cart Task Success';
+export const UPDATE_ITEM_FROM_CART_TASK = '[Cart] Update Item From Cart Task';
+export const UPDATE_ITEM_FROM_CART_SUCCESS = '[Cart] Update Item From Cart Success';
+export const UPDATE_ITEM_FROM_CART_FAILURE = '[Cart] Update Item From Cart Failure';
 
 //--add item
 export class AddItemToCartTask implements Action {
@@ -71,8 +74,23 @@ export class RemoveItemFromCartTaskFailure implements Action {
     constructor(public payload: RemoveItemFromCartResponse) {}
 }
 
+//--update item
+export class UpdateItemFromCartTask implements Action {
+    readonly type = UPDATE_ITEM_FROM_CART_TASK;
+    constructor(public payload: UpdateItemFromCartRequest) {}
+}
+export class UpdateItemFromCartSuccess implements Action {
+    readonly type = UPDATE_ITEM_FROM_CART_SUCCESS;
+    constructor(public payload: UpdateItemFromCartResponse){}
+}
+export class UpdateItemFromCartFailure implements Action {
+    readonly type = UPDATE_ITEM_FROM_CART_FAILURE;
+    constructor(public payload: UpdateItemFromCartResponse){}
+}
+
 export type CartTaskActions = AddItemToCartTask | RemoveItemFromCartTask | 
 CartActionSuccess | CartActionFailure | 
 RetrieveAllItemFromCartTask | RetrieveAllItemFromCartTaskSuccess | RetrieveAllItemFromCartTaskFailure |
 RetrieveTotalItemCountInCartTask | RemoveItemFromCartTaskSuccess | RemoveItemFromCartTaskFailure | 
-RetrieveTotalItemCountInCartTaskSuccess | RetrieveTotalItemCountInCartTaskFailure;
+RetrieveTotalItemCountInCartTaskSuccess | RetrieveTotalItemCountInCartTaskFailure | UpdateItemFromCartTask |
+UpdateItemFromCartSuccess | UpdateItemFromCartFailure;

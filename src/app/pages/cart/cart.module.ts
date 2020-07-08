@@ -4,7 +4,7 @@ import { CartComponent } from './cart.component';
 import { AntDesignCommonModule } from 'src/app/ant-design-common.module';
 import { AngularFlexLayoutModule } from 'src/app/angular-flex-layout.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [CartComponent],
@@ -13,7 +13,8 @@ import { FormsModule } from '@angular/forms';
     AntDesignCommonModule,
     AngularFlexLayoutModule,
     FontAwesomeModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class CartModule { }
