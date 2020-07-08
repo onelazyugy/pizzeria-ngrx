@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { of } from 'rxjs';
 import { AddWingToOrderResponse, Status } from 'src/app/model/wing.model';
-import { RemoveItemFromCartResponse } from 'src/app/model/cart.model';
+import { RemoveItemFromCartResponse, UpdateItemFromCartResponse } from 'src/app/model/cart.model';
 import { RetrieveCartResponse } from 'src/app/model/cart.model';
 
 @Injectable() 
@@ -222,6 +222,66 @@ export class CartEffects {
         })
     )
 
+    @Effect()
+    updateItemInCartEffects = this.actions$.pipe(
+        ofType(CartActions.UPDATE_ITEM_FROM_CART_TASK),
+        switchMap((cartData: CartActions.UpdateItemFromCartTask) => {
+            const updateItemPayload = cartData.payload;
+            return this.http.put<any>(environment.updateItemFromCartUrl, updateItemPayload)
+            .pipe(
+                map((response: UpdateItemFromCartResponse) => {
+                    return this.updateItemFromCartSuccess(response);
+                }),
+                catchError(err => {
+                    if(err.status === 403) {
+                        let status: Status;
+                        if(err.error === null) {
+                            //generic response from server not custom
+                            status = {
+                                message: err.message,
+                                timestamp: '',
+                                transactionId: '',
+                                statusCd: err.status
+                            } 
+                        } else {
+                            status = {
+                                message: err.error.status.message,
+                                timestamp: '',
+                                transactionId: '',
+                                statusCd: err.status
+                            } 
+                        }
+                        return this.updateItemFromCartFailure(status);
+                    } else if(err.status === 500) {
+                        const status: Status = {
+                            message: err.error.status.message,
+                            timestamp: '',
+                            transactionId: '',
+                            statusCd: err.status
+                        }
+                        return this.updateItemFromCartFailure(status);
+                    } else if(err.status === 400) {
+                        const status: Status = {
+                            message: err.error.status.message,
+                            timestamp: '',
+                            transactionId: '',
+                            statusCd: err.status
+                        }
+                        return this.updateItemFromCartFailure(status);
+                    } else {
+                        const status: Status = {
+                            message: 'unknow error',
+                            timestamp: '',
+                            transactionId: '',
+                            statusCd: err.status
+                        }
+                        return this.updateItemFromCartFailure(status);
+                    }
+                })
+            );
+        }),
+    );
+
     //--add to cart
     addToCartSuccess(response: AddWingToOrderResponse) {
         if(response.success) {           
@@ -357,6 +417,45 @@ export class CartEffects {
             action: 'REMOVE'
         }
         return of(new CartActions.RemoveItemFromCartTaskFailure(response));
+    }
+    //--
+
+    //--update 
+    updateItemFromCartSuccess(response: UpdateItemFromCartResponse) {
+        if(response.success) {
+            response.isRequestFromModal = true;
+            response.action = 'UPDATE';
+            return new CartActions.UpdateItemFromCartSuccess(response);
+        } else {
+            const status: Status = {
+                message: response.status.message,
+                statusCd: response.status.statusCd,
+                transactionId: response.status.transactionId,
+                timestamp: response.status.timestamp
+            }
+            const updateItemFromCartResponse: UpdateItemFromCartResponse = {
+                status: status,
+                success: false,
+                cart: null,
+                totalItemInCart: null,
+                cartSummary: null,
+                isRequestFromModal: true,
+                action: 'UPDATE'
+            }
+            return of(new CartActions.UpdateItemFromCartFailure(updateItemFromCartResponse));
+        }
+    }
+    updateItemFromCartFailure(status: Status) {
+        const response: UpdateItemFromCartResponse = {
+            status: status,
+            success: false,
+            cart: null,
+            totalItemInCart: null,
+            cartSummary: null,
+            isRequestFromModal: true,
+            action: 'UPDATE'
+        }
+        return of(new CartActions.UpdateItemFromCartFailure(response));
     }
     //--
 }

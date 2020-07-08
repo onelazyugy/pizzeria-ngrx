@@ -47,38 +47,42 @@
 
 <!-- update item modal -->
 <nz-modal [(nzVisible)]="isEditModalVisible" nzMaskClosable="false" nzTitle="Update Order" (nzOnCancel)="handleEditModalCancel()">
-    <div *ngIf="selectedWing !== undefined">
-        <div fxLayoutAlign="center" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="5px">
-            <div fxLayout="column" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="10px">
-                <div>
-                    <h3>{{selectedWing.name}}</h3>
+    <form nz-form [formGroup]="updateItemInCartForm" (ngSubmit)="handleEditModalUpdate()">
+        <div *ngIf="selectedWing !== undefined">
+            <div fxLayoutAlign="center" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="5px">
+                <div fxLayout="column" fxLayout.lt-sm="column" fxLayout.md="column" fxLayout.lt fxLayoutGap="10px">
+                    <div>
+                        <h3>{{selectedWing.name}}</h3>
+                    </div>
+                        <div>
+                            <!-- order qty -->
+                            <nz-select formControlName="qty" style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="How Many Wing?" [(ngModel)]="selectedQty" (ngModelChange)="qtyDropdownSelect($event)">
+                                <nz-option *ngFor="let qty of quanties" nzLabel="{{qty}}" nzValue="{{qty}}"></nz-option>
+                            </nz-select>
+                        </div>
+                        <div *ngIf="selectedWing.hasFlavor">
+                            <!-- flavor -->
+                            <nz-select formControlName="flavor" style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="What Flavor?" [(ngModel)]="selectedFlavor" (ngModelChange)="flavorDropdownSelect($event)">
+                                <nz-option *ngFor="let flavor of flavors" nzLabel="{{flavor}}" nzValue="{{flavor}}"></nz-option>
+                            </nz-select>
+                        </div>
+                        <div>
+                            <!-- number of order -->
+                            <nz-select formControlName="nbrOfOrder" style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="How many order?" [(ngModel)]="numberOfOrder" (ngModelChange)="numberOfOrderDropdownSelect($event)">
+                                <nz-option *ngFor="let order of orderQtys" nzLabel="{{order}}" nzValue="{{order}}"></nz-option>
+                            </nz-select>
+                        </div>
                 </div>
                 <div>
-                    <!-- order qty -->
-                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="How Many Wing?" [(ngModel)]="selectedValue" (ngModelChange)="qtyDropdownSelect($event)">
-                        <nz-option *ngFor="let qty of quanties" nzLabel="{{qty}}" nzValue="{{qty}}"></nz-option>
-                    </nz-select>
+                    <img src="{{selectedWing.img}}">
                 </div>
-                <div>
-                    <!-- flavor -->
-                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="What Flavor?" [(ngModel)]="selectedValue">
-                        <nz-option *ngFor="let flavor of flavors" nzLabel="{{flavor}}" nzValue="{{flavor}}"></nz-option>
-                    </nz-select>
-                </div>
-                <div>
-                    <!-- qty -->
-                    <nz-select style="width: 100%;" nzShowSearch nzAllowClear nzPlaceHolder="How many order?" [(ngModel)]="selectedValue">
-                        <nz-option *ngFor="let order of orderQtys" nzLabel="{{order}}" nzValue="{{order}}"></nz-option>
-                    </nz-select>
-                </div>
-            </div>
-            <!-- <div style="border-style: solid;"> -->
-            <div>
-                <img src="{{selectedWing.img}}">
             </div>
         </div>
-    </div>
-    <div *nzModalFooter>
-        <button style="width: 100%;" nz-button nzType="primary" (click)="handleEditModalUpdate()" [nzLoading]="isUpdating">UPDATE</button>
-    </div>
+        <div style="padding-top: 5px;" *ngIf="isShowMessageIndicator">
+            <nz-alert nzMessage="{{this.messageIndicator.message}}" nzType="{{this.messageIndicator.type}}" nzShowIcon></nz-alert>
+        </div>
+        <div *nzModalFooter>
+            <button [disabled]="isUpdateBtnDisabled" style="width: 100%;" nz-button nzType="primary" (click)="handleEditModalUpdate()" [nzLoading]="isUpdating">UPDATE</button>
+        </div>
+    </form>
 </nz-modal>

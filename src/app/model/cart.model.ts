@@ -50,3 +50,22 @@ export class RemoveItemFromCartResponse {
     isRequestFromModal: boolean;
     action: string;
 }
+
+export class UpdateItemFromCartRequest {
+    enc: string;
+    type: string;
+    originalSelectedQty: number;
+    originalSelectedFlavor: string;
+    originalNumberOfOrder: number;
+    wing: Wing;
+}
+
+export class UpdateItemFromCartResponse {
+    status: Status;
+    success: boolean;
+    cart: Cart;
+    totalItemInCart: number;
+    cartSummary: CartSummary;
+    isRequestFromModal: boolean;
+    action: string;
+}
