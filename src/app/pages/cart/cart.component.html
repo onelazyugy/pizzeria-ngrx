@@ -1,5 +1,19 @@
 <h1 fxLayoutAlign="center">CART</h1>
-<div *ngIf="cart !== undefined && cart.wings.length !== 0" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayoutGap="10px">
+<!-- summary -->
+<div *ngIf="cartSummary !== undefined" class="summary-box" fxLayout="column" style="width: 100%; margin-bottom: 5px;">
+    <div>
+        <span>Subtotal</span> <span style="float: right;">{{cartSummary.subTotal | currency}}</span>
+    </div>
+    <div>
+        <span>Tax</span> <span style="float: right;">{{cartSummary.tax | currency}}</span>
+    </div>
+    <div>
+        <span>Total</span> <span style="float: right;">{{cartSummary.total | currency}}</span>
+    </div>
+    <button style="width: 100%;" nz-button nzType="primary" (click)="checkout()">CHECKOUT</button>
+</div>
+<!-- wings -->
+<div *ngIf="cart !== undefined && cart.wings !== undefined && cart.wings.length !== 0; else emptyWingBlock" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayoutGap="10px">
     <div *ngFor="let wing of cart.wings">
         <div class="wing-box" fxFlex="4 4 calc(12em + 20px)" style="margin-bottom: 5px;">
             <nz-card [nzCover]="wingimage">
@@ -16,20 +30,56 @@
             </div>
         </div>
     </div>
-    <div class="wing-box" fxLayout="column" style="width: 100%;">
-        <div>
-            <span>Subtotal</span> <span style="float: right;">{{cartSummary.subTotal | currency}}</span>
-        </div>
-        <div>
-            <span>Tax</span> <span style="float: right;">{{cartSummary.tax | currency}}</span>
-        </div>
-        <div>
-            <span>Total</span> <span style="float: right;">{{cartSummary.total | currency}}</span>
-        </div>
-        <button style="width: 100%;" nz-button nzType="primary" (click)="checkout()">CHECKOUT</button>
-    </div>
 </div>  
+<ng-template  #emptyWingBlock>
+    <div *ngIf="!isShowStatusMessageOnNonModal">
+        <hr />
+        <p fxLayoutAlign="center" style="color: green;">
+            <i>No wing in cart!, <a [routerLink]="['/wings']">Let's add some wings!</a></i>
+        </p> 
+        <hr />
+    </div>
+</ng-template>
 
+<!-- pizzas -->
+<div *ngIf="cart !== undefined && cart.pizzas !== undefined && cart.pizzas.length !== 0; else emptyPizzaBlock" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayout.md="column" fxLayoutGap="10px">
+    <div *ngFor="let pizza of cart.pizzas">
+        <div class="pizza-box" fxFlex="4 4 calc(12em + 20px)" style="margin-bottom: 5px;">
+            <nz-card [nzCover]="pizzaimage">
+                <nz-card-meta nzTitle="Pizza" nzDescription="{{pizza.selectedPizzaSize}} pizza at {{pizza.selectedPizzaPrice | currency}}"></nz-card-meta>
+                <nz-card-meta nzDescription="Order type is {{pizza.orderType}}"></nz-card-meta>
+                <nz-card-meta nzDescription="Number of order {{pizza.numberOfOrder}}"></nz-card-meta>
+            </nz-card>
+            <ng-template #pizzaimage>
+                <div fxLayoutAlign="center">
+                    <img style="width: 175px; height: 203px;" alt="pizza" src="{{pizza.img}}"/>
+                </div>
+            </ng-template>
+            <div fxLayoutAlign="center" class="ant-card-actions">
+                <span (click)="editPizza(pizza)" style="font-size: 20px;" nzTooltipTitle="Edit" nzTooltipPlacement="top" nz-tooltip><fa-icon [icon]="faPen"></fa-icon></span>&nbsp;&nbsp;&nbsp;
+                <span (click)="removePizza(pizza)" style="color: red; font-size: 20px;" nzTooltipTitle="Remove" nzTooltipPlacement="top" nz-tooltip><fa-icon [icon]="faTrash"></fa-icon></span>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #emptyPizzaBlock>
+    <p *ngIf="!isShowStatusMessageOnNonModal" fxLayoutAlign="center" style="color: green;">
+        <i>No pizza in cart!, <a [routerLink]="['/']">Let's add some pizzas!</a></i>
+    </p>
+</ng-template>
+<!-- summary -->
+<div *ngIf="cartSummary !== undefined" class="summary-box" fxLayout="column" style="width: 100%;">
+    <div>
+        <span>Subtotal</span> <span style="float: right;">{{cartSummary.subTotal | currency}}</span>
+    </div>
+    <div>
+        <span>Tax</span> <span style="float: right;">{{cartSummary.tax | currency}}</span>
+    </div>
+    <div>
+        <span>Total</span> <span style="float: right;">{{cartSummary.total | currency}}</span>
+    </div>
+    <button style="width: 100%;" nz-button nzType="primary" (click)="checkout()">CHECKOUT</button>
+</div>
 <div *ngIf="isShowStatusMessageOnNonModal" class="remove-item-message-box" fxLayoutAlign="center">{{statusMessageOnNonModal}}</div>
 
 <!-- remove item modal -->

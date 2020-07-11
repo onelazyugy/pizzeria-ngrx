@@ -3,11 +3,14 @@ import { Ingredient } from 'src/app/model/ingredient.model';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../../store/app.reducer';
 import { Subscription } from 'rxjs';
-import { Pizza, PizzaSize, DeliveryType } from 'src/app/model/pizza.model';
+import { Pizza, PizzaSize, DeliveryType, AddPizzaToOrderRequest, AddPizzaToOrderResponse } from 'src/app/model/pizza.model';
 import * as PizzaAction from './store/pizza.action';
 import _ from 'lodash';
 import { Router } from '@angular/router';
 import { faCar, faPizzaSlice, faCubes } from '@fortawesome/free-solid-svg-icons';
+import * as CartActions from '../../cart/store/cart.action';
+import { HelperService } from 'src/app/service/pizzeria-helper.service';
+import { ResetStoreTask } from '../checkout/start/store/start.action';
 
 @Component({
   selector: 'app-create',
@@ -17,6 +20,7 @@ import { faCar, faPizzaSlice, faCubes } from '@fortawesome/free-solid-svg-icons'
 export class CreateComponent implements OnInit, OnDestroy {
   current = 0;
   //data for pizza component
+  pizza: Pizza;
   pizzaSizeArray: PizzaSize[] = [];
   selectedPizzaSize = '';
   finalSelectedPizzaSize = '';
@@ -38,13 +42,24 @@ export class CreateComponent implements OnInit, OnDestroy {
 
   toppingSubscription: Subscription;
   pizzaSubscription: Subscription;
+  cartSubscription: Subscription;
 
   //icons
   faCar = faCar;
   faPizzaSlice = faPizzaSlice;
   faCubes = faCubes;
 
-  constructor(private store: Store<fromApp.AppState>, private router: Router) { }
+  //cart
+  isShowMessageIndicator = false;
+  isAddingPizzaToCart = false;
+  isAddToOrderBtnDisabled = false;
+  isPreviousBtnDisabled = false;
+  messageIndicator = {
+    type: '',
+    message: ''
+};
+
+  constructor(private store: Store<fromApp.AppState>, private router: Router, private helperService: HelperService) { }
 
   ngOnInit() {
     //load data for Topping compnent
@@ -55,6 +70,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     });
     //load data for this pizza component
     this.pizzaSubscription = this.store.select('pizzaReducer').subscribe(data => {
+      this.pizza = data.pizza;//use this throughout
       const pizza: Pizza = data.pizza;
       this.pizzaSizeArray = pizza.size;
       this.deliveryTypeArray = pizza.deliveryType;
@@ -68,6 +84,25 @@ export class CreateComponent implements OnInit, OnDestroy {
       const currentSelectedDeliveryType = _.filter(this.deliveryTypeArray, {'isSelected': true});
       this.selectedDeliveryType = currentSelectedDeliveryType[0].value;
     });
+
+    //load data from cart
+    this.cartSubscription = this.store.select('cartReducer').subscribe(data => {
+      this.isShowMessageIndicator = true;
+      const addPizzaToCartResponse = data.addPizzaToOrderResponse;
+      if(addPizzaToCartResponse.status.statusCd === 200) {
+        this.messageIndicator = {
+          type: 'success',
+          message: addPizzaToCartResponse.status.message
+        }
+      } else {
+        this.messageIndicator = {
+          type: 'error',
+          message: addPizzaToCartResponse.status.message
+        }
+      }
+      this.isAddingPizzaToCart = false;
+    });
+    
   }
 
   onSelectSize(size: string) {
@@ -90,6 +125,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   next(): void {
     this.current += 1;
     if(this.current === 4){
+      this.isShowMessageIndicator = false;
       this.toppingSubscription = this.store.select('toppingReducer').subscribe(toppings => {
         this.selectedCheeeses = toppings.selectedCheeses;
         this.selectedMeats = toppings.selectedMeats;
@@ -110,8 +146,32 @@ export class CreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  checkout(): void {
-    this.router.navigate(['/checkout']);
+  addToOrder(): void {
+    this.isAddingPizzaToCart = true;
+    this. isAddToOrderBtnDisabled = true;
+    this.isPreviousBtnDisabled = true;
+
+    this.selectedCheeeses;
+    this.selectedMeats;
+    this.selectedVeggies;
+    this.selectedPizzaSize;
+    this.pizza;
+    const user = JSON.parse(this.helperService.getObjectFromLocalStorage());
+
+    const request: AddPizzaToOrderRequest = {
+      selectedPizzaSize: this.finalSelectedPizzaSize,
+      orderType: this.selectedDeliveryType,
+      img: this.pizza.typeOfImage.endPizzaImage,
+      selectedCheese: this.selectedCheeeses,
+      selectedMeat: this.selectedMeats,
+      selectedVeggie: this.selectedVeggies,
+      userId: user.id
+    }
+    this.store.dispatch(
+      new CartActions.AddPizzaToCartTask(request)
+    );
+    //clear the store 
+    this.store.dispatch(new ResetStoreTask());
   }
 
   ngOnDestroy(): void {
@@ -120,6 +180,9 @@ export class CreateComponent implements OnInit, OnDestroy {
     }
     if(this.pizzaSubscription !== undefined) {
       this.pizzaSubscription.unsubscribe();
+    }
+    if(this.cartSubscription !== undefined) {
+      this.cartSubscription.unsubscribe();
     }
   }
 }

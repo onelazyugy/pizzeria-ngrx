@@ -1,16 +1,28 @@
 import * as CartActions from './cart.action';
 import _ from 'lodash';
 import { AddWingToOrderResponse, Status } from 'src/app/model/wing.model';
-import { RetrieveCartResponse, CartSummary, RemoveItemFromCartResponse } from 'src/app/model/cart.model';
+import { RetrieveCartResponse } from 'src/app/model/cart.model';
+import { AddPizzaToOrderResponse } from 'src/app/model/pizza.model';
 
 export interface State {
     addWingToOrderResponse: AddWingToOrderResponse;
+    addPizzaToOrderResponse: AddPizzaToOrderResponse;
     retrieveCartResponse: RetrieveCartResponse;
     totalItemInCart: number;
 }
 
 const initlaTasks: State = {
     addWingToOrderResponse: {
+        status: {
+            timestamp: '',
+            message: '',
+            transactionId: '',
+            statusCd: 0
+        },
+        success: false,
+        totalItemInCart: 0
+    },
+    addPizzaToOrderResponse: {
         status: {
             timestamp: '',
             message: '',
@@ -53,6 +65,7 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
             return {
                 ...state,
                 addWingToOrderResponse: {...state.addWingToOrderResponse},
+                addPizzaToOrderResponse: {...state.addPizzaToOrderResponse},
                 retrieveCartResponse: {...retrieveAllItemFromCartSuccessResponse},
                 totalItemInCart: retrieveAllItemFromCartSuccessResponse.totalItemInCart
             }
@@ -61,6 +74,7 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
             return {
                 ...state,
                 addWingToOrderResponse: {...state.addWingToOrderResponse},
+                addPizzaToOrderResponse: {...state.addPizzaToOrderResponse},
                 retrieveCartResponse: {...retrieveAllItemFromCartFailureResponse},
                 totalItemInCart: retrieveAllItemFromCartFailureResponse.totalItemInCart
             }
@@ -76,6 +90,7 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
             return {
                 ...state,
                 addWingToOrderResponse: {...state.addWingToOrderResponse},
+                addPizzaToOrderResponse: {...state.addPizzaToOrderResponse},
                 retrieveCartResponse: {...retrieveTotalItemCountInCartSuccess},
                 totalItemInCart: retrieveTotalItemCountInCartSuccess.totalItemInCart
             }
@@ -84,6 +99,7 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
             return {
                 ...state,
                 addWingToOrderResponse: {...state.addWingToOrderResponse},
+                addPizzaToOrderResponse: {...state.addPizzaToOrderResponse},
                 retrieveCartResponse: {...retrieveTotalItemCountInCartSuccess},
                 totalItemInCart: retrieveTotalItemCountInCartSuccess.totalItemInCart
             }
@@ -98,6 +114,7 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
             return {
                 ...state,
                 addWingToOrderResponse: {...state.addWingToOrderResponse},
+                addPizzaToOrderResponse: {...state.addPizzaToOrderResponse},
                 retrieveCartResponse: {...removeItemFromCartResponseSuccess},
                 totalItemInCart: removeItemFromCartResponseSuccess.totalItemInCart
             }
@@ -106,6 +123,7 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
             return {
                 ...state,
                 addWingToOrderResponse: {...state.addWingToOrderResponse},
+                addPizzaToOrderResponse: {...state.addPizzaToOrderResponse},
                 retrieveCartResponse: {...removeItemFromCartResponseFailure},
                 totalItemInCart: removeItemFromCartResponseFailure.totalItemInCart
             }
@@ -117,6 +135,7 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
             return {
                 ...state,
                 addWingToOrderResponse: {...addWingToOrderResponse},
+                addPizzaToOrderResponse: {...state.addPizzaToOrderResponse},
                 retrieveCartResponse: {...state.retrieveCartResponse},
                 totalItemInCart: addWingToOrderResponse.totalItemInCart
             }
@@ -149,7 +168,31 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
             return {
                 ...state,
                 addWingToOrderResponse: {...failureResponse},
+                addPizzaToOrderResponse: {...state.addPizzaToOrderResponse},
                 retrieveCartResponse: {...failureResponseForRetrieve}
+            }
+        //--
+
+        //--add pizza
+        case CartActions.ADD_PIZZA_TO_CART:
+            return {
+                ...state
+            }
+        case CartActions.ADD_PIZZA_TO_CART_SUCCESS:
+            const addPizzaToCartResponse: AddPizzaToOrderResponse = action.payload;
+            return {
+                addWingToOrderResponse: {...state.addWingToOrderResponse},
+                addPizzaToOrderResponse: {...addPizzaToCartResponse},
+                retrieveCartResponse: {...state.retrieveCartResponse},
+                totalItemInCart: addPizzaToCartResponse.totalItemInCart
+            }
+        case CartActions.ADD_PIZZA_TO_CART_FAILURE:
+            const addPizzaToCartFailure: AddPizzaToOrderResponse = action.payload;
+            return {
+                addWingToOrderResponse: {...state.addWingToOrderResponse},
+                addPizzaToOrderResponse: {...addPizzaToCartFailure},
+                retrieveCartResponse: {...state.retrieveCartResponse},
+                totalItemInCart: addPizzaToCartResponse.totalItemInCart
             }
         //--
 
@@ -158,22 +201,22 @@ export function cartReducer(state: State = initlaTasks, action: CartActions.Cart
             return {
                 ...state
             }
-            case CartActions.UPDATE_ITEM_FROM_CART_SUCCESS:
-                const updateItemFromCartResponseSuccess = action.payload;
-                return {
-                    ...state,
-                    addWingToOrderResponse: {...state.addWingToOrderResponse},
-                    retrieveCartResponse: {...updateItemFromCartResponseSuccess},
-                    totalItemInCart: updateItemFromCartResponseSuccess.totalItemInCart
-                }
-            case CartActions.UPDATE_ITEM_FROM_CART_FAILURE:
-                const updateItemFromCartResponseFailure = action.payload;
-                return {
-                    ...state,
-                    addWingToOrderResponse: {...state.addWingToOrderResponse},
-                    retrieveCartResponse: {...updateItemFromCartResponseFailure},
-                    totalItemInCart: updateItemFromCartResponseFailure.totalItemInCart
-                }
+        case CartActions.UPDATE_ITEM_FROM_CART_SUCCESS:
+            const updateItemFromCartResponseSuccess = action.payload;
+            return {
+                ...state,
+                addWingToOrderResponse: {...state.addWingToOrderResponse},
+                retrieveCartResponse: {...updateItemFromCartResponseSuccess},
+                totalItemInCart: updateItemFromCartResponseSuccess.totalItemInCart
+            }
+        case CartActions.UPDATE_ITEM_FROM_CART_FAILURE:
+            const updateItemFromCartResponseFailure = action.payload;
+            return {
+                ...state,
+                addWingToOrderResponse: {...state.addWingToOrderResponse},
+                retrieveCartResponse: {...updateItemFromCartResponseFailure},
+                totalItemInCart: updateItemFromCartResponseFailure.totalItemInCart
+            }
         default:
             return state;
     }

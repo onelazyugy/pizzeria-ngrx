@@ -28,6 +28,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AntDesignCommonModule } from './ant-design-common.module';
 import { HttpRequestInterceptor } from './service/request.interceptor';
 import { CartModule } from './pages/cart/cart.module';
+import { PizzaEffects } from './pages/pizza/create/store/pizza.effect';
 
 registerLocaleData(en);
 
@@ -47,7 +48,7 @@ registerLocaleData(en);
 
     //wire up the store with all of the app reducers
     StoreModule.forRoot(fromApp.appReducer, {metaReducers: [clearState]}), //metaReducers is for clearing the store upon logout
-    EffectsModule.forRoot([RegisterEffects, LoginEffects, CartEffects]),
+    EffectsModule.forRoot([RegisterEffects, LoginEffects, CartEffects, PizzaEffects]),
     //ngrxdevtools
     StoreDevtoolsModule.instrument({logOnly: environment.production}),
     PizzaModule,

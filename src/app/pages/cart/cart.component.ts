@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import * as fromApp from '../../store/app.reducer';
 import _ from 'lodash';
 import { Store } from '@ngrx/store';
@@ -8,6 +8,7 @@ import { RetrieveCartRequest, Cart, CartSummary, RemoveItemFromCartRequest, Retr
 import { HelperService } from 'src/app/service/pizzeria-helper.service';
 import { faTrash, faPen, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { Wing } from 'src/app/model/wing.model';
+import { Pizza } from 'src/app/model/pizza.model';
 
 @Component({
   selector: 'app-cart',
@@ -299,6 +300,14 @@ export class CartComponent implements OnInit {
     this.store.dispatch(
       new CartActions.UpdateItemFromCartTask(request)
     );
+  }
+
+  editPizza(pizza: Pizza) {
+    
+  }
+
+  removePizza(pizza: Pizza) {
+    
   }
 
   qtyDropdownSelect(qty: string) {

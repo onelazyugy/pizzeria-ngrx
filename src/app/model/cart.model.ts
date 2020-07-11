@@ -1,4 +1,5 @@
 import { Wing } from './wing.model';
+import { Pizza } from './pizza.model';
 
 export class RetrieveCartRequest {
     userId: number;
@@ -26,6 +27,7 @@ export class Cart {
     id: number;
     userId: number;
     wings: Wing[];
+    pizzas: Pizza[];
 }
 
 export class CartSummary {
