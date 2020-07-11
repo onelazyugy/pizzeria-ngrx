@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import { AddWingToOrderRequest, AddWingToOrderResponse, Status } from 'src/app/model/wing.model';
 import { RemoveItemFromCartResponse, UpdateItemFromCartResponse, UpdateItemFromCartRequest } from 'src/app/model/cart.model';
 import { RetrieveCartRequest, RetrieveCartResponse } from 'src/app/model/cart.model';
+import { AddPizzaToOrderRequest, AddPizzaToOrderResponse } from 'src/app/model/pizza.model';
 export const ADD_ITEM_TO_CART = '[Cart] Add Item To Cart';
 export const REMOVE_ITEM_FROM_CART = '[Cart] Remove Item From Cart';
 export const REMOVE_ITEM_FROM_CART_SUCCESS = '[Cart] Remove Item From Cart Success';
@@ -17,6 +18,9 @@ export const RETRIEVE_TOTAL_ITEM_COUNT_IN_CART_TASK_SUCCESS = '[Cart] Retrieve T
 export const UPDATE_ITEM_FROM_CART_TASK = '[Cart] Update Item From Cart Task';
 export const UPDATE_ITEM_FROM_CART_SUCCESS = '[Cart] Update Item From Cart Success';
 export const UPDATE_ITEM_FROM_CART_FAILURE = '[Cart] Update Item From Cart Failure';
+export const ADD_PIZZA_TO_CART = '[Cart] Add Pizza To Cart';
+export const ADD_PIZZA_TO_CART_SUCCESS = '[Cart] Add Pizza To Cart Success';
+export const ADD_PIZZA_TO_CART_FAILURE = '[Cart] Add Pizza To Cart Failure';
 
 //--add item
 export class AddItemToCartTask implements Action {
@@ -30,6 +34,20 @@ export class CartActionSuccess implements Action {
 export class CartActionFailure implements Action {
     readonly type = CART_ACTION_FAILURE;
     constructor(public payload: Status) {}
+}
+
+//--add pizza to cart
+export class AddPizzaToCartTask implements Action {
+    readonly type = ADD_PIZZA_TO_CART;
+    constructor(public payload: AddPizzaToOrderRequest){}
+}
+export class AddPizzaToCartSuccess implements Action {
+    readonly type = ADD_PIZZA_TO_CART_SUCCESS;
+    constructor(public payload: AddPizzaToOrderResponse){}
+}
+export class AddPizzaToCartFailure implements Action {
+    readonly type = ADD_PIZZA_TO_CART_FAILURE;
+    constructor(public payload: AddPizzaToOrderResponse){}
 }
 
 //--retrieve all item
@@ -93,4 +111,4 @@ CartActionSuccess | CartActionFailure |
 RetrieveAllItemFromCartTask | RetrieveAllItemFromCartTaskSuccess | RetrieveAllItemFromCartTaskFailure |
 RetrieveTotalItemCountInCartTask | RemoveItemFromCartTaskSuccess | RemoveItemFromCartTaskFailure | 
 RetrieveTotalItemCountInCartTaskSuccess | RetrieveTotalItemCountInCartTaskFailure | UpdateItemFromCartTask |
-UpdateItemFromCartSuccess | UpdateItemFromCartFailure;
+UpdateItemFromCartSuccess | UpdateItemFromCartFailure | AddPizzaToCartTask | AddPizzaToCartSuccess | AddPizzaToCartFailure;

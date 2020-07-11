@@ -1,3 +1,6 @@
+import { Status } from './wing.model';
+import { Ingredient } from './ingredient.model';
+
 export interface PizzaImage {
     initialPizzaImage: string;
     endPizzaImage: string;
@@ -29,3 +32,19 @@ export class Pizza {
     }
 }
 
+export class AddPizzaToOrderRequest {
+    selectedPizzaSize: string;
+    orderType: string;
+    img: string;
+    // selectedPizzaPrice: number;
+    selectedCheese: Ingredient[];
+    selectedMeat: Ingredient[];
+    selectedVeggie: Ingredient[];
+    userId: number;
+}
+
+export class AddPizzaToOrderResponse {
+    status: Status;
+    success: boolean;
+    totalItemInCart: number;
+}

@@ -70,14 +70,17 @@
         </div>
     </div>
 </div>
+<div *ngIf="current === 4 && isShowMessageIndicator">
+    <nz-alert nzMessage="{{this.messageIndicator.message}}" nzType="{{this.messageIndicator.type}}" nzShowIcon></nz-alert>
+</div>
 <div class="steps-action">
-    <button nz-button nzType="default" (click)="pre()" *ngIf="current > 0">
+    <button [disabled]="isPreviousBtnDisabled" nz-button nzType="default" (click)="pre()" *ngIf="current > 0">
         <span>Previous</span>
     </button>
     <button nz-button nzType="default" (click)="next()" *ngIf="current < 4">
         <span>Next</span>
     </button>
-    <button nz-button nzType="primary" (click)="checkout()" *ngIf="current === 4">
-        <span>Checkout</span>
+    <button [disabled]="isAddToOrderBtnDisabled" [nzLoading]="isAddingPizzaToCart" nz-button nzType="primary" (click)="addToOrder()" *ngIf="current === 4">
+        <span>ADD TO ORDER</span>
     </button>
 </div>
