@@ -207,8 +207,7 @@ export class CartComponent implements OnInit {
     const request: RemoveItemFromCartRequest = {
       enc: user.enc,
       type: 'wing',
-      itemId: this.selectedWing.wingId,
-      numberOfOrder: this.selectedWing.numberOfOrder
+      wing: this.selectedWing
     }
     this.store.dispatch(
       new CartActions.RemoveItemFromCartTask(request)

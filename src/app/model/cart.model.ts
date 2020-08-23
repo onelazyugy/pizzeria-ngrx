@@ -39,8 +39,7 @@ export class CartSummary {
 export class RemoveItemFromCartRequest {
     enc: string;
     type: string;
-    itemId: number;
-    numberOfOrder: number;
+    wing: Wing;
 }
 
 export class RemoveItemFromCartResponse {
